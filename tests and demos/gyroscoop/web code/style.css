@@ -1,0 +1,50 @@
+body, html {
+	height: 100%; 
+	width : 100%;  
+	margin: 0;
+  background-color: #000000;
+  color: white;
+}
+
+.circle {
+    position: absolute;
+	width: 60px; 
+	height: 60px; 
+    border-radius: 50%;  
+    background-color: white;
+}
+
+.grid {
+    margin: auto;
+    margin-top: 3rem;
+    max-width: 50rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-gap: 3rem;
+  aspect-ratio: 1/1;
+}
+
+.icon{
+    background-color: black;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.arrow{
+    width: 20rem;
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20rem;
+}
+
+.arrow-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
