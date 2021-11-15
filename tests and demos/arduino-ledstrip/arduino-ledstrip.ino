@@ -13,8 +13,8 @@
 #define NUMPIXELS 300 // Number of LEDs in strip
 
 // Here's how to control the LEDs from any two pins:
-#define DATAPIN    4 // gele draad - ci! of spi mosi 51 op mega 
-#define CLOCKPIN   5 //groene draad - di! of spi sck 52 op mega
+#define DATAPIN    51 // gele draad - di -  of spi mosi 51 op mega - of 4
+#define CLOCKPIN   52 //groene draad - ci - of spi sck 52 op mega -  of 5
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 // The last parameter is optional -- this is the color data order of the
 // DotStar strip, which has changed over time in different production runs.
@@ -27,6 +27,7 @@ Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 void setup() {
 
+//niet relevant
 #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000L)
   clock_prescale_set(clock_div_1); // Enable 16 MHz on Trinket
 #endif
