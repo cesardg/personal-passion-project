@@ -13,8 +13,8 @@
 #define NUMPIXELS 300 // Number of LEDs in strip
 
 // Here's how to control the LEDs from any two pins:
-#define DATAPIN    4 // gele draad - ci!
-#define CLOCKPIN   5 //groene draad - di!
+#define DATAPIN    4 // gele draad - ci! of spi mosi 51 op mega 
+#define CLOCKPIN   5 //groene draad - di! of spi sck 52 op mega
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 // The last parameter is optional -- this is the color data order of the
 // DotStar strip, which has changed over time in different production runs.
