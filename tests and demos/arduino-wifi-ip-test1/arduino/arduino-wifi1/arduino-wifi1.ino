@@ -4,7 +4,7 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
-SoftwareSerial esp8266(0, 1); //set ESP8266 RX pin = 5/0, and TX pin = 4/1
+SoftwareSerial esp8266(5, 4); //set ESP8266 RX pin = 5, and TX pin = 4
 
 //define variables
 #define DEBUG true //display ESP8266 messages on Serial Monitor
@@ -39,11 +39,11 @@ void setup()
   
   //start serial communication
   Serial.begin(9600);
-  esp8266.begin(19200);
+  esp8266.begin(115200);
   
   sendData("AT+RST\r\n", 2000, DEBUG); //reset module
   sendData("AT+CWMODE=1\r\n", 1000, DEBUG); //set station mode
-  sendData("AT+CWJAP=\"telenet-D3EFO\",\"YYY\"\r\n", 2000, DEBUG);   //connect wifi network
+  sendData("AT+CWJAP=\"telenet-D3EFO\",\"YYY_WIFI_CODE_HERE_YYY\"\r\n", 2000, DEBUG);   //connect wifi network
   while(!esp8266.find("OK")) { //wait for connection
   } 
   sendData("AT+CIFSR\r\n", 1000, DEBUG); //show IP address

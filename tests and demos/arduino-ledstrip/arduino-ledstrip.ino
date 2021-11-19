@@ -13,9 +13,9 @@
 #define NUMPIXELS 300 // Number of LEDs in strip
 
 // Here's how to control the LEDs from any two pins:
-#define DATAPIN    51 // gele draad - di -  of spi mosi 51 op mega - of 4
-#define CLOCKPIN   52 //groene draad - ci - of spi sck 52 op mega -  of 5
-Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
+#define DATAPIN    11 // gele draad - di -  of spi mosi 51 op mega - of 4
+#define CLOCKPIN   13 //groene draad - ci - of spi sck 52 op mega -  of 5
+//Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 // The last parameter is optional -- this is the color data order of the
 // DotStar strip, which has changed over time in different production runs.
 // Your code just uses R,G,B colors, the library then reassigns as needed.
@@ -23,7 +23,7 @@ Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 // Hardware SPI is a little faster, but must be wired to specific pins
 // (Arduino Uno = pin 11 for data, 13 for clock, other boards are different).
-//Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BRG);
+Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BRG);
 
 void setup() {
 
