@@ -11,9 +11,9 @@
 #include <Firebase_Arduino_WiFiNINA.h>
  
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
-#define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
+#define FIREBASE_AUTH ""
 #define WIFI_SSID "iPhone van Cesar"
-#define WIFI_PASSWORD "not so safe 123"
+#define WIFI_PASSWORD ""
  
 FirebaseData firebaseData;
  
