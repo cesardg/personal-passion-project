@@ -10,8 +10,8 @@
 #include <Arduino_LSM6DS3.h>
 #include <Firebase_Arduino_WiFiNINA.h>
  
-#define FIREBASE_HOST "uno-wifi-r-2-f7c79-default-rtdb.europe-west1.firebasedatabase.app"
-#define FIREBASE_AUTH "cMeZ3OEFpcsovshxbrB7VIGFgzcbdFaH5JdVw7Bw"
+#define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
+#define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
 #define WIFI_SSID "iPhone van Cesar"
 #define WIFI_PASSWORD "not so safe 123"
  
@@ -72,7 +72,7 @@ void loop()
 
  Serial.println("behin hoop");
 
-  if (Firebase.getString(firebaseData, path + "/hello/world")) // also can use Firebase.get(fbdo, path)
+  if (Firebase.getString(firebaseData, path + "/messages/message")) // also can use Firebase.get(fbdo, path)
   {
     Serial.println("ok");
     Serial.println("path: " + firebaseData.dataPath());
