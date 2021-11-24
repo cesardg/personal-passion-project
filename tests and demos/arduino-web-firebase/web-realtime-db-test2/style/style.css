@@ -1,0 +1,47 @@
+html{
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+}
+
+.container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: Helvetica, sans-serif;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 60rem;
+}
+
+.form > *{
+    font-size: 2rem;
+}
+
+.title{
+    font-size: 4rem;
+    margin: 4rem;
+    text-align: center;
+}
+
+.input, button{
+    margin-bottom: 2rem;
+}
+
+.input{
+    padding: 1rem;
+}
+
+.button{
+    padding: 2rem;
+}
+

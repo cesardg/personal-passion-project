@@ -14,57 +14,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 
-let $name= document.querySelector(`.name`);
-let $roll = document.querySelector(`.roll`);
-let $sec = document.querySelector(`.sec`);
-let $gen = document.querySelector(`.gen`);
-const $insBtn = document.querySelector(`.insert`);
-const $selBtn = document.querySelector(`.select`);
-const $updBtn = document.querySelector(`.update`);
-const $delBtn = document.querySelector(`.delete`);
+const $treeId= document.querySelector(`.tree-id`);
+const $message = document.querySelector(`.message`);
 
-// insert data
-const insertData = (e) => {
-    e.preventDefault();
-    set(ref(db, "TheStudents/"+ $roll.value),{
-        Name: $name.value,
-        Roll: $roll.value,
-        Section: $sec.value,
-        Gender: $gen.value
+const $sendButton = document.querySelector(`.send`);
 
-    })
-    .then(()=>{
-        console.log("set done")
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
-}
-
-const selectData = (e) => {
-    e.preventDefault();
-    const dbRef = ref(db);
-    get(child(dbRef, "TheStudents/" + $roll.value)).then((snapshot)=>{
-        if (snapshot.exists()){
-            $name.value = snapshot.val().Name;
-            $sec.value = snapshot.val().Section;
-            $gen.value = snapshot.val().Gender;
-        } else{
-            console.log("no data found")
-        }
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
-}
-
-const updateData = (e) => {
+const handleClickSend = (e) => {
     e.preventDefault();
     update(ref(db, "TheStudents/"+ $roll.value),{
-        Name: $name.value,
-        Section: $sec.value,
-        Gender: $gen.value
-
+        Message: $message.value  
     })
     .then(()=>{
         console.log("update done")
@@ -74,24 +32,9 @@ const updateData = (e) => {
     })
 }
 
-const deleteData = (e) => {
-    e.preventDefault();
-    remove(ref(db, "TheStudents/"+ $roll.value))
-    .then(()=>{
-        console.log("remove done")
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
-}
-
-
 
 const init = () =>{
-    $insBtn.addEventListener('click', insertData);
-    $selBtn.addEventListener('click', selectData);
-    $updBtn.addEventListener('click', updateData);
-    $delBtn.addEventListener('click', deleteData);
+    $sendButton.addEventListener('click', handleClickSend);
 }
 
 init()

@@ -5,30 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
     <title>Firebase test</title>
 </head>
 
 <body>
-    <main>
-        <h1>Firebase front end</h1>
-        <form>
-            <fieldset>
-                <label for="Namebox">Name</label><input class="name" type="text" name="Namebox" id="Namebox"><br>
-                <label for="Rollbox">RollNo</label><input class="roll" type="text" name="Rollbox" id="Rollbox"><br>
-                <label for="Secbox">Section</label><input class="sec" type="text" name="Secbox" id="Secbox"><br>
-                <label>gender</label>
-                <select id="Genbox" class="gen">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </fieldset>
-            <fieldset>
-                <button class="insert" id="Insbtn">insert</button>
-                <button class="select" id="Selbtn">select</button>
-                <button class="update" id="Updbtn">update</button>
-                <button class="delete" id="Delbtn">delete</button>
-            </fieldset>
+    <main class="container">
+        <h1 class="title">Send a message to my Christmas tree!</h1>
+        <form class="form">
+            <label for="treeId">Tree ID</label>
+            <input class="input tree-id" type="text" name="treeId" id="treeId">
+            <label for="message">Message</label>
+            <input class="input message" type="text" name="message" id="message">
+            <button class="button send" id="send">Send Message</button>
         </form>
     </main>
 <script type="module" src="js/script.js"></script>
