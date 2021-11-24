@@ -11,9 +11,9 @@
 #include <Firebase_Arduino_WiFiNINA.h>
  
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
-#define FIREBASE_AUTH ""
+#define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
 #define WIFI_SSID "iPhone van Cesar"
-#define WIFI_PASSWORD ""
+#define WIFI_PASSWORD "not so safe 123"
  
 FirebaseData firebaseData;
  
@@ -60,17 +60,16 @@ void loop()
  IMU.readAcceleration(x, y, z);
  
  // Send data to Firebase with specific path
- if (Firebase.setFloat(firebaseData, path + "/1-setFloat/X", x)) {
+ if (Firebase.setFloat(firebaseData, path + "/gyro-values/X-axis", x)) {
  Serial.println(firebaseData.dataPath() + " = " + x);
  }
- if (Firebase.setFloat(firebaseData, path + "/1-setFloat/Y", y)) {
+ if (Firebase.setFloat(firebaseData, path + "/gyro-values/Y-axis", y)) {
  Serial.println(firebaseData.dataPath() + " = " + y);
  }
- if (Firebase.setFloat(firebaseData, path + "/1-setFloat/Z", z)) {
+ if (Firebase.setFloat(firebaseData, path + "/gyro-values/Z-axis", z)) {
  Serial.println(firebaseData.dataPath() + " = " + z);
  }
 
- Serial.println("behin hoop");
 
   if (Firebase.getString(firebaseData, path + "/messages/message")) // also can use Firebase.get(fbdo, path)
   {
@@ -97,12 +96,11 @@ void loop()
     else if (firebaseData.dataType() == "array")
       Serial.println(firebaseData.arrayData());
   }
- Serial.println("einde hoop");
  
  // Push data using pushJSON
  jsonStr = "{\"X\":" + String(x,6) + ",\"Y\":" + String(y,6) + ",\"Z\":" + String(z,6) + "}";
  
- if (Firebase.pushJSON(firebaseData, path + "/2-pushJSON", jsonStr)) {
+ if (Firebase.pushJSON(firebaseData, path + "/gyroJSON", jsonStr)) {
  Serial.println(firebaseData.dataPath() + " = " + firebaseData.pushName());
  }
  else {
@@ -110,6 +108,6 @@ void loop()
  }
  
  Serial.println();
- delay(10000);
+ delay(5000);
  }
 }
