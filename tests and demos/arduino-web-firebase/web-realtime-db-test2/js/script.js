@@ -21,8 +21,8 @@ const $sendButton = document.querySelector(`.send`);
 
 const handleClickSend = (e) => {
     e.preventDefault();
-    update(ref(db, "TheStudents/"+ $roll.value),{
-        Message: $message.value  
+    update(ref(db, $treeId.value + "/messages"),{
+        message: $message.value  
     })
     .then(()=>{
         console.log("update done")
