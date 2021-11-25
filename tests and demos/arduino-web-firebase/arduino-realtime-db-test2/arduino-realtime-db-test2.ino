@@ -9,16 +9,17 @@
 #define WIFI_SSID "iPhone van Cesar"
 #define WIFI_PASSWORD "not so safe 123"
  
-FirebaseData firebaseData;
+
+String treeId = "/Rudolph-A3EpYEF7zU";
+String jsonStr;
+String previousMessage;
 
 // LCD pinout
 const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
 const int i2c_addr = 0x27;
- 
+
+FirebaseData firebaseData;
 LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
- 
-String treeId = "/Rudolph-A3EpYEF7zU";
-String jsonStr;
  
 void setup() {
   Serial.begin(9600);
@@ -47,8 +48,10 @@ void setup() {
 
   lcd.setCursor(0,1);
   lcd.print("Waiting for msg...");
-  
-  
+
+  if (Firebase.getString(firebaseData, treeId + "/messages/message")) { 
+    previousMessage = firebaseData.stringData();
+  }
 }
  
 void loop() {
@@ -57,13 +60,16 @@ void loop() {
 
 void listeningForMessages(){
    if (Firebase.getString(firebaseData, treeId + "/messages/message")) { 
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Message:");
-    lcd.setCursor(0,1);
-    lcd.print(firebaseData.stringData());
-    Serial.println(firebaseData.stringData()); 
+      if (previousMessage != firebaseData.stringData()) {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Message:");
+        lcd.setCursor(0,1);
+        lcd.print(firebaseData.stringData());
+        Serial.println(firebaseData.stringData());
+      }
+    previousMessage = firebaseData.stringData();
+     
   }
- Serial.println();
  delay(1000);
  }

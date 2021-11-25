@@ -26,6 +26,8 @@ const handleClickSend = (e) => {
     })
     .then(()=>{
         console.log("update done")
+        $message.value = "";
+        document.querySelector(`.container`).innerHTML = `<h1 class="title">Your message has been successfully sent!</h1>`
     })
     .catch((error)=>{
         console.log(error)
