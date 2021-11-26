@@ -23,7 +23,7 @@ html, body{
 }
 
 .form > *{
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
 .title{
@@ -37,7 +37,7 @@ html, body{
 }
 
 .input{
-    padding: 1rem;
+    padding: .2rem;
 }
 
 .button{
@@ -45,9 +45,8 @@ html, body{
 }
 
 .preview{
-    display: grid;
-    grid-template-columns: repeat(34, 2rem);
-    grid-template-rows: repeat(15, 4rem);
+   display: flex;
+    flex-direction: column
 }
 
 .led-container{
@@ -55,6 +54,8 @@ html, body{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 4rem;
+    width: 2rem;
 }
 
 .led{
@@ -62,27 +63,17 @@ html, body{
     border-radius: 50%;
 }
 
-.led-container-0, .led-container-1, .led-container-2, .led-container-3, .led-container-4, .led-container-5, .led-container-6, .led-container-7, .led-container-8, .led-container-9, .led-container-10, .led-container-11, .led-container-12, .led-container-13, .led-container-14, .led-container-15, .led-container-16, .led-container-17, .led-container-18, .led-container-19, .led-container-20, .led-container-21, .led-container-22, .led-container-23, .led-container-24, .led-container-25, .led-container-26, .led-container-27, .led-container-29, .led-container-30, .led-container-31, .led-container-32, .led-container-33, .led-container-34, .led-container-28     {
-    grid-row-start: 15;
+.preview-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.reversed{
+    flex-direction: row-reverse;
 }
 
 
-
-
-.led-container-56{
-    grid-row-start: 14;
-    grid-column-start: 2;
-}
-
-.led-container-33{
-     grid-row-start: 15;
-    grid-column-start: 34;
-}
-
-.led-container-34{
-     grid-row-start: 14;
-    grid-column-start: 33;
-}
 
 
 
