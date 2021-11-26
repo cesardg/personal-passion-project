@@ -1,0 +1,88 @@
+html{
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+}
+
+.container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Helvetica, sans-serif;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 60rem;
+}
+
+.form > *{
+    font-size: 2rem;
+}
+
+.title{
+    font-size: 4rem;
+    margin: 4rem;
+    text-align: center;
+}
+
+.input, button{
+    margin-bottom: 2rem;
+}
+
+.input{
+    padding: 1rem;
+}
+
+.button{
+    padding: 2rem;
+}
+
+.preview{
+    display: grid;
+    grid-template-columns: repeat(34, 2rem);
+    grid-template-rows: repeat(15, 4rem);
+}
+
+.led-container{
+    border: .1rem solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.led{
+    background-color: rgba(255, 0, 0, 0.233);
+    border-radius: 50%;
+}
+
+.led-container-0, .led-container-1, .led-container-2, .led-container-3, .led-container-4, .led-container-5, .led-container-6, .led-container-7, .led-container-8, .led-container-9, .led-container-10, .led-container-11, .led-container-12, .led-container-13, .led-container-14, .led-container-15, .led-container-16, .led-container-17, .led-container-18, .led-container-19, .led-container-20, .led-container-21, .led-container-22, .led-container-23, .led-container-24, .led-container-25, .led-container-26, .led-container-27, .led-container-29, .led-container-30, .led-container-31, .led-container-32, .led-container-33, .led-container-34, .led-container-28     {
+    grid-row-start: 15;
+}
+
+
+
+
+.led-container-56{
+    grid-row-start: 14;
+    grid-column-start: 2;
+}
+
+.led-container-33{
+     grid-row-start: 15;
+    grid-column-start: 34;
+}
+
+.led-container-34{
+     grid-row-start: 14;
+    grid-column-start: 33;
+}
+
+
+
