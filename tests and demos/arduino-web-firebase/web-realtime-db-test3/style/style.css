@@ -46,7 +46,7 @@ html, body{
 
 .preview{
    display: flex;
-    flex-direction: column
+flex-direction: column;
 }
 
 .led-container{
@@ -54,8 +54,10 @@ html, body{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 4rem;
-    width: 2rem;
+    height: 3rem;
+    width: 3rem;
+    margin: 4rem 1rem;
+    border-radius: 50%;
 }
 
 .led{
@@ -71,6 +73,16 @@ html, body{
 
 .reversed{
     flex-direction: row-reverse;
+}
+
+.font{
+position: absolute;
+z-index: -1;
+transform: scale(6.5) translate(-6rem, 69rem);
+}
+
+.copy-array{
+    height: 0;
 }
 
 
