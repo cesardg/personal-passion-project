@@ -78,7 +78,7 @@ flex-direction: column;
 .font{
 position: absolute;
 z-index: -1;
-transform: scale(6.5) translate(-6rem, 69rem);
+transform: scale(6.5) translate(56rem, 26rem);
 }
 
 .copy-array{
