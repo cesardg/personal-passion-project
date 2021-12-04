@@ -19,12 +19,6 @@ const $message = document.querySelector(`.message`);
 const $ledContainers = document.querySelectorAll(`.led-container`);
 const $sendButton = document.querySelector(`.send`);
 
-let url = window.location.href;
-let params = (new URL(url)).searchParams;
-let messageMode = "message"
-let user;
-let treeInfo;
-
 //mapping
 const A = [242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44];
 const Acol = [[242,"e9692c"],[241,"e9692c"],[240,"e9692c"],[243,"e9692c"],[224,"e9692c"],[225,"e9692c"],[226,"e9692c"],[227,"e9692c"],[203,"e9692c"],[204,"e9692c"],[202,"e9692c"],[201,"e9692c"],[200,"e9692c"],[228,"e9692c"],[223,"e9692c"],[222,"e9692c"],[221,"e9692c"],[208,"e9692c"],[207,"e9692c"],[209,"e9692c"],[179,"e9692c"],[180,"e9692c"],[181,"e9692c"],[165,"e9692c"],[166,"e9692c"],[167,"e9692c"],[131,"e9692c"],[132,"e9692c"],[133,"e9692c"],[134,"e9692c"],[135,"e9692c"],[136,"e9692c"],[137,"e9692c"],[138,"e9692c"],[139,"e9692c"],[159,"e9692c"],[160,"e9692c"],[161,"e9692c"],[162,"e9692c"],[163,"e9692c"],[164,"e9692c"],[210,"e9692c"],[211,"e9692c"],[188,"e9692c"],[189,"e9692c"],[190,"e9692c"],[156,"e9692c"],[157,"e9692c"],[158,"e9692c"],[140,"e9692c"],[141,"e9692c"],[142,"e9692c"],[104,"e9692c"],[105,"e9692c"],[106,"e9692c"],[84,"e9692c"],[85,"e9692c"],[86,"e9692c"],[44,"e9692c"],[45,"e9692c"],[46,"e9692c"],[53,"e9692c"],[54,"e9692c"],[55,"e9692c"],[75,"e9692c"],[76,"e9692c"],[77,"e9692c"],[113,"e9692c"],[114,"e9692c"],[115,"e9692c"]]
@@ -109,9 +103,15 @@ const alpCol = [Acol, Bcol, Ccol, Dcol, Ecol, Fcol, Gcol, Hcol, Icol, Jcol, Kcol
 
 //end mapping
 
+let url = window.location.href;
+let params = (new URL(url)).searchParams;
+let messageMode = "message"
+let userStatus = "not logged in"
+let treeInfo;
+
+
 let litLights = [];
 let litLightsOnlyIndex = [];
-
 
 
 const handleClickSend = (e) => {
@@ -287,18 +287,15 @@ const handleHoverOverLed = (e) => {
 }
 
 const visibilityTest = () => {
-
-alpCol.forEach((letter, i) => {
- 
-  setTimeout(() => {
-    clearPreview();
-    //console.log(letter)
-    letter.forEach((led)=> {
-        console.log(led)
-        document.querySelector(`.led-container-${led[0]}`).style.background = `#${led[1]}`;
-    })
-  }, i * 1000);
-});
+    alpCol.forEach((letter, i) => {
+    setTimeout(() => {
+        clearPreview();
+        letter.forEach((led)=> {
+            console.log(led)
+            document.querySelector(`.led-container-${led[0]}`).style.background = `#${led[1]}`;
+        })
+    }, i * 1000);
+    });
 }
 
 const clearPreview = () =>{
@@ -319,9 +316,8 @@ const checkIfTreeExist = () => {
            console.log("vallid url"); 
            treeInfo = snapshot.val();
            document.querySelector(`.owner-name`).textContent = treeInfo.ownerName;
-
         } else{
-            console.log("invallid url, do something with html")
+            handleErrorScreen()
         }
     })
     .catch((error)=>{
@@ -332,43 +328,82 @@ const checkIfTreeExist = () => {
 const handleSubmitUserForm = (e) => {
     e.preventDefault();
     if ($treeCode.value == treeInfo.userCode){
+        userStatus = "user logged in"
         document.querySelector(`.logged-off`).style.display = "none"
         document.querySelector(`.logged-in`).style.display = "flex"
+        localStorage.setItem("userStatus", userStatus);
+    } else if ($treeCode.value == treeInfo.ownerCode)  {
+        userStatus = "owner logged in"
+        document.querySelector(`.logged-off`).style.display = "none"
+        document.querySelector(`.logged-in`).style.display = "flex"
+        localStorage.setItem("userStatus", userStatus);
     } else {
-        console.log("foute keuze") 
+        console.log("foute code") 
     }
 }
 
 const checkUrl = () =>{
 
     if ( !params.get('tree-id') || params.get('tree-id').length == 0){
-        console.log("invallid url, do something with html")
+        handleErrorScreen()
     } else {
         checkIfTreeExist()
     }
 
 }
 
+const handleErrorScreen = () => {
+    console.log("invallid url, do something with html")
+    const errorHtml = `<p>invallid url, do something with htm</p>`
+    document.querySelector(`.error-screen`).style.display= "flex"
+    document.querySelector(`.error-screen`).innerHTML = errorHtml;
+    document.querySelector(`.logged-off`).style.display = "none"
+    document.querySelector(`.logged-in`).style.display = "none"
+}
 
-const init = () =>{
-    checkUrl()
-    $sendButton.addEventListener('click', handleClickSend);
-    //addHTMLandCSS();
+const checkIfUserLoggedIn = () => {
+    userStatus = localStorage.getItem("userStatus")
+    if (userStatus === "user logged in" || "userStatus" === "owner logged in"){
+        document.querySelector(`.logged-off`).style.display = "none"
+        document.querySelector(`.logged-in`).style.display = "flex"
+    }
+}
+
+const developerAndTestingFunctions = () =>{
+    addHTMLandCSS();
     lightUpPreview();
-    //visibilityTest();
-    document.querySelectorAll(`.message-modes`).forEach((mode)=> {
-        mode.addEventListener("change", handleClickMode)
-    })
+    visibilityTest();
     document.querySelector(`.tree-id`).textContent = params.get('tree-id')
-    if ($ledContainers){
+        if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
             ledContainer.addEventListener('mousedown', handleHoverOverLed)
         })
     }
+}
 
+
+const init = () =>{
+
+    // checkt met local storage of de user ingelogt is
+    checkIfUserLoggedIn();
+
+    // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
+    checkUrl();
+
+    // message versturen
+    $sendButton.addEventListener('click', handleClickSend);
+
+    // on change radio button menu
+    document.querySelectorAll(`.message-modes`).forEach((mode)=> {
+        mode.addEventListener("change", handleClickMode)
+    })
+
+    //login code form
     document.querySelector(`.user-form`).addEventListener(`submit`, handleSubmitUserForm)
 
-
+    // developer en testing functies
+    //developerAndTestingFunctions();
+ 
 }
 
 init()

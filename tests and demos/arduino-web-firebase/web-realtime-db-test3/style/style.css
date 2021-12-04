@@ -130,7 +130,7 @@ transform: scale(6.5) translate(56rem, 26rem);
   background-color: #f1592a;
 }
 
-.section-drawing, .section-motion, .logged-in{
+.section-drawing, .section-motion, .logged-in, .error-screen{
     display: none;
 }
  

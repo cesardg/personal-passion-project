@@ -12,6 +12,7 @@
 
 <body>
     <main class="container">
+        <div class="error-screen"></div>
         <div class="logged-off">
             <form class="user-form">
                 <label for="treeCode">Tree code (see back Christmas ball)</label>
@@ -55,13 +56,13 @@
                 <form class="form">
 
                     <label for="message">Message</label>
-                    <input class="input message" type="text" name="message" id="message">
-                    <button class="button send" id="send">Send Message</button>
+                    <input class="input message" required type="text" name="message" id="message2">
+                    <button class="button send" id="send-message">Send Message</button>
                 </form>
             </section>
             <section class="section section-drawing section-live-drawing">
                 <h2 class="title">Send a drawing to my Christmas tree!</h2>
-                <button class="button send" id="send">Send Message</button>
+                <button class="button send" id="send-drawing">Send Drawing</button>
             </section>
             <section class="section section-motion">
                 <h2 class="title">Send webcam motion to my Christmas tree!</h2>
