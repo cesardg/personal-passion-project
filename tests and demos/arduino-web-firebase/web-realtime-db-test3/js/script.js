@@ -318,6 +318,7 @@ const checkIfTreeExist = () => {
         if (snapshot.exists()){
            console.log("vallid url"); 
            treeInfo = snapshot.val();
+           document.querySelector(`.owner-name`).textContent = treeInfo.ownerName;
 
         } else{
             console.log("invallid url, do something with html")
@@ -351,7 +352,6 @@ const checkUrl = () =>{
 
 const init = () =>{
     checkUrl()
-    //checkIfTreeExist();
     $sendButton.addEventListener('click', handleClickSend);
     //addHTMLandCSS();
     lightUpPreview();
