@@ -1,24 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import {getDatabase, ref, get, set, child, update, remove} from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAdfE9rKt59I0J-qVrvDnOsJAx0-xp1dMI",
-    authDomain: "arduino-wi-fi-xmas-tree-db.firebaseapp.com",
-    databaseURL: "https://arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "arduino-wi-fi-xmas-tree-db",
-    storageBucket: "arduino-wi-fi-xmas-tree-db.appspot.com",
-    messagingSenderId: "838895049591",
-    appId: "1:838895049591:web:6e11c76081c8d1d9f05f72"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase();
-
-const $treeCode= document.querySelector(`.tree-code`);
-const $message = document.querySelector(`.message`);
-const $ledContainers = document.querySelectorAll(`.led-container`);
-const $sendButton = document.querySelector(`.send`);
-
 //mapping
 const A = [242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44];
 const Acol = [[242,"e9692c"],[241,"e9692c"],[240,"e9692c"],[243,"e9692c"],[224,"e9692c"],[225,"e9692c"],[226,"e9692c"],[227,"e9692c"],[203,"e9692c"],[204,"e9692c"],[202,"e9692c"],[201,"e9692c"],[200,"e9692c"],[228,"e9692c"],[223,"e9692c"],[222,"e9692c"],[221,"e9692c"],[208,"e9692c"],[207,"e9692c"],[209,"e9692c"],[179,"e9692c"],[180,"e9692c"],[181,"e9692c"],[165,"e9692c"],[166,"e9692c"],[167,"e9692c"],[131,"e9692c"],[132,"e9692c"],[133,"e9692c"],[134,"e9692c"],[135,"e9692c"],[136,"e9692c"],[137,"e9692c"],[138,"e9692c"],[139,"e9692c"],[159,"e9692c"],[160,"e9692c"],[161,"e9692c"],[162,"e9692c"],[163,"e9692c"],[164,"e9692c"],[210,"e9692c"],[211,"e9692c"],[188,"e9692c"],[189,"e9692c"],[190,"e9692c"],[156,"e9692c"],[157,"e9692c"],[158,"e9692c"],[140,"e9692c"],[141,"e9692c"],[142,"e9692c"],[104,"e9692c"],[105,"e9692c"],[106,"e9692c"],[84,"e9692c"],[85,"e9692c"],[86,"e9692c"],[44,"e9692c"],[45,"e9692c"],[46,"e9692c"],[53,"e9692c"],[54,"e9692c"],[55,"e9692c"],[75,"e9692c"],[76,"e9692c"],[77,"e9692c"],[113,"e9692c"],[114,"e9692c"],[115,"e9692c"]]
@@ -101,15 +83,37 @@ const Zcol = [[247, "e9692c"],[246, "e9692c"],[245, "e9692c"],[244, "e9692c"],[2
 const alp = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]
 const alpCol = [Acol, Bcol, Ccol, Dcol, Ecol, Fcol, Gcol, Hcol, Icol, Jcol, Kcol, Lcol, Mcol, Ncol, Ocol, Pcol, Qcol, Rcol, Scol, Tcol, Ucol, Vcol, Wcol, Xcol, Ycol, Zcol]
 
-//end mapping
+//end mapping 
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAdfE9rKt59I0J-qVrvDnOsJAx0-xp1dMI",
+    authDomain: "arduino-wi-fi-xmas-tree-db.firebaseapp.com",
+    databaseURL: "https://arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "arduino-wi-fi-xmas-tree-db",
+    storageBucket: "arduino-wi-fi-xmas-tree-db.appspot.com",
+    messagingSenderId: "838895049591",
+    appId: "1:838895049591:web:6e11c76081c8d1d9f05f72"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
+
+const $treeCode= document.querySelector(`.tree-code`);
+const $message = document.querySelector(`.message`);
+const $ledContainers = document.querySelectorAll(`.led-container`);
+const $sendButton = document.querySelector(`.send`);
+const $canvas = document.querySelector(`.canvas`);
+const ctx = $canvas.getContext("2d");
+const $resetButton = document.querySelector(`.reset-button`);
 
 let url = window.location.href;
 let params = (new URL(url)).searchParams;
 let messageMode = "message"
 let userStatus = "not logged in"
 let treeInfo;
-
-
+let mouseIsDown = false;
+let coords = []
+let roundedCoords = []
 let litLights = [];
 let litLightsOnlyIndex = [];
 
@@ -250,7 +254,7 @@ const lightUpPreview = () => {
 }
 
 const handleHoverOverLed = (e) => {
-
+console.log(e)
     const ledNumber = Number(e.currentTarget.innerHTML);
   
     if (litLightsOnlyIndex.includes(ledNumber)){
@@ -331,12 +335,12 @@ const handleSubmitUserForm = (e) => {
         userStatus = "user logged in"
         document.querySelector(`.logged-off`).style.display = "none"
         document.querySelector(`.logged-in`).style.display = "flex"
-        localStorage.setItem("userStatus", userStatus);
+        sessionStorage.setItem("userStatus", userStatus);
     } else if ($treeCode.value == treeInfo.ownerCode)  {
         userStatus = "owner logged in"
         document.querySelector(`.logged-off`).style.display = "none"
         document.querySelector(`.logged-in`).style.display = "flex"
-        localStorage.setItem("userStatus", userStatus);
+        sessionStorage.setItem("userStatus", userStatus);
     } else {
         console.log("foute code") 
     }
@@ -362,21 +366,83 @@ const handleErrorScreen = () => {
 }
 
 const checkIfUserLoggedIn = () => {
-    userStatus = localStorage.getItem("userStatus")
+    userStatus = sessionStorage.getItem("userStatus")
     if (userStatus === "user logged in" || "userStatus" === "owner logged in"){
         document.querySelector(`.logged-off`).style.display = "none"
         document.querySelector(`.logged-in`).style.display = "flex"
     }
 }
 
-const developerAndTestingFunctions = () =>{
-    addHTMLandCSS();
-    lightUpPreview();
-    visibilityTest();
+const handleDrawingCanvas = () =>{
+    drawTriangle()
+    $canvas.addEventListener('mousedown', startDrawing);
+    $canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+    $resetButton.addEventListener('click', resetCanvas);
+}
+
+const resetCanvas = () => {
+    coords = [];
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+    drawTriangle();
+};
+
+const startDrawing = e => {
+    mouseIsDown = true;
+    ctx.save();
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.lineCap = 'round';
+    ctx.moveTo(e.offsetX, e.offsetY);
+    coords.push({x: e.offsetX, y: e.offsetY});
+};
+
+const stopDrawing = e => {
+    if (!mouseIsDown) {
+    return;
+    }
+    mouseIsDown = false;
+    ctx.closePath();
+    ctx.restore();
+};
+
+
+const draw = e => {
+    if (!mouseIsDown) {
+    return;
+    }
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.lineCap = 'round';
+    coords.push({x: e.offsetX, y: e.offsetY});
+    const row = 15-(Math.round(e.offsetY/39))
+    //console.log(row)
+    const col = Math.round(e.offsetX/18)
+    //console.log(col);
+    roundedCoords.push([col, row])
+    console.log(roundedCoords);
+};
+
+const drawTriangle = () => {
+    ctx.beginPath();
+    ctx.moveTo(0+10, 600-10);
+    ctx.lineTo(300, 0+10);
+    ctx.lineTo(600-10, 600-10);
+    ctx.closePath();
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+}
+
+const developerAndTestingFunctions = () => {
+    //addHTMLandCSS();
+    //lightUpPreview();
+    //visibilityTest();
     document.querySelector(`.tree-id`).textContent = params.get('tree-id')
         if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
-            ledContainer.addEventListener('mousedown', handleHoverOverLed)
+            ledContainer.addEventListener('mouseover', handleHoverOverLed)
         })
     }
 }
@@ -384,7 +450,7 @@ const developerAndTestingFunctions = () =>{
 
 const init = () =>{
 
-    // checkt met local storage of de user ingelogt is
+    // checkt met localStorage of de user ingelogt is
     checkIfUserLoggedIn();
 
     // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
@@ -401,8 +467,9 @@ const init = () =>{
     //login code form
     document.querySelector(`.user-form`).addEventListener(`submit`, handleSubmitUserForm)
 
+    handleDrawingCanvas();
     // developer en testing functies
-    //developerAndTestingFunctions();
+    developerAndTestingFunctions();
  
 }
 

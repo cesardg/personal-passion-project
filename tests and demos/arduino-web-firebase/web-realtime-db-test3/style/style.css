@@ -55,6 +55,8 @@ html, body{
 
 .preview{
 flex-direction: column;
+margin-top: -40rem;
+z-index: 2;
 }
 
 .led-container{
@@ -134,13 +136,13 @@ transform: scale(6.5) translate(56rem, 26rem);
     display: none;
 }
  
+.canvas{
+
+}
+
 
 @media only screen and (max-width: 700px) {
-
-
- 
-
-    .container{
+    .logged-in{
         flex-direction: column;
     }
 }
