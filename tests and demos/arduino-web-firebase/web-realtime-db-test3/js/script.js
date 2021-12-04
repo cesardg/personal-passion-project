@@ -16,12 +16,12 @@ const db = getDatabase();
 
 const $treeCode= document.querySelector(`.tree-code`);
 const $message = document.querySelector(`.message`);
-const $mode = document.querySelector(`.mode`);
 const $ledContainers = document.querySelectorAll(`.led-container`);
 const $sendButton = document.querySelector(`.send`);
 
 let url = window.location.href;
 let params = (new URL(url)).searchParams;
+let messageMode = "message"
 
 //mapping
 const A = [242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44];
@@ -113,10 +113,13 @@ let litLightsOnlyIndex = [];
 
 
 const handleClickSend = (e) => {
+
     e.preventDefault();
+
+
     update(ref(db, params.get('tree-id') ),{
         message: $message.value, 
-        mode: $mode.value,
+        mode: messageMode,
         lights: litLights
     })
     .then(()=>{
@@ -304,13 +307,20 @@ const clearPreview = () =>{
     })
 }
 
+const handleClickMode = (e) => {
+    messageMode = e.target.value
+}
 
 
 const init = () =>{
     $sendButton.addEventListener('click', handleClickSend);
     //addHTMLandCSS();
     lightUpPreview();
-    visibilityTest();
+    //visibilityTest();
+    document.querySelectorAll(`.message-modes`).forEach((mode)=> {
+        mode.addEventListener("change", handleClickMode)
+    })
+    document.querySelector(`.tree-id`).textContent = params.get('tree-id')
     if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
             ledContainer.addEventListener('mousedown', handleHoverOverLed)

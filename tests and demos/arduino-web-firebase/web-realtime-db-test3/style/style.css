@@ -10,9 +10,17 @@ html, body{
 .container{
     height: 100vh;
     display: flex;
-    align-items: center;
-    flex-direction: column;
     font-family: Helvetica, sans-serif;
+}
+
+.header{
+    border: .1rem solid black;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .form{
@@ -45,7 +53,6 @@ html, body{
 }
 
 .preview{
-   display: flex;
 flex-direction: column;
 }
 
@@ -79,12 +86,61 @@ flex-direction: column;
 position: absolute;
 z-index: -1;
 transform: scale(6.5) translate(56rem, 26rem);
-display: none;
 }
 
 .copy-array{
     height: 0;
 }
+
+.section-preview{
+    display: none;
+}
+
+.section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.radio-input .selection {
+  margin-bottom: 1em;
+}
+
+.radio-input .selection label {
+  display: inline-block;
+  width:8em;
+  background-color: #42b4d6;
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.radio-input .selection label:hover {
+  background-color: #5fc0dc;
+}
+
+.radio-input .selection input[type=radio] {
+  display: none;
+}
+
+.radio-input .selection input[type=radio]:checked ~ label {
+  background-color: #f1592a;
+}
+
+ 
+
+@media only screen and (max-width: 700px) {
+
+
+ 
+
+    .container{
+        flex-direction: column;
+    }
+}
+
 
 
 
