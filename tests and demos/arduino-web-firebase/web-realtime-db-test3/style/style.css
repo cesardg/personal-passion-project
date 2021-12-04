@@ -7,10 +7,11 @@ html, body{
   height: 100%;
 }
 
-.container{
+.container, .logged-in, .logged-off{
     height: 100vh;
     display: flex;
     font-family: Helvetica, sans-serif;
+    width: 100%;
 }
 
 .header{
@@ -129,6 +130,9 @@ transform: scale(6.5) translate(56rem, 26rem);
   background-color: #f1592a;
 }
 
+.section-drawing, .section-motion, .logged-in{
+    display: none;
+}
  
 
 @media only screen and (max-width: 700px) {

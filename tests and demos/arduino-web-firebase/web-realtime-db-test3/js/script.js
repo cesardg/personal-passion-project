@@ -22,6 +22,7 @@ const $sendButton = document.querySelector(`.send`);
 let url = window.location.href;
 let params = (new URL(url)).searchParams;
 let messageMode = "message"
+let user;
 
 //mapping
 const A = [242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44];
@@ -115,8 +116,6 @@ let litLightsOnlyIndex = [];
 const handleClickSend = (e) => {
 
     e.preventDefault();
-
-
     update(ref(db, params.get('tree-id') ),{
         message: $message.value, 
         mode: messageMode,
@@ -308,11 +307,51 @@ const clearPreview = () =>{
 }
 
 const handleClickMode = (e) => {
-    messageMode = e.target.value
+    messageMode = e.target.value;
+    document.querySelectorAll(`.section`).forEach(sections => sections.style.display = "none")
+    document.querySelector(`.section-${messageMode}`).style.display = "flex"
+}
+
+const checkIfTreeExist = () => {
+    get(child(ref(db), params.get('tree-id') )).then((snapshot)=>{
+        if (snapshot.exists()){
+           console.log(snapshot.val())
+           console.log("vallid url")
+        } else{
+            console.log("invallid url, do something with html")
+        }
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+}
+
+const handleSubmitUserForm = (e) => {
+    e.preventDefault();
+    if ($treeCode.value == "1234"){
+        document.querySelector(`.logged-off`).style.display = "none"
+        document.querySelector(`.logged-in`).style.display = "flex"
+    } else {
+        console.log("foute keuze")
+        
+    }
+}
+
+const checkUrl = () =>{
+
+   
+    if ( !params.get('tree-id') || params.get('tree-id').length == 0){
+        console.log("invallid url, do something with html")
+    } else {
+        checkIfTreeExist()
+    }
+
 }
 
 
 const init = () =>{
+    checkUrl()
+    //checkIfTreeExist();
     $sendButton.addEventListener('click', handleClickSend);
     //addHTMLandCSS();
     lightUpPreview();
@@ -326,6 +365,10 @@ const init = () =>{
             ledContainer.addEventListener('mousedown', handleHoverOverLed)
         })
     }
+
+    document.querySelector(`.user-form`).addEventListener(`submit`, handleSubmitUserForm)
+
+
 }
 
 init()
