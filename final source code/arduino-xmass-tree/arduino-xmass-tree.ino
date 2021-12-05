@@ -2,6 +2,8 @@
 #include <Firebase_Arduino_WiFiNINA.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <Adafruit_DotStar.h>
+#include <SPI.h>         
 
  
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
