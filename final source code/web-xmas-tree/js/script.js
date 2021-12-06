@@ -349,13 +349,11 @@ const handleSubmitUserForm = (e) => {
 }
 
 const checkUrl = () =>{
-
     if ( !params.get('tree-id') || params.get('tree-id').length == 0){
         handleErrorScreen()
     } else {
         checkIfTreeExist()
     }
-
 }
 
 const handleErrorScreen = () => {
@@ -417,13 +415,24 @@ const draw = e => {
     ctx.stroke();
     ctx.lineCap = 'round';
     coords.push({x: e.offsetX, y: e.offsetY});
-    const row = 15-(Math.round(e.offsetY/39))
-    //console.log(row)
-    const col = Math.round(e.offsetX/18)
-    //console.log(col);
-    roundedCoords.push([col, row])
-    console.log(roundedCoords);
+    convertCoordsToLedIndex(e);
 };
+
+const convertCoordsToLedIndex = (e) => {
+    let row = 15- (Math.round((e.offsetY-100)/28))
+    if (row < 1){
+        row =  1
+    } else if (row > 15){
+        row = 15
+    }
+    const col = Math.round(e.offsetX/18)
+
+    //roundedCoords.push([col, row])
+    //console.log(roundedCoords);
+    document.querySelector(`.row-test`).textContent = row;
+    document.querySelector(`.col-test`).textContent = col;
+    document.querySelector(`.led-test`).textContent = "tbd";
+}
 
 const drawTriangle = () => {
     ctx.beginPath();

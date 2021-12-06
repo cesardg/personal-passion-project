@@ -132,7 +132,7 @@ transform: scale(6.5) translate(56rem, 26rem);
   background-color: #f1592a;
 }
 
-.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen{
+.section-message, .section-motion, .logged-in, .section-dashboard, .error-screen{
     display: none;
 }
  
@@ -143,6 +143,10 @@ transform: scale(6.5) translate(56rem, 26rem);
 
 .canvas{
     border: .1rem solid black;
+}
+
+.section-drawing{
+    font-size: 2rem;
 }
 
 
