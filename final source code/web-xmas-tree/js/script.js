@@ -99,6 +99,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 
 const $treeCode= document.querySelector(`.tree-code`);
+const $drawColor= document.querySelector(`.drawing-color`);
 const $message = document.querySelector(`.message`);
 const $ledContainers = document.querySelectorAll(`.led-container`);
 const $sendButton = document.querySelector(`.send`);
@@ -113,7 +114,7 @@ let userStatus = "not logged in"
 let treeInfo;
 let mouseIsDown = false;
 let coords = []
-let roundedCoords = []
+let litLightsOnlyColor = [];
 let litLights = [];
 let litLightsOnlyIndex = [];
 
@@ -248,8 +249,9 @@ const addHTMLandCSS = () => {
 }
 
 const lightUpPreview = () => {
+    console.log(litLights)
     litLights.forEach((light)=>{
-        document.querySelector(`.led-container-${light[0]}`).style.background = `#${light[1]}`;
+    document.querySelector(`.led-container-${light[0]-1}`).style.background = `${light[1]}`;
     })
 }
 
@@ -383,16 +385,21 @@ const handleDrawingCanvas = () =>{
 
 const resetCanvas = () => {
     coords = [];
+    litLights = [];
+    litLightsOnlyIndex = [];
+    litLightsOnlyColor = [];
     ctx.clearRect(0, 0, $canvas.width, $canvas.height);
     //drawTriangle();
+    clearPreview()
 };
 
 const startDrawing = e => {
     mouseIsDown = true;
     ctx.save();
     ctx.lineWidth = 10;
-    ctx.beginPath();
+    ctx.strokeStyle = $drawColor.value
     ctx.lineCap = 'round';
+    ctx.beginPath();
     ctx.moveTo(e.offsetX, e.offsetY);
     coords.push({x: e.offsetX, y: e.offsetY});
 };
@@ -408,12 +415,15 @@ const stopDrawing = e => {
 
 
 const draw = e => {
+
     if (!mouseIsDown) {
     return;
-    }
+    } 
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = $drawColor.value
     ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
-    ctx.lineCap = 'round';
+   
     coords.push({x: e.offsetX, y: e.offsetY});
     convertCoordsToLedIndex(e);
 };
@@ -524,21 +534,24 @@ const convertCoordsToLedIndex = (e) => {
         }
     }
 
-    
-
-    if (!litLightsOnlyIndex.includes(led)){
-        if (led){
-        litLightsOnlyIndex.push(led);
+        
+    if (led){
+        if (!litLightsOnlyIndex.includes(led)){
+            litLightsOnlyIndex.push(led);
+            litLightsOnlyColor.push($drawColor.value);
+            litLights.push([led, $drawColor.value])
+            //console.log(litLights)
+        } else {
+            // het ledje kan al gekleurd zijn, maar mss is het kleur anders
+            const tempColor = litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)];
+            if (tempColor != $drawColor.value){
+                litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)] = $drawColor.value;
+                litLights[litLightsOnlyIndex.indexOf(led)] = [led, $drawColor.value];
+            }
         }
     }
-
-    console.log(litLightsOnlyIndex);
-
-    //roundedCoords.push([col, row])
-    //console.log(roundedCoords);
-    document.querySelector(`.row-test`).textContent = row;
-    document.querySelector(`.col-test`).textContent = "----";
     document.querySelector(`.led-test`).textContent = led;
+    lightUpPreview();
 }
 
 const drawTriangle = () => {
@@ -559,7 +572,7 @@ const developerAndTestingFunctions = () => {
     document.querySelector(`.tree-id`).textContent = params.get('tree-id')
         if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
-            ledContainer.addEventListener('mouseover', handleHoverOverLed)
+           // ledContainer.addEventListener('mouseover', handleHoverOverLed)
         })
     }
 }
