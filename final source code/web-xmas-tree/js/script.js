@@ -314,7 +314,6 @@ const handleClickMode = (e) => {
     messageMode = e.target.value;
     document.querySelectorAll(`.section`).forEach(sections => sections.style.display = "none")
     document.querySelector(`.section-${messageMode}`).style.display = "flex"
-    console.log($sendDrawingButton)
     if (messageMode === "live-drawing"){
         $sendDrawingButton.style.display = "none"
     } else {
@@ -328,6 +327,7 @@ const checkIfTreeExist = () => {
            console.log("vallid url"); 
            treeInfo = snapshot.val();
            document.querySelectorAll(`.owner-name`).forEach((name) => name.textContent = treeInfo.ownerName );
+           document.querySelector(`.room-temp`).textContent = treeInfo.roomTemp
         } else{
             handleErrorScreen()
         }
@@ -375,9 +375,17 @@ const handleErrorScreen = () => {
 
 const checkIfUserLoggedIn = () => {
     userStatus = sessionStorage.getItem("userStatus")
-    if (userStatus === "user logged in" || "userStatus" === "owner logged in"){
+
+    if (userStatus === "user logged in" || userStatus === "owner logged in"){
         document.querySelector(`.logged-off`).style.display = "none"
         document.querySelector(`.logged-in`).style.display = "flex"
+
+        if (userStatus === "user logged in"){
+            document.querySelector(`.selection-dashboard`).style.display = "none"
+        } else if (userStatus === "owner logged in")  {
+            userStatus = "owner logged in"
+            sessionStorage.setItem("userStatus", userStatus);
+        } 
     }
 }
 

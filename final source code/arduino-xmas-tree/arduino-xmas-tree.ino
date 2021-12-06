@@ -4,23 +4,36 @@
 #include <LiquidCrystal_I2C.h>
 #include <Adafruit_DotStar.h>
 #include <SPI.h>
-#include <Arduino_LSM6DS3.h>         
+#include <Arduino_LSM6DS3.h> 
+#include <DHT.h>        
 
+// Firebase 
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
 #define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
 #define WIFI_SSID "iPhone van Cesar"
 #define WIFI_PASSWORD "not so safe 123"
+
+// DotStar ledstrip
 #define NUMPIXELS 300
 #define DATAPIN    11 
 #define CLOCKPIN   13 
+
+// temperature sensor
+#define DHTPIN 7   
+#define DHTTYPE DHT11
 
 String treeId = "/Rudolph-A3EpYEF7zU";
 String jsonStr;
 String previousMessage;
 String mode;
+
 const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
 const int i2c_addr = 0x27;
+
 bool attackedByCat = false;
+
+float previousHum;    
+float previousTemp;   
 
 int alfabed[][100]= {
  /* A */ {242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44}, 
@@ -54,6 +67,7 @@ int alfabed[][100]= {
 
 FirebaseData firebaseData;
 LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
+DHT dht(DHTPIN, DHTTYPE);
 Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
 //Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
  
@@ -112,13 +126,14 @@ void setup() {
     while (1);
   }
 
-  Serial.print("Gyroscope sample rate = ");
-  Serial.print(IMU.gyroscopeSampleRate());
-  Serial.println(" Hz");
-  Serial.println();
-  Serial.println("Gyroscope in degrees/second");
-  Serial.println("X\tY\tZ");
-  
+
+// init temperature
+dht.begin();
+previousTemp= dht.readTemperature();
+previousHum = dht.readHumidity();  
+ Firebase.setFloat(firebaseData, treeId  + "/roomTemp/", previousTemp); 
+ Firebase.setFloat(firebaseData, treeId  + "/roomHumidity/", previousHum);
+ 
 }
  
 void loop() {
@@ -145,23 +160,31 @@ void loop() {
 }
 
 void getTemperature (){
-  
+
+    if (previousTemp != dht.readTemperature()){
+    Firebase.setFloat(firebaseData, treeId  + "/roomTemp/", dht.readTemperature());
+  }
+
+  if (previousHum != dht.readHumidity()){
+    Firebase.setFloat(firebaseData, treeId  + "/roomHumidity/", dht.readHumidity());
+  }   
+
+  previousHum = dht.readHumidity();  
+  previousTemp= dht.readTemperature(); 
 }
 
 void detectCatAttack(){
    float x, y, z;
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
-    /*
-    Serial.print(abs(x));
-    Serial.print('\t');
-    Serial.print(abs(y));
-    Serial.print('\t');
-    Serial.println(abs(z));
-    */
+    
     if (abs(x) > 30 || abs(y) > 30 || abs(z) > 30){
+
+      //if change in tilt is detected, send to db
       attackedByCat = true;
       Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
+
+      // for now, reset it after 5s
       delay(5000);
       attackedByCat = false;
       Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
