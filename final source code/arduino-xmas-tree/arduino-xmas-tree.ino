@@ -170,12 +170,12 @@ void detectIntruder (){
     pirVal = digitalRead(pirInputPin);  
   if (pirVal == HIGH) {            
     if (pirState == LOW) {
-      Serial.println("Motion detected!");
+      Firebase.setBool(firebaseData, treeId  + "/intruderDetected/", true);
       pirState = HIGH;
     }
   } else {
     if (pirState == HIGH){
-      Serial.println("Motion ended!");
+      Firebase.setBool(firebaseData, treeId  + "/intruderDetected/", false);
       pirState = LOW;
     }
   }
