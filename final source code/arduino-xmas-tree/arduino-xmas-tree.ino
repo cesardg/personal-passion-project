@@ -3,13 +3,14 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Adafruit_DotStar.h>
-#include <SPI.h>         
+#include <SPI.h>
+#include <Arduino_LSM6DS3.h>         
 
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
 #define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
 #define WIFI_SSID "iPhone van Cesar"
 #define WIFI_PASSWORD "not so safe 123"
-#define NUMPIXELS 300 // Number of LEDs in strip
+#define NUMPIXELS 300
 #define DATAPIN    11 
 #define CLOCKPIN   13 
 
@@ -19,6 +20,7 @@ String previousMessage;
 String mode;
 const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
 const int i2c_addr = 0x27;
+bool attackedByCat = false;
 
 int alfabed[][100]= {
  /* A */ {242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44}, 
@@ -76,11 +78,15 @@ void setup() {
   lcd.setCursor(0,0);
   lcd.print("Wifi: connecting");
   int status = WL_IDLE_STATUS;
+
+  // holds everything until Wifi is connected
   while (status != WL_CONNECTED) {
     status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print(".");
     delay(300);
   }
+
+  // wifi is connected
   Serial.print(" IP: ");
   Serial.println(WiFi.localIP());
   lcd.clear();
@@ -95,11 +101,28 @@ void setup() {
 
   if (Firebase.getString(firebaseData, treeId + "/message/")) { 
     previousMessage = firebaseData.stringData();
-    //Serial.println(previousMessage);
   }
+
+  // init gyro for cat attack detector
+  while (!Serial);
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+
+    while (1);
+  }
+
+  Serial.print("Gyroscope sample rate = ");
+  Serial.print(IMU.gyroscopeSampleRate());
+  Serial.println(" Hz");
+  Serial.println();
+  Serial.println("Gyroscope in degrees/second");
+  Serial.println("X\tY\tZ");
+  
 }
  
 void loop() {
+
   if (Firebase.getString(firebaseData, treeId + "/mode/")) { 
     mode = firebaseData.stringData();
   }
@@ -113,10 +136,46 @@ void loop() {
      showDrawing();
   }
 
+// only works in idle mode to save computational power for other tasks. 
+  if (mode == "idle"){
+      detectCatAttack();
+      getTemperature();
+  }
+
 }
 
+void getTemperature (){
+  
+}
+
+void detectCatAttack(){
+   float x, y, z;
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+    /*
+    Serial.print(abs(x));
+    Serial.print('\t');
+    Serial.print(abs(y));
+    Serial.print('\t');
+    Serial.println(abs(z));
+    */
+    if (abs(x) > 30 || abs(y) > 30 || abs(z) > 30){
+      attackedByCat = true;
+      Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
+      delay(5000);
+      attackedByCat = false;
+      Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
+    } else {
+      attackedByCat = false;
+    }
+  }
+}
+
+// shows drawing in leds
 void showDrawing(){
-      Serial.println("showdrawing");
+
+  // Somehow you can only fetch 25 items max from an array
+    Serial.println("showdrawing");
     if (Firebase.getArray(firebaseData, treeId + "/lights")) { 
           Serial.println("begin");
           Serial.println(firebaseData.arrayData());
@@ -125,6 +184,7 @@ void showDrawing(){
   delay(5000);
 }
 
+ // when new message is detected
 void listeningForMessages(){
    if (Firebase.getString(firebaseData, treeId + "/message/")) { 
       if (previousMessage != firebaseData.stringData()) {
@@ -136,14 +196,14 @@ void listeningForMessages(){
         mapMessageInLeds(firebaseData.stringData());
       }
     previousMessage = firebaseData.stringData();
-     
   }
  delay(1000);
  }
 
  
-
+  // string message to led array
  void mapMessageInLeds(String message){
+
   Serial.println(message);
   message.toUpperCase();
   int messageLenght = message.length() + 1;
