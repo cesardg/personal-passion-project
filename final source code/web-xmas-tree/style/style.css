@@ -1,0 +1,159 @@
+html{
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+}
+
+.container, .logged-in, .logged-off{
+    height: 100vh;
+    display: flex;
+    font-family: Helvetica, sans-serif;
+    width: 100%;
+}
+
+.header{
+    border: .1rem solid black;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 60rem;
+}
+
+.form > *{
+    font-size: 1rem;
+}
+
+.title{
+    font-size: 4rem;
+    margin: 4rem;
+    text-align: center;
+}
+
+.input, button{
+    margin-bottom: 2rem;
+}
+
+.input{
+    padding: .2rem;
+}
+
+.button{
+    padding: 2rem;
+}
+
+.preview{
+flex-direction: column;
+margin-top: -40rem;
+z-index: 2;
+}
+
+.led-container{
+    border: .1rem solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    width: 3rem;
+    margin: 4rem 1rem;
+    border-radius: 50%;
+}
+
+.led{
+    background-color: rgba(255, 0, 0, 0.233);
+    border-radius: 50%;
+}
+
+.preview-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.reversed{
+    flex-direction: row-reverse;
+}
+
+.font{
+position: absolute;
+z-index: -1;
+transform: scale(6.5) translate(56rem, 26rem);
+}
+
+.copy-array{
+    height: 0;
+}
+
+.section-preview{
+    display: none;
+}
+
+.section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.radio-input .selection {
+  margin-bottom: 1em;
+}
+
+.radio-input .selection label {
+  display: inline-block;
+  width:8em;
+  background-color: #42b4d6;
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.radio-input .selection label:hover {
+  background-color: #5fc0dc;
+}
+
+.radio-input .selection input[type=radio] {
+  display: none;
+}
+
+.radio-input .selection input[type=radio]:checked ~ label {
+  background-color: #f1592a;
+}
+
+.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen{
+    display: none;
+}
+ 
+.canvas-bg{
+    background-image: url("../assets/treebg.png");
+    background-repeat: no-repeat;
+}
+
+.canvas{
+    border: .1rem solid black;
+}
+
+
+@media only screen and (max-width: 700px) {
+    .logged-in{
+        flex-direction: column;
+    }
+}
+
+
+
+
+
+

@@ -5,17 +5,20 @@
 #include <Adafruit_DotStar.h>
 #include <SPI.h>         
 
- 
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
 #define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
 #define WIFI_SSID "iPhone van Cesar"
 #define WIFI_PASSWORD "not so safe 123"
- 
+#define NUMPIXELS 300 // Number of LEDs in strip
+#define DATAPIN    11 
+#define CLOCKPIN   13 
 
 String treeId = "/Rudolph-A3EpYEF7zU";
 String jsonStr;
 String previousMessage;
 String mode;
+const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
+const int i2c_addr = 0x27;
 
 int alfabed[][100]= {
  /* A */ {242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44}, 
@@ -47,14 +50,22 @@ int alfabed[][100]= {
 };
 
 
-// LCD pinout
-const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
-const int i2c_addr = 0x27;
-
 FirebaseData firebaseData;
 LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
+Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
+//Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
  
 void setup() {
+
+  /*
+  strip.begin(); // Initialize pins for output
+  strip.show();  // Turn all LEDs off ASAP
+
+  strip.fill(0x00FF00, 1, 30);
+  strip.setBrightness(40);
+  strip.show();      
+  */
+  
   Serial.begin(9600);
   delay(1000);
   
@@ -143,13 +154,6 @@ void listeningForMessages(){
         delay(1000);
   }
  }
-
-
-
-
-
-
-
 
 
 

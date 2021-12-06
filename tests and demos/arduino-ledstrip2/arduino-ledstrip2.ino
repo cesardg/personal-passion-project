@@ -9,6 +9,7 @@
 #define CLOCKPIN   13 
 
 Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
+//Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
 
 void setup() {
 
@@ -21,11 +22,10 @@ void setup() {
 
 void loop() {
 
-
-  
-  //for (int i=100; i<300; i++) strip.setPixelColor(i, 0x00FF00);
-  strip.fill(0x00FF00, 0, 300);
+  //for (int i=100; i<30; i++) strip.setPixelColor(i, 0x00FF00);
+  strip.fill(0x00FF00, 0, 30);
   strip.setBrightness(40);
-  strip.show();                     // Refresh strip
- 
+  strip.show();       // Refresh strip
+  delay(1000);
+  
 }
