@@ -29,6 +29,9 @@ String mode;
 
 const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
 const int i2c_addr = 0x27;
+int pirInputPin = 2;               
+int pirState = LOW;    
+int pirVal = 0;  
 
 bool attackedByCat = false;
 
@@ -127,12 +130,15 @@ void setup() {
   }
 
 
-// init temperature
-dht.begin();
-previousTemp= dht.readTemperature();
-previousHum = dht.readHumidity();  
- Firebase.setFloat(firebaseData, treeId  + "/roomTemp/", previousTemp); 
- Firebase.setFloat(firebaseData, treeId  + "/roomHumidity/", previousHum);
+  // init temperature
+  dht.begin();
+  previousTemp= dht.readTemperature();
+  previousHum = dht.readHumidity();  
+  Firebase.setFloat(firebaseData, treeId  + "/roomTemp/", previousTemp); 
+  Firebase.setFloat(firebaseData, treeId  + "/roomHumidity/", previousHum);
+
+  //PIR sensor
+   pinMode(pirInputPin, INPUT); 
  
 }
  
@@ -154,9 +160,26 @@ void loop() {
 // only works in idle mode to save computational power for other tasks. 
   if (mode == "idle"){
       detectCatAttack();
+      detectIntruder();
       getTemperature();
   }
 
+}
+
+void detectIntruder (){
+    pirVal = digitalRead(pirInputPin);  
+  if (pirVal == HIGH) {            
+    if (pirState == LOW) {
+      Serial.println("Motion detected!");
+      pirState = HIGH;
+    }
+  } else {
+    if (pirState == HIGH){
+      Serial.println("Motion ended!");
+      pirState = LOW;
+    }
+  }
+  
 }
 
 void getTemperature (){
