@@ -102,7 +102,8 @@ const $treeCode= document.querySelector(`.tree-code`);
 const $drawColor= document.querySelector(`.drawing-color`);
 const $message = document.querySelector(`.message`);
 const $ledContainers = document.querySelectorAll(`.led-container`);
-const $sendButton = document.querySelector(`.send`);
+const $sendMessageButton = document.querySelector(`.send`);
+const $sendDrawingButton = document.querySelector(`.send-drawing`);
 const $canvas = document.querySelector(`.canvas`);
 const ctx = $canvas.getContext("2d");
 const $resetButton = document.querySelector(`.reset-button`);
@@ -119,16 +120,15 @@ let litLights = [];
 let litLightsOnlyIndex = [];
 
 
-const handleClickSend = (e) => {
+const handleClickSendMessage = (e) => {
 
     e.preventDefault();
     update(ref(db, params.get('tree-id') ),{
         message: $message.value, 
-        mode: messageMode,
-        lights: litLights
+        mode: messageMode
     })
     .then(()=>{
-        console.log("update done")
+        console.log("update send message done")
     })
     .catch((error)=>{
         console.log(error)
@@ -314,6 +314,12 @@ const handleClickMode = (e) => {
     messageMode = e.target.value;
     document.querySelectorAll(`.section`).forEach(sections => sections.style.display = "none")
     document.querySelector(`.section-${messageMode}`).style.display = "flex"
+    console.log($sendDrawingButton)
+    if (messageMode === "live-drawing"){
+        $sendDrawingButton.style.display = "none"
+    } else {
+        $sendDrawingButton.style.display= "block"
+    }
 }
 
 const checkIfTreeExist = () => {
@@ -540,13 +546,18 @@ const convertCoordsToLedIndex = (e) => {
             litLightsOnlyIndex.push(led);
             litLightsOnlyColor.push($drawColor.value);
             litLights.push([led, $drawColor.value])
-            //console.log(litLights)
+            if (messageMode === "live-drawing"){
+                handleClickSendDrawing();
+            }
         } else {
-            // het ledje kan al gekleurd zijn, maar mss is het kleur anders
+            // zelfde ledje, maar andere kleur
             const tempColor = litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)];
             if (tempColor != $drawColor.value){
                 litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)] = $drawColor.value;
                 litLights[litLightsOnlyIndex.indexOf(led)] = [led, $drawColor.value];
+                if (messageMode === "live-drawing"){
+                    handleClickSendDrawing();
+                }
             }
         }
     }
@@ -563,6 +574,20 @@ const drawTriangle = () => {
     ctx.lineWidth = 10;
     ctx.lineCap = 'round';
     ctx.stroke();
+}
+
+const handleClickSendDrawing = (e) => {
+    if (e) e.preventDefault();
+    update(ref(db, params.get('tree-id') ),{
+        mode: messageMode,
+        lights: litLights
+    })
+    .then(()=>{
+        console.log("update send drawing done")
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
 }
 
 const developerAndTestingFunctions = () => {
@@ -587,7 +612,10 @@ const init = () =>{
     checkUrl();
 
     // message versturen
-    $sendButton.addEventListener('click', handleClickSend);
+    $sendMessageButton.addEventListener('click', handleClickSendMessage);
+
+    // drawing versturen
+    $sendDrawingButton.addEventListener('click', handleClickSendDrawing);
 
     // on change radio button menu
     document.querySelectorAll(`.message-modes`).forEach((mode)=> {
