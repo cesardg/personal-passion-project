@@ -88,6 +88,7 @@ z-index: 2;
 .font{
 position: absolute;
 z-index: -1;
+display: none;
 transform: scale(6.5) translate(56rem, 26rem);
 }
 
@@ -97,6 +98,7 @@ transform: scale(6.5) translate(56rem, 26rem);
 
 .section-preview{
     display: none;
+   
 }
 
 .section{

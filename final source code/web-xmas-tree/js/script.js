@@ -425,13 +425,120 @@ const convertCoordsToLedIndex = (e) => {
     } else if (row > 15){
         row = 15
     }
-    const col = Math.round(e.offsetX/18)
+    
+    let col = Math.round((e.offsetX - 40)/15)
+    if (col < 1){
+        col =  1
+    } else if (col > 34){
+        col = 34
+    }
+
+    let led
+
+    switch (row) {
+    case 1:
+        led = col;
+        break;
+    case 2:
+        led = 68-col;
+        if  (led < 35 || led > 66){
+            led = undefined
+        }
+        break;
+    case 3:
+        led = 64+col
+          if  (led < 67 || led > 96){
+            led = undefined
+        }
+        break;
+    case 4:
+        led = 128-col;
+        if  (led < 97 || led > 124){
+            led = undefined
+        }
+        break;
+    case 5:
+    led = 120 + col
+          if  (led < 125 || led > 150){
+            led = undefined
+        }
+        break;
+    case 6:
+        led = 180-col;
+        if  (led < 151 || led > 174){
+            led = undefined
+        }
+        break;
+    case 7:
+        led = 168 + col
+          if  (led < 175 || led > 196){
+            led = undefined
+        }
+        break;
+    case 8:
+        led = 224-col;
+        if  (led < 197 || led > 216){
+            led = undefined
+        }
+        break;
+    case 9:
+        led = 208 + col
+          if  (led < 217 || led > 234){
+            led = undefined
+        }
+        break;
+    case 10:
+        led = 260-col;
+        if  (led < 235 || led > 250){
+            led = undefined
+        }
+        break;
+    case 11:
+        led = 240 + col
+          if  (led < 251 || led > 264){
+            led = undefined
+        }
+        /* I need a */ break;
+    case 12:
+        led = 288-col;
+        if  (led < 265 || led > 276){
+            led = undefined
+        }
+        break;
+    case 13:
+        led = 264 + col
+          if  (led < 277 || led > 286){
+            led = undefined
+        }
+        break;
+    case 14:
+        led = 308-col;
+        if  (led < 287 || led > 294){
+            led = undefined
+        }
+        break;
+    case 15:
+        led = 280 + col
+          if  (led < 295 || led > 300){
+            led = undefined
+        }
+    }
+
+    
+
+    if (!litLightsOnlyIndex.includes(led)){
+        if (led){
+        litLightsOnlyIndex.push(led);
+        }
+    }
+
+    console.log(litLightsOnlyIndex);
 
     //roundedCoords.push([col, row])
     //console.log(roundedCoords);
     document.querySelector(`.row-test`).textContent = row;
-    document.querySelector(`.col-test`).textContent = col;
-    document.querySelector(`.led-test`).textContent = "tbd";
+    document.querySelector(`.col-test`).textContent = "----";
+    document.querySelector(`.led-test`).textContent = led;
 }
 
 const drawTriangle = () => {
