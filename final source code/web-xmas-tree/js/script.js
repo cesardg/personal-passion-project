@@ -578,12 +578,14 @@ const drawTriangle = () => {
 
 const handleClickSendDrawing = (e) => {
     if (e) e.preventDefault();
+
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
         lights: litLights
     })
     .then(()=>{
         console.log("update send drawing done")
+        resetCanvas()
     })
     .catch((error)=>{
         console.log(error)

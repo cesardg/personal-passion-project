@@ -95,7 +95,7 @@ void setup() {
 
   if (Firebase.getString(firebaseData, treeId + "/message/")) { 
     previousMessage = firebaseData.stringData();
-    Serial.println(previousMessage);
+    //Serial.println(previousMessage);
   }
 }
  
@@ -107,8 +107,22 @@ void loop() {
   if (mode == "message"){
      listeningForMessages();
   }
-  
 
+
+  if (mode == "drawing"){
+     showDrawing();
+  }
+
+}
+
+void showDrawing(){
+      Serial.println("showdrawing");
+    if (Firebase.getArray(firebaseData, treeId + "/lights")) { 
+          Serial.println("begin");
+          Serial.println(firebaseData.arrayData());
+          Serial.println("einde");
+  }
+  delay(5000);
 }
 
 void listeningForMessages(){
@@ -129,7 +143,6 @@ void listeningForMessages(){
 
  
 
-// wordt getriggered als er een nieuwe message binnenkomt en print het in de Serial monitor
  void mapMessageInLeds(String message){
   Serial.println(message);
   message.toUpperCase();
