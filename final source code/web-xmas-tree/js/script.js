@@ -589,7 +589,8 @@ const handleClickSendDrawing = (e) => {
 
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
-        lights: litLights
+        lights: litLights,
+        lightsString: twoDimArrToStr()
     })
     .then(()=>{
         console.log("update send drawing done")
@@ -600,6 +601,14 @@ const handleClickSendDrawing = (e) => {
     .catch((error)=>{
         console.log(error)
     })
+}
+
+const twoDimArrToStr = () => {
+    let tempArr = []
+    litLights.forEach((led) => {
+        tempArr.push(led.join("-"))
+    })
+    return tempArr.toString("")
 }
 
 const developerAndTestingFunctions = () => {
