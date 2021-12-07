@@ -82,13 +82,15 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
-    // init led strip
+  // init led strip
+  /*
   strip.begin(); // Initialize pins for output
   strip.show();  // Turn all LEDs off ASAP
 
   strip.fill(0x00FF00, 0, 299);
   strip.setBrightness(40);
-  strip.show();  
+  strip.show();
+  */  
   
   lcd.begin(16,2);
 
@@ -254,7 +256,7 @@ void listeningForMessages(){
 
 
 // led uit zetten 
-  strip.clear();
+  //strip.clear();
   
   Serial.println(message);
   message.toUpperCase();
@@ -270,16 +272,16 @@ void listeningForMessages(){
       Serial.print(": ");
         for (int j =0; j < 100l; j++) {
           if (alfabed[index][j] != 0 && alfabed[index][j] > 0 && alfabed[index][j] < 300 ){
-          strip.setPixelColor(alfabed[index][j], 0x00FF00);
+          //strip.setPixelColor(alfabed[index][j], 0x00FF00);
           Serial.print(alfabed[index][j]);
           Serial.print("-");
           }
           
         }
-        strip.show(); 
+        //strip.show(); 
         Serial.println();
         delay(1000);
-        strip.clear();
+        //strip.clear();
   }
  }
 

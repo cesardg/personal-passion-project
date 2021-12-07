@@ -134,7 +134,7 @@ margin-top: 50rem;
   background-color: #f1592a;
 }
 
-.section-message, .section-motion, .logged-in, .section-dashboard, .error-screen{
+.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen{
     display: none;
 }
  

@@ -593,7 +593,9 @@ const handleClickSendDrawing = (e) => {
     })
     .then(()=>{
         console.log("update send drawing done")
-        resetCanvas()
+        if (messageMode === "drawing"){
+            resetCanvas() 
+        }
     })
     .catch((error)=>{
         console.log(error)
