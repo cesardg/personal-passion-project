@@ -15,8 +15,8 @@
 
 // DotStar ledstrip
 #define NUMPIXELS 300
-#define DATAPIN    11 
-#define CLOCKPIN   13 
+#define DATAPIN    4
+#define CLOCKPIN   8
 
 // temperature sensor
 #define DHTPIN 7   
@@ -71,22 +71,24 @@ int alfabed[][100]= {
 FirebaseData firebaseData;
 LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
 DHT dht(DHTPIN, DHTTYPE);
-Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
-//Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
+//Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
+Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BGR);
  
 void setup() {
 
-  /*
-  strip.begin(); // Initialize pins for output
-  strip.show();  // Turn all LEDs off ASAP
-
-  strip.fill(0x00FF00, 1, 30);
-  strip.setBrightness(40);
-  strip.show();      
-  */
+    
+  
   
   Serial.begin(9600);
   delay(1000);
+
+    // init led strip
+  strip.begin(); // Initialize pins for output
+  strip.show();  // Turn all LEDs off ASAP
+
+  strip.fill(0x00FF00, 0, 299);
+  strip.setBrightness(40);
+  strip.show();  
   
   lcd.begin(16,2);
 
@@ -250,6 +252,10 @@ void listeningForMessages(){
   // string message to led array
  void mapMessageInLeds(String message){
 
+
+// led uit zetten 
+  strip.clear();
+  
   Serial.println(message);
   message.toUpperCase();
   int messageLenght = message.length() + 1;
@@ -263,14 +269,17 @@ void listeningForMessages(){
       Serial.print(messageArray[i]);
       Serial.print(": ");
         for (int j =0; j < 100l; j++) {
-          if (alfabed[index][j] != 0){
+          if (alfabed[index][j] != 0 && alfabed[index][j] > 0 && alfabed[index][j] < 300 ){
+          strip.setPixelColor(alfabed[index][j], 0x00FF00);
           Serial.print(alfabed[index][j]);
           Serial.print("-");
           }
           
         }
+        strip.show(); 
         Serial.println();
         delay(1000);
+        strip.clear();
   }
  }
 
