@@ -266,6 +266,7 @@ void listeningForMessages(){
   message.toCharArray(messageArray, messageLenght);
 
   for (int i=0; i<messageLenght-1; i++) {
+      //search for ASCII number and substract it with 65
       int index = int(messageArray[i]) - 65;
       Serial.print("These leds needs to be on for ");
       Serial.print(messageArray[i]);

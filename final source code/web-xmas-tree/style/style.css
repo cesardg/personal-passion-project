@@ -1,3 +1,12 @@
+@font-face{
+    font-family: "Recoleta";
+    src: url('../assets/fonts/Recoleta-Bold.woff2') format('woff2'),
+         url('../assets/fonts/Recoleta-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+
 html{
   font-size: 62.5%;
   box-sizing: border-box;
@@ -12,6 +21,7 @@ html, body{
     display: flex;
     font-family: Helvetica, sans-serif;
     width: 100%;
+    background-color: var(--blue);
 }
 
 .header{
@@ -149,6 +159,27 @@ margin-top: 50rem;
 
 .section-drawing{
     font-size: 2rem;
+}
+
+.error-screen{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.invallid-url-error{
+    text-align: center;
+}
+
+.error-title{
+    font-family: "Recoleta";
+    color: var(--red);
+    font-size: 5rem;
+}
+
+.p5Canvas{
+    display: none;
 }
 
 

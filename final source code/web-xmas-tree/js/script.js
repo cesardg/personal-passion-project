@@ -366,7 +366,7 @@ const checkUrl = () =>{
 
 const handleErrorScreen = () => {
     console.log("invallid url, do something with html")
-    const errorHtml = `<p>invallid url, do something with htm</p>`
+    const errorHtml = `<div class="invallid-url-error"><p class="error-title">Tree not found</p> <p class="error-text error-text-first">Please scan the QR code on the tree or ball agian</p><p  class="error-text">Or make sure you typed the URL correctly </p></div>`
     document.querySelector(`.error-screen`).style.display= "flex"
     document.querySelector(`.error-screen`).innerHTML = errorHtml;
     document.querySelector(`.logged-off`).style.display = "none"
