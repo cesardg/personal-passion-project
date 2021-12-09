@@ -121,18 +121,25 @@ let litLightsOnlyIndex = [];
 
 
 const handleClickSendMessage = (e) => {
+    const $errorMessage = document.querySelector(`.error-message`);
 
     e.preventDefault();
-    update(ref(db, params.get('tree-id') ),{
-        message: $message.value, 
-        mode: messageMode
-    })
-    .then(()=>{
-        console.log("update send message done")
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
+
+    if ($message.value.length == 0){
+        $errorMessage.textContent = `please type a message`
+    } else {
+        update(ref(db, params.get('tree-id') ),{
+            message: $message.value, 
+            mode: messageMode
+        })
+        .then(()=>{
+            console.log("update send message done")
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    }
+   
     
 }
 
