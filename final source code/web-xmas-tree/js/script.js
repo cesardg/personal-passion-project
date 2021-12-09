@@ -365,7 +365,7 @@ const checkUrl = () =>{
 }
 
 const handleErrorScreen = () => {
-    console.log("invallid url, do something with html")
+    console.log("invallid url, try putting ?tree-id=Rudolph-A3EpYEF7zU after it")
     const errorHtml = `<div class="invallid-url-error"><p class="error-title">Tree not found</p> <p class="error-text error-text-first">Please scan the QR code on the tree or ball agian</p><p  class="error-text">Or make sure you typed the URL correctly </p></div>`
     document.querySelector(`.error-screen`).style.display= "flex"
     document.querySelector(`.error-screen`).innerHTML = errorHtml;
