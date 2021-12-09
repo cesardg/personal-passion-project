@@ -18,6 +18,7 @@ const handleClickMode = (e) => {
 function setup() {
     console.log(messageMode)
     if (messageMode === "motion"){
+        document.querySelector(`.p5Canvas`).style.display = "block";
         const myCanvas = createCanvas(640, 480);
         myCanvas.parent("canvasPlaceholder");
         video = createCapture(VIDEO);

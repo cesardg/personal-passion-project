@@ -19,7 +19,9 @@ html, body{
 .container, .logged-in, .logged-off{
     height: 100vh;
     display: flex;
-    font-family: Helvetica, sans-serif;
+     font-family: houschka-rounded, sans-serif;
+    font-weight: 500;
+    font-style: normal;
     width: 100%;
     background-color: var(--blue);
     color: var(--black);
@@ -152,7 +154,7 @@ z-index: 2;
     width: 100%;
 }
 
-.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen{
+.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas{
     display: none;
 }
  
@@ -195,9 +197,6 @@ z-index: 2;
     padding-bottom: 2rem;
 }
 
-.p5Canvas{
-    display: none;
-}
 
 .logged-off{
     display: flex;
@@ -232,6 +231,11 @@ z-index: 2;
 
 }
 
+.error-code{
+    font-size: 2rem;
+    color: var(--red);
+}
+
 ::placeholder { 
   color: var(--black);
   opacity: .3;
@@ -252,6 +256,11 @@ z-index: 2;
         font-size: 1.4rem;
         margin-top: 1rem;
     }
+
+    .code-text{
+        width: 90%;
+    }
+
 
     .error-text-first{
         border-bottom: .1rem solid var(--red);

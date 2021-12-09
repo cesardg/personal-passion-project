@@ -338,21 +338,27 @@ const checkIfTreeExist = () => {
 }
 
 const handleSubmitUserForm = (e) => {
+
     e.preventDefault();
-    if ($treeCode.value == treeInfo.userCode){
-        userStatus = "user logged in"
-        document.querySelector(`.logged-off`).style.display = "none"
-        document.querySelector(`.logged-in`).style.display = "flex"
-        document.querySelector(`.selection-dashboard`).style.display = "none"
-        sessionStorage.setItem("userStatus", userStatus);
-    } else if ($treeCode.value == treeInfo.ownerCode)  {
-        userStatus = "owner logged in"
-        document.querySelector(`.logged-off`).style.display = "none"
-        document.querySelector(`.logged-in`).style.display = "flex"
-        document.querySelector(`.room-temp`).textContent = treeInfo.roomTemp
-        sessionStorage.setItem("userStatus", userStatus);
-    } else {
-        console.log("foute code") 
+    console.log(e)
+    if ($treeCode.value.length >= 4){
+        if ($treeCode.value == treeInfo.userCode){
+            userStatus = "user logged in"
+            sessionStorage.setItem("userStatus", userStatus);
+            document.querySelector(`.logged-off`).style.display = "none"
+            document.querySelector(`.logged-in`).style.display = "flex"
+            document.querySelector(`.selection-dashboard`).style.display = "none"
+            
+        } else if ($treeCode.value == treeInfo.ownerCode)  {
+            userStatus = "owner logged in"
+            sessionStorage.setItem("userStatus", userStatus);
+            document.querySelector(`.logged-off`).style.display = "none"
+            document.querySelector(`.logged-in`).style.display = "flex"
+            document.querySelector(`.room-temp`).textContent = treeInfo.roomTemp
+        } else {
+            document.querySelector(`.error-code`).textContent = "Wrong code, please try again."
+            $treeCode.value = "";
+        }
     }
 }
 
@@ -632,6 +638,7 @@ const init = () =>{
     // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
     checkUrl();
 
+    
     // message versturen
     $sendMessageButton.addEventListener('click', handleClickSendMessage);
 
@@ -644,9 +651,11 @@ const init = () =>{
     })
 
     //login code form
-    document.querySelector(`.user-form`).addEventListener(`submit`, handleSubmitUserForm)
+    document.querySelector(`.user-form`).addEventListener(`keyup`, handleSubmitUserForm)
+
 
     handleDrawingCanvas();
+
     // developer en testing functies
     developerAndTestingFunctions();
  
