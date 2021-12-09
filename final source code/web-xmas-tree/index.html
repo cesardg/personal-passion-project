@@ -17,10 +17,12 @@
         <div class="error-screen"></div>
         <div class="logged-off">
             <form class="user-form">
-                <label for="treeCode">Tree code (see back Christmas ball)</label>
-                <input class="input tree-code" type="text" name="treeCode" id="treeCode" placeholder="1234">
+                <label class="code-label error-title" for="treeCode">Please fill in pin code</label>
+                <input class="input tree-code" type="password" autofocus name="treeCode" id="treeCode" placeholder="****">
                 <input type="submit" value="Next">
             </form>
+            <p class="code-text error-text">You can find this 4-digit code on the back of the Christmas ball or tree.
+                You need this code before you can interact with <span class="owner-name"></span>'s tree.</p>
         </div>
         <div class="logged-in">
             <header class="header">

@@ -199,6 +199,45 @@ z-index: 2;
     display: none;
 }
 
+.logged-off{
+    display: flex;
+    justify-content: center;
+    flex-direction:  column;
+    align-items: center;
+}
+
+.user-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.code-text{
+    width: 62rem;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.tree-code{
+    font-size: 5rem;
+    padding: 1rem;
+    width: 15rem;
+    letter-spacing: 1rem;
+    border-radius: 2rem;
+    padding-left: 6rem;
+    border: .1rem solid var(--black);
+    background-color: transparent;
+    outline: none;
+    color: var(--black);
+
+}
+
+::placeholder { 
+  color: var(--black);
+  opacity: .3;
+  letter-spacing: .7rem;
+}
+
 @media only screen and (max-width: 700px) {
     .logged-in{
         flex-direction: column;
