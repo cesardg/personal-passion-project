@@ -62,26 +62,29 @@
                 <h2 class="title">Send a message to <span class="owner-name"></span>'s Christmas tree!</h2>
                 <form class="form message-form">
                     <label class="hide" for="message">Message</label>
-                    <input class="input message"  required placeholder="This massage will appear in the tree" type="text" name="message" id="message2">
-                   <div class="error-box">
+                    <input class="input message" required placeholder="This massage will appear in the tree" type="text" name="message" id="message2">
+                    <div class="error-box">
                         <p class="info-lenght-message"></p>
                         <p class="succes-message"></p>
-                       <p class="error-message"></p>
-                   </div>
+                        <p class="error-message"></p>
+                    </div>
                     <button class="button send" id="send-message">Send Message</button>
                 </form>
             </section>
             <section class="section section-drawing section-live-drawing">
                 <h2 class="title">Send a drawing to my Christmas tree!</h2>
-                <p>led: <span class="led-test"></span></p>
-                <div>
-                    <input class="drawing-color" type="color" id="drawing-color" name="drawing-color" value="#e66465">
-                    <label for="drawing-color">Drawing color</label>
+                <p>Draw something on the tree</p>
+                <div class="drawing-options">
+                    <div class="color-container">
+                        <label for="drawing-color">Drawing color: </label>
+                        <input class="drawing-color" type="color" id="drawing-color" name="drawing-color" value="#e66465">
+                    </div>
+                    <button class="reset-button">Try again</button>
                 </div>
+
                 <div class="canvas-bg">
                     <canvas class="canvas" width="600" height="531"></canvas>
                 </div>
-                <button class="reset-button">Clear Canvas</button>
                 <button class="button send-drawing" id="send-drawing">Send Drawing</button>
 
             </section>

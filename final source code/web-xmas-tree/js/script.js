@@ -123,6 +123,7 @@ let litLightsOnlyIndex = [];
 const handleClickSendMessage = (e) => {
     const $errorMessage = document.querySelector(`.error-message`);
     const $succesMessage = document.querySelector(`.succes-message`);
+    const alowedChars = /^[a-zA-Z\s\\?\\!\\0-9\\-]*$/
 
     e.preventDefault();
 
@@ -131,7 +132,11 @@ const handleClickSendMessage = (e) => {
          $succesMessage.textContent=""
     } else if ($message.value.length >= 20) {
         $errorMessage.textContent = `Your message to long (${$message.value.length}) charachters. Max 20 characters.`
-    }else {
+    } else if (!$message.value.match(alowedChars)) {
+         $succesMessage.textContent=""
+        $errorMessage.textContent = `Message can't contain special characters `
+    }
+    else {
         update(ref(db, params.get('tree-id') ),{
             message: $message.value, 
             mode: messageMode
@@ -589,7 +594,6 @@ const convertCoordsToLedIndex = (e) => {
             }
         }
     }
-    document.querySelector(`.led-test`).textContent = led;
     lightUpPreview();
 }
 

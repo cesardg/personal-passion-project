@@ -200,16 +200,37 @@ html, body{
 .canvas-bg{
     background-image: url("../assets/img/treebg.png");
     background-repeat: no-repeat;
+    margin-bottom: 3rem;
 }
 
-.canvas{
-    border: .1rem solid black;
-}
+
 
 .section-drawing{
     font-size: 2rem;
 }
 
+.drawing-options{
+    display: flex;
+}
+
+.color-container{
+    border: .1rem solid var(--black) ;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 2rem;
+}
+
+.reset-button{
+    padding: 1rem;
+    border: .1rem solid var(--black) ;
+    border-radius: 1rem;
+    font-family: houschka-rounded, sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    background-color: transparent;
+    font-size: 2rem;
+    margin: 2rem;
+}
 
 .invallid-url-error{
     text-align: center;
