@@ -267,6 +267,9 @@ void listeningForMessages(){
     previousMessage = firebaseData.stringData();
   }
  delay(1000);
+
+ //set mode back to idle
+  Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
  }
 
  
