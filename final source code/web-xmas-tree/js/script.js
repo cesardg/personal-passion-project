@@ -122,18 +122,25 @@ let litLightsOnlyIndex = [];
 
 const handleClickSendMessage = (e) => {
     const $errorMessage = document.querySelector(`.error-message`);
+    const $succesMessage = document.querySelector(`.succes-message`);
 
     e.preventDefault();
 
     if ($message.value.length == 0){
-        $errorMessage.textContent = `please type a message`
-    } else {
+        $errorMessage.textContent = `Please type a message`
+         $succesMessage.textContent=""
+    } else if ($message.value.length >= 20) {
+        $errorMessage.textContent = `Your message to long (${$message.value.length}) charachters. Max 20 characters.`
+    }else {
         update(ref(db, params.get('tree-id') ),{
             message: $message.value, 
             mode: messageMode
         })
         .then(()=>{
             console.log("update send message done")
+            $errorMessage.textContent = ""
+            $succesMessage.textContent=`Your message is succesfully send to ${treeInfo.ownerName}' tree!`
+            $message.value="";
         })
         .catch((error)=>{
             console.log(error)
