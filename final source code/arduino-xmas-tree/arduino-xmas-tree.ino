@@ -68,22 +68,22 @@ int alfabed[][100]= {
 };
 
 int numbers[][100]= {
- /* 0 */ {}, 
- /* 1 */ {},
- /* 2 */ {},
- /* 3 */ {},
- /* 4 */ {},
- /* 5 */ {},
- /* 6 */ {},
- /* 7 */ {},
- /* 8 */ {},
- /* 9 */ {}
+ /* 0 */ {0, 01}, 
+ /* 1 */ {247, 246},
+ /* 2 */ {247, 246},
+ /* 3 */ {247, 246},
+ /* 4 */ {247, 246},
+ /* 5 */ {247, 246},
+ /* 6 */ {247, 246},
+ /* 7 */ {247, 246},
+ /* 8 */ {247, 246},
+ /* 9 */ {99, 999}
  };
 
  int specialChars[][100]= {
- /* ? */ {}, 
- /* ! */ {},
- /* - */ {}
+ /* ? */ {123, 246}, 
+ /* ! */ {345, 246},
+ /* - */ {567, 246}
  };
 
 
@@ -286,24 +286,77 @@ void listeningForMessages(){
 
   for (int i=0; i<messageLenght-1; i++) {
       //search for ASCII number and substract it with 65
-      int index = int(messageArray[i]) - 65;
+      int index = int(messageArray[i]);
+      Serial.println(index);
       Serial.print("These leds needs to be on for ");
       Serial.print(messageArray[i]);
       Serial.print(": ");
 
-      //loop over alfa
+      if ((index >=65) && (index<= 90)) {
+        
+      //loop over alfabed
+      
         for (int j =0; j < 100; j++) {
-          if (alfabed[index][j] != 0 && alfabed[index][j] > 0 && alfabed[index][j] < 300 ){
-          //strip.setPixelColor(alfabed[index][j], 0x00FF00);
-          Serial.print(alfabed[index][j]);
+          if (alfabed[index- 65][j] != 0 && alfabed[index- 65][j] > 0 && alfabed[index- 65][j] < 300 ){
+          //strip.setPixelColor(alfabed[index- 65][j], 0x00FF00);
+          Serial.print(alfabed[index- 65][j]);
           Serial.print("-");
           } 
         }
+        
+      } else if (index == 63){
+       
+         //loop over special chars (?!-)
+         for (int j =0; j < 100; j++) {
+          if (specialChars[0][j] != 0 && specialChars[0][j] > 0 && specialChars[0][j] < 300 ){
+          //strip.setPixelColor(specialChars[0][j], 0x00FF00);
+          Serial.print(specialChars[0][j]);
+          Serial.print("-");
+          } 
+        }
+        
+        
+      }  else if (index == 33){
+       
+         //loop over special chars (?!-)
+         for (int j =0; j < 100; j++) {
+          if (specialChars[1][j] != 0 && specialChars[1][j] > 0 && specialChars[1][j] < 300 ){
+          //strip.setPixelColor(specialChars[1][j], 0x00FF00);
+          Serial.print(specialChars[1][j]);
+          Serial.print("-");
+          } 
+        }
+        
+        
+      }else if (index == 45){
+       
+         //loop over special chars (?!-)
+         for (int j =0; j < 100; j++) {
+          if (specialChars[2][j] != 0 && specialChars[2][j] > 0 && specialChars[2][j] < 300 ){
+          //strip.setPixelColor(specialChars[2][j], 0x00FF00);
+          Serial.print(specialChars[2][j]);
+          Serial.print("-");
+          } 
+        }
+        
+        
+      }else if ((index >=48) && (index<= 57)){
+        
+             //loop over number
 
-       //loop over special chars
+         for (int j =0; j < 100; j++) {
+          if (numbers[index- 48][j] != 0 && numbers[index- 48][j] > 0 && numbers[index- 48][j] < 300 ){
+          //strip.setPixelColor(numbers[index- 48][j], 0x00FF00);
+          Serial.print(numbers[index- 48][j]);
+          Serial.print("-");
+         } 
+        
+      }
+
+      }
 
 
-       //loop over number
+  
         
       //strip.show(); 
       Serial.println();
