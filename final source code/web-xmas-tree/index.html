@@ -71,12 +71,12 @@
                 </form>
             </section>
             <section class="section section-drawing section-live-drawing">
-                <h2 class="title">Send a drawing to my Christmas tree!</h2>
+                <h2 class="title">Send a drawing to <span class="owner-name"></span>'s Christmas tree!</h2>
                 <p>Draw something on the tree</p>
                 <div class="drawing-options">
                     <div class="color-container">
                         <label for="drawing-color">Drawing color: </label>
-                        <input class="drawing-color" type="color" id="drawing-color" name="drawing-color" value="#e66465">
+                        <input class="drawing-color" type="color" id="drawing-color" name="drawing-color" value="#d94047">
                     </div>
                     <button class="reset-button">Try again</button>
                 </div>
@@ -89,28 +89,35 @@
             </section>
             <section class="section section-motion">
                 <h2 class="title">Send webcam motion to my Christmas tree!</h2>
-                <div id=canvasPlaceholder></div>
+                <div class="canvas-placeholder" id=canvasPlaceholder></div>
             </section>
             <section class="section section-dashboard">
                 <h2 class="title"><span class="owner-name"></span>'s Xmas tree 2.0 dashboard</h2>
                 <div class="dashboard-item-container">
-                    <div class="dashboard-item">
+                    <article class="dashboard-item">
+                        <h3 class="dashboard-title">Enviroment</h3>
                         <p>room temperature: <span class="room-temp"></span>°C</p>
                         <p>room humidity: <span class="room-hum"></span>%</p>
-                    </div>
-                    <div class="dashboard-item">
+                    </article>
+                    <article class="dashboard-item">
                         <h3 class="dashboard-title">Current active baubles (<span class="active-baubles"></span>) </h3>
                         <p class="dashboard-description">These people can send messages to your tree</p>
                         <ol class="user-list">
-                          
                         </ol>
-
-               
-                    </div>
-                    <div class="dashboard-item">
-                        <p>Tree id: <span class="tree-id"></span></p>
-
-                    </div>
+                    </article>
+                    <article class="dashboard-item">
+                        <h3 class="dashboard-title">Tree ID</h3>
+                        <p class="tree-id"></p>
+                        <p>Name owner:</p>
+                        <div class="owner-dashbord">
+                            <p class="owner-name"></p>
+                            <img class="edit-icon-visible" src="./assets/img/edit.png" height="15" width="15">
+                        </div>
+                        <div class="new-name-container">
+                            <input required minlength="2" maxlength="14" id="ownerName" class="input-owner-name"></input>
+                            <button class="button-owner-name">update name</button>
+                        </div>
+                    </article>
                 </div>
             </section>
 

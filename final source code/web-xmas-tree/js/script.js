@@ -122,6 +122,7 @@ const $sendDrawingButton = document.querySelector(`.send-drawing`);
 const $canvas = document.querySelector(`.canvas`);
 const ctx = $canvas.getContext("2d");
 const $resetButton = document.querySelector(`.reset-button`);
+const $ownerName = document.querySelector(`.input-owner-name`) 
 
 let url = window.location.href;
 let params = (new URL(url)).searchParams;
@@ -625,6 +626,7 @@ const drawTriangle = () => {
 const handleClickSendDrawing = (e) => {
     if (e) e.preventDefault();
 
+    if (litLights.length != 0){
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
         lights: litLights,
@@ -639,6 +641,7 @@ const handleClickSendDrawing = (e) => {
     .catch((error)=>{
         console.log(error)
     })
+}
 }
 
 const twoDimArrToStr = () => {
@@ -660,27 +663,34 @@ const updateFirebaseData = () =>{
         document.querySelector(`.room-hum`).textContent = snapshot.val();
     });
 
-        const users = ref(db, params.get('tree-id') + '/users');
-        onValue(users, (snapshot) => {
-        document.querySelector(`.active-baubles`).textContent = snapshot.val().length;
-        let list = "";
-        let button;
-         snapshot.val().forEach((user) => {
-        (user.active) ? button=`<button id=mute class="user-mute">mute</button>` :  button=`<button id=unmute class="user-mute">unmute</button>`;
-         })
+    const users = ref(db, params.get('tree-id') + '/users');
+    onValue(users, (snapshot) => {
+    document.querySelector(`.active-baubles`).textContent = snapshot.val().length;
+    let list = "";
+    let button;
         snapshot.val().forEach((user) => {
-                    list +=`<li class="active-baubles-list"> 
-                                <div class="list-info">
-                                    <input id="name" value="${user.name}" class="list-input list-name"></input>
-                                    <label>code:
-                                    <input class="list-input list-code" id="code" type="number" value="${user.code}" </input>
-                                    </label>
-                                </div>
-                                ${button}
-                            </li>`
-                })
-        document.querySelector(`.user-list`).innerHTML = list
-    });
+    (user.active) ? button=`<button id=mute class="user-mute">mute</button>` :  button=`<button id=unmute class="user-mute">unmute</button>`;
+        })
+    snapshot.val().forEach((user) => {
+                list +=`<li class="active-baubles-list"> 
+                            <div class="list-info">
+                                <label class="list-name-label">
+                                
+                                <input id="name" value="${user.name}" class="list-input list-name"></input>
+                                <img class="edit-icon" src="./assets/img/edit.png" height="15" width="15">
+                                </label>
+                                <label class="list-code-label">
+                                
+                                code:
+                                <input class="list-input list-code" id="code" type="number" value="${user.code}" </input>
+                                    <img class="edit-icon" src="./assets/img/edit.png" height="15" width="15">
+                                </label>
+                            </div>
+                            ${button}
+                        </li>`
+            })
+    document.querySelector(`.user-list`).innerHTML = list
+});
 }
 
 const handleClickUserMute = (e) => {
@@ -718,19 +728,40 @@ const handleFocusOutUserList = (e) => {
         })
         .then(()=>{
             console.log("update code done")
+            treeInfo.users[0].code = e.target.value
         })
         .catch((error)=>{
             console.log(error)
         })
         } else {
             console.log("code moet 4 nummers hebben")
+            e.target.value = treeInfo.users[0].code
+            alert("Tree code has to have 4 nummeric digits")
         }
-
    }
+}
+
+const handleClickShowInput = () => {
+    document.querySelector(`.new-name-container`).style.display = "block"
+    $ownerName.value = treeInfo.ownerName;
+}
 
 
-
- 
+const handleClickUpdateButton = () => {
+    if ($ownerName.value.length != 0){
+        update(ref(db, params.get('tree-id')),{
+            ownerName: $ownerName.value
+        })
+        .then(()=>{
+            console.log("update name done")
+            treeInfo.ownerName = $ownerName.value
+            document.querySelector(`.new-name-container`).style.display = "none"
+            document.querySelectorAll(`.owner-name`).forEach((name) => name.textContent = treeInfo.ownerName );
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    }
 }
 
 const developerAndTestingFunctions = () => {
@@ -776,6 +807,12 @@ const init = () =>{
 
     // update user name and code when focus out
     document.querySelector(`.user-list`).addEventListener(`focusout`, handleFocusOutUserList)
+
+    // show input owner name on click
+    document.querySelector(`.owner-dashbord`).addEventListener(`click`, handleClickShowInput)
+
+        // show input owner name on click
+    document.querySelector(`.button-owner-name`).addEventListener(`click`, handleClickUpdateButton)
 
     handleDrawingCanvas();
 
