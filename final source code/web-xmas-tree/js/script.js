@@ -685,6 +685,17 @@ const updateFirebaseData = () =>{
 
 const handleClickUserMute = (e) => {
     console.log(e.target.id)
+    update(ref(db, params.get('tree-id') + "/users/" + [0] ),{
+        active: (e.target.id === "mute") ? false :  true
+    })
+    .then(()=>{
+        console.log("update mute/unmute done")
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+    
+
 }
 
 const developerAndTestingFunctions = () => {
