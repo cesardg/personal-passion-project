@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-import {getDatabase, ref, get, set, child, update, remove} from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+import {getDatabase, ref, get, child, update, onValue} from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
 //mapping
 const A = [242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44];
@@ -361,7 +361,6 @@ const checkIfTreeExist = () => {
            console.log("vallid url"); 
            treeInfo = snapshot.val();
            document.querySelectorAll(`.owner-name`).forEach((name) => name.textContent = treeInfo.ownerName );
-           document.querySelector(`.room-temp`).textContent = treeInfo.roomTemp
         } else{
             handleErrorScreen()
         }
@@ -372,11 +371,11 @@ const checkIfTreeExist = () => {
 }
 
 const handleSubmitUserForm = (e) => {
-
+console.log(treeInfo)
     e.preventDefault();
     console.log(e)
     if ($treeCode.value.length >= 4){
-        if ($treeCode.value == treeInfo.userCode){
+        if ($treeCode.value == treeInfo.users[0].code){
             userStatus = "user logged in"
             sessionStorage.setItem("userStatus", userStatus);
             document.querySelector(`.logged-off`).style.display = "none"
@@ -650,6 +649,44 @@ const twoDimArrToStr = () => {
     return tempArr.toString("")
 }
 
+const updateFirebaseData = () =>{
+    const roomTemp = ref(db, params.get('tree-id') + '/roomTemp');
+        onValue(roomTemp, (snapshot) => {
+        document.querySelector(`.room-temp`).textContent = snapshot.val();
+        });
+    
+    const roomHum = ref(db, params.get('tree-id') + '/roomHumidity');
+        onValue(roomHum, (snapshot) => {
+        document.querySelector(`.room-hum`).textContent = snapshot.val();
+    });
+
+        const users = ref(db, params.get('tree-id') + '/users');
+        onValue(users, (snapshot) => {
+        document.querySelector(`.active-baubles`).textContent = snapshot.val().length;
+        let list = "";
+        let button;
+         snapshot.val().forEach((user) => {
+        (user.active) ? button=`<button id=mute class="user-mute">mute</button>` :  button=`<button id=unmute class="user-mute">unmute</button>`;
+         })
+        snapshot.val().forEach((user) => {
+                    list +=`<li class="active-baubles-list"> 
+                                <div class="list-info">
+                                    <input value="${user.name}" class="list-input list-name"></input>
+                                    <label>code:
+                                    <input class="list-input list-code" value="${user.code}" </input>
+                                    </label>
+                                </div>
+                                ${button}
+                            </li>`
+                })
+        document.querySelector(`.user-list`).innerHTML = list
+    });
+}
+
+const handleClickUserMute = (e) => {
+    console.log(e.target.id)
+}
+
 const developerAndTestingFunctions = () => {
     //addHTMLandCSS();
     //lightUpPreview();
@@ -671,7 +708,9 @@ const init = () =>{
     // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
     checkUrl();
 
-    
+    //update data on value change from firebase realtime db
+    updateFirebaseData()
+
     // message versturen
     $sendMessageButton.addEventListener('click', handleClickSendMessage);
 
@@ -686,6 +725,8 @@ const init = () =>{
     //login code form
     document.querySelector(`.user-form`).addEventListener(`keyup`, handleSubmitUserForm)
 
+    // user muten
+     document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
 
     handleDrawingCanvas();
 

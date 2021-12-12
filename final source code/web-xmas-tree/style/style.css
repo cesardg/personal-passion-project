@@ -325,6 +325,52 @@ html, body{
   letter-spacing: 0
 }
 
+.dashboard-item{
+    font-size: 1.6rem;
+    border: .1rem solid var(--black);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    line-height: 1.4;
+}
+
+.dashboard-item-container{
+    display: flex;
+}
+
+.dashboard-title{
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.dashboard-description{
+    padding-bottom: .2rem;
+    border-bottom: .1rem solid var(--black);
+}
+
+.active-baubles-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: .1rem solid var(--black);
+    line-height: 1;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.list-name{
+    font-weight: 700;
+}
+
+.list-input{
+    border: none;
+    background: transparent;
+}
+
+.list-info{
+    display: flex;
+    flex-direction: column;
+}
 
 @media only screen and (max-width: 700px) {
     .logged-in{

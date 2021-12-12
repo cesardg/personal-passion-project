@@ -54,8 +54,7 @@
                     </form>
                 </div>
                 <div class="header-bottom">
-                    <p>tree id:</p>
-                    <p class="tree-id"></p>
+
                 </div>
             </header>
             <section class="section section-message">
@@ -94,7 +93,25 @@
             </section>
             <section class="section section-dashboard">
                 <h2 class="title"><span class="owner-name"></span>'s Xmas tree 2.0 dashboard</h2>
-                <div class="dashboard-item">room temperature: <span class="room-temp"></span></div>
+                <div class="dashboard-item-container">
+                    <div class="dashboard-item">
+                        <p>room temperature: <span class="room-temp"></span>°C</p>
+                        <p>room humidity: <span class="room-hum"></span>%</p>
+                    </div>
+                    <div class="dashboard-item">
+                        <h3 class="dashboard-title">Current active baubles (<span class="active-baubles"></span>) </h3>
+                        <p class="dashboard-description">These people can send messages to your tree</p>
+                        <ol class="user-list">
+                          
+                        </ol>
+
+               
+                    </div>
+                    <div class="dashboard-item">
+                        <p>Tree id: <span class="tree-id"></span></p>
+
+                    </div>
+                </div>
             </section>
 
             <section class="section-preview">
