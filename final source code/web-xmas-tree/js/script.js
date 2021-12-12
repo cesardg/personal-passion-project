@@ -671,9 +671,9 @@ const updateFirebaseData = () =>{
         snapshot.val().forEach((user) => {
                     list +=`<li class="active-baubles-list"> 
                                 <div class="list-info">
-                                    <input value="${user.name}" class="list-input list-name"></input>
+                                    <input id="name" value="${user.name}" class="list-input list-name"></input>
                                     <label>code:
-                                    <input class="list-input list-code" value="${user.code}" </input>
+                                    <input class="list-input list-code" id="code" type="number" value="${user.code}" </input>
                                     </label>
                                 </div>
                                 ${button}
@@ -684,7 +684,6 @@ const updateFirebaseData = () =>{
 }
 
 const handleClickUserMute = (e) => {
-    console.log(e.target.id)
     update(ref(db, params.get('tree-id') + "/users/" + [0] ),{
         active: (e.target.id === "mute") ? false :  true
     })
@@ -696,6 +695,42 @@ const handleClickUserMute = (e) => {
     })
     
 
+}
+
+const handleFocusOutUserList = (e) => {
+
+
+   if (e.target.id === "name"){
+        update(ref(db, params.get('tree-id') + "/users/" + [0] ),{
+            name: e.target.value
+        })
+        .then(()=>{
+            console.log("update name done")
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    
+   } else if (e.target.id === "code") {
+        if (e.target.value.length == 4){
+        update(ref(db, params.get('tree-id') + "/users/" + [0] ),{
+            code: parseInt(e.target.value)
+        })
+        .then(()=>{
+            console.log("update code done")
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+        } else {
+            console.log("code moet 4 nummers hebben")
+        }
+
+   }
+
+
+
+ 
 }
 
 const developerAndTestingFunctions = () => {
@@ -738,6 +773,9 @@ const init = () =>{
 
     // user muten
      document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
+
+    // update user name and code when focus out
+    document.querySelector(`.user-list`).addEventListener(`focusout`, handleFocusOutUserList)
 
     handleDrawingCanvas();
 
