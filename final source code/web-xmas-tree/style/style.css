@@ -340,6 +340,9 @@ html, body{
 
 .dashboard-item-container{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100rem;
 }
 
 .dashboard-title{
@@ -423,6 +426,70 @@ list-name-label:hover{
 
 .new-name-container{
     display: none;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 6rem;
+  height: 3.4rem;
+}
+
+.toggle-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 2.6rem;
+  width: 2.6rem;
+  left: .4rem;
+  bottom: .4rem;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: var(--red);
+}
+
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 .1rem var(--red);;
+}
+
+.toggle-switch input:checked + .slider:before {
+  -webkit-transform: translateX(2.6rem);
+  -ms-transform: translateX(2.2rem);
+  transform: translateX(2.6rem);
+}
+
+.toggle-switch .slider.round {
+  border-radius: 1rem;
+}
+
+.dashboard-item-switch{
+    display: flex;
+    justify-content: space-between;
+}
+
+.toggle-switch .slider.round:before {
+  border-radius: .8rem;
 }
 
 @media only screen and (max-width: 1000px) {

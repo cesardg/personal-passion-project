@@ -193,12 +193,12 @@ void detectIntruder (){
     pirVal = digitalRead(pirInputPin);  
   if (pirVal == HIGH) {            
     if (pirState == LOW) {
-      Firebase.setBool(firebaseData, treeId  + "/intruderDetected/", true);
+      Firebase.setBool(firebaseData, treeId  + "/intruderDetection/intruderDetected/", true);
       pirState = HIGH;
     }
   } else {
     if (pirState == HIGH){
-      Firebase.setBool(firebaseData, treeId  + "/intruderDetected/", false);
+      Firebase.setBool(firebaseData, treeId  + "/intruderDetection/intruderDetected/", false);
       pirState = LOW;
     }
   }
@@ -228,12 +228,12 @@ void detectCatAttack(){
 
       //if change in tilt is detected, send to db
       attackedByCat = true;
-      Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
+      Firebase.setBool(firebaseData, treeId  + "/catAttackDetection/isAttackedByCat/", attackedByCat);
 
       // for now, reset it after 5s
       delay(5000);
       attackedByCat = false;
-      Firebase.setBool(firebaseData, treeId  + "/isAttackedByCat/", attackedByCat);
+      Firebase.setBool(firebaseData, treeId  + "/catAttackDetection/isAttackedByCat/", attackedByCat);
     } else {
       attackedByCat = false;
     }

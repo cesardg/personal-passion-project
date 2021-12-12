@@ -764,6 +764,35 @@ const handleClickUpdateButton = () => {
     }
 }
 
+const handleChangeToggle = (e) => {
+
+    setTreeMode("idle")
+
+    update(ref(db, params.get('tree-id') + `/${e.target.value}/`),{
+            active: e.target.checked
+        })
+        .then(()=>{
+            console.log("update done")
+           
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+}
+
+const setTreeMode = (mode) => {
+
+     update(ref(db, params.get('tree-id')),{
+            mode: mode
+        })
+        .then(()=>{
+            console.log("update mode done")
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+}
+
 const developerAndTestingFunctions = () => {
     //addHTMLandCSS();
     //lightUpPreview();
@@ -802,6 +831,8 @@ const init = () =>{
     //login code form
     document.querySelector(`.user-form`).addEventListener(`keyup`, handleSubmitUserForm)
 
+    handleDrawingCanvas();
+
     // user muten
      document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
 
@@ -814,7 +845,11 @@ const init = () =>{
         // show input owner name on click
     document.querySelector(`.button-owner-name`).addEventListener(`click`, handleClickUpdateButton)
 
-    handleDrawingCanvas();
+    document.querySelectorAll(`.toggle-input`).forEach((toggle)=>{
+        toggle.addEventListener(`change`, handleChangeToggle)
+    })
+
+  
 
     // developer en testing functies
     developerAndTestingFunctions();
