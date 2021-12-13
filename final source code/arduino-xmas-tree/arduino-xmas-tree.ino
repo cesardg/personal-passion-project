@@ -1,11 +1,11 @@
 
 #include <Firebase_Arduino_WiFiNINA.h>
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
 #include <Adafruit_DotStar.h>
 #include <SPI.h>
 #include <Arduino_LSM6DS3.h> 
-#include <DHT.h>        
+#include <DHT.h> 
+#include <Servo.h>       
 
 // Firebase 
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
@@ -27,8 +27,6 @@ String jsonStr;
 String previousMessage;
 String mode;
 
-const int  en = 2, rw = 1, rs = 0, d4 = 4, d5 = 5, d6 = 6, d7 = 7, bl = 3;
-const int i2c_addr = 0x27;
 int pirInputPin = 2;               
 int pirState = LOW;    
 int pirVal = 0;  
@@ -88,32 +86,24 @@ int numbers[][100]= {
 
 
 FirebaseData firebaseData;
-LiquidCrystal_I2C lcd(i2c_addr, en, rw, rs, d4, d5, d6, d7, bl, POSITIVE);
 DHT dht(DHTPIN, DHTTYPE);
-//Adafruit_DotStar strip(NUMPIXELS, DOTSTAR_BGR);
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BGR);
+Servo servo1; 
  
 void setup() {
 
-    
-  
-  
   Serial.begin(9600);
   delay(1000);
 
   // init led strip
   
-  strip.begin(); // Initialize pins for output
-  strip.show();  // Turn all LEDs off ASAP
+  //strip.begin(); // Initialize pins for output
+  //strip.show();  // Turn all LEDs off ASAP
 
   //showLedPatternFullGreen();
   
-  lcd.begin(16,2);
-
-    
   Serial.print("Connecting to WiFi…");
-  lcd.setCursor(0,0);
-  lcd.print("Wifi: connecting");
+// wifi connecting...
   int status = WL_IDLE_STATUS;
 
   // holds everything until Wifi is connected
@@ -126,15 +116,11 @@ void setup() {
   // wifi is connected
   Serial.print(" IP: ");
   Serial.println(WiFi.localIP());
-  lcd.clear();
-  lcd.print("Wifi: connected");
   Serial.println();
-  
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH, WIFI_SSID, WIFI_PASSWORD);
   Firebase.reconnectWiFi(true);
 
-  lcd.setCursor(0,1);
-  lcd.print("Waiting for msg...");
+
 
   if (Firebase.getString(firebaseData, treeId + "/message/")) { 
     previousMessage = firebaseData.stringData();
@@ -159,10 +145,15 @@ void setup() {
 
   //PIR sensor
    pinMode(pirInputPin, INPUT); 
+
+   //servo 
+    servo1.attach(11);
  
 }
  
 void loop() {
+
+
 
   if (Firebase.getString(firebaseData, treeId + "/mode/")) { 
     mode = firebaseData.stringData();
@@ -257,11 +248,7 @@ void showDrawing(){
 void listeningForMessages(){
    if (Firebase.getString(firebaseData, treeId + "/message/")) { 
       if (previousMessage != firebaseData.stringData()) {
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("Message:");
-        lcd.setCursor(0,1);
-        lcd.print(firebaseData.stringData());
+        playRingtoneServo();
         mapMessageInLeds(firebaseData.stringData());
       }
     previousMessage = firebaseData.stringData();
@@ -342,7 +329,6 @@ void listeningForMessages(){
           } 
         }
         
-        
       }else if ((index >=48) && (index<= 57)){
         
              //loop over number
@@ -357,10 +343,7 @@ void listeningForMessages(){
       }
 
       }
-
-
-  
-        
+      
       //strip.show(); 
       Serial.println();
       delay(500);
@@ -368,11 +351,18 @@ void listeningForMessages(){
   }
  }
 
+ void playRingtoneServo () {
+    servo1.write(10);
+    delay(1000);
+    servo1.write(170);
+    delay(1000);
+    servo1.write(10);
+ }
+
  void showLedPatternFullGreen () {
   strip.fill(0x00FF00, 0, 300);
   strip.setBrightness(40);
   strip.show();
-   
  }
 
 

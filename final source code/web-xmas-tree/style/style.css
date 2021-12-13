@@ -154,9 +154,9 @@ html, body{
     font-size: 2rem;
     display: inline-block;
     width: 15rem;
-    background-color: var(--red);
+    background-color: var(--blue);
     border-radius: 1rem;
-    color: #ffffff;
+    color: var(--black);
     padding: 1rem;
     cursor: pointer;
     transition: .2s all ease;
@@ -173,8 +173,8 @@ html, body{
 }
 
  .selection input[type=radio]:checked ~ label {
-    background-color: var(--blue);
-    color: var(--black)
+    background-color: var(--red);
+    color: white
 }
 
 .error-screen{
