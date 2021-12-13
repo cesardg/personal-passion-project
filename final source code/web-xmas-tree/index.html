@@ -97,8 +97,8 @@
                 <div class="dashboard-item-container">
                     <article class="dashboard-item">
                         <h3 class="dashboard-title">Enviroment</h3>
-                        <p>room temperature: <span class="room-temp"></span>°C</p>
-                        <p>room humidity: <span class="room-hum"></span>%</p>
+                        <p>Room temperature: <span class="room-temp"></span>°C</p>
+                        <p>Room humidity: <span class="room-hum"></span>%</p>
                     </article>
                     <article class="dashboard-item">
                         <h3 class="dashboard-title">Current active baubles (<span class="active-baubles"></span>) </h3>
@@ -123,22 +123,23 @@
                         <div class="dashboard-item-switch">
                             <h3 class="dashboard-title">Intruder detection</h3>
                             <label class="toggle-switch">
-                                <input name="intruder" value="intruderDetection"   class="toggle-input" type="checkbox">
+                                <input name="intruder" value="intruderDetection"   class="toggle-input toggle-input-intruder" type="checkbox">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <p>You will get notified when a person passes by the tree</p>
-                       
+                        <p>Time since last attack: <span class="time last-intruder-detection"></span></p>
                     </article>
                     <article class="dashboard-item">
                             <div class="dashboard-item-switch">
                                 <h3 class="dashboard-title">Cat attack detector</h3>
                                 <label class="toggle-switch">
-                                    <input name="cat" value="catAttackDetection" class="toggle-input" type="checkbox">
+                                    <input name="cat" value="catAttackDetection" class="toggle-input toggle-input-cat" type="checkbox">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         <p>You will get notified when a cat attacks your tree</p>
+                        <p>Time since last attack: <span class="time last-cat-attack"></span></p>
                     </article>
                 </div>
             </section>

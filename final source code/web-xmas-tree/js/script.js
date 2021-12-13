@@ -656,7 +656,7 @@ const updateFirebaseData = () =>{
     const roomTemp = ref(db, params.get('tree-id') + '/roomTemp');
         onValue(roomTemp, (snapshot) => {
         document.querySelector(`.room-temp`).textContent = snapshot.val();
-        });
+    });
     
     const roomHum = ref(db, params.get('tree-id') + '/roomHumidity');
         onValue(roomHum, (snapshot) => {
@@ -790,6 +790,41 @@ const setTreeMode = (mode) => {
         })
 }
 
+const detectIntruder = () => {
+    const intruderDetection = ref(db, params.get('tree-id') + '/intruderDetection');
+        onValue(intruderDetection, (snapshot) => {
+        document.querySelector(`.last-intruder-detection`).textContent = snapshot.val().time
+        if (snapshot.val().active){
+            document.querySelector(`.toggle-input-intruder`).checked = true
+             if(snapshot.val().intruderDetected) {
+                 alert("there is an intruder detected in your house")
+                update(ref(db, params.get('tree-id') + `/intruderDetection/`),{ intruderDetected: false})
+                }
+      
+        } else {
+            document.querySelector(`.toggle-input-intruder`).checked = false
+        }
+    });
+}
+
+const detectCatAttack = () => {
+    const catAttackDetection = ref(db, params.get('tree-id') + '/catAttackDetection');
+        onValue(catAttackDetection, (snapshot) => {
+        document.querySelector(`.last-cat-attack`).textContent = snapshot.val().time
+        if (snapshot.val().active){
+            document.querySelector(`.toggle-input-cat`).checked = true
+            if(snapshot.val().isAttackedByCat){
+                alert("a cat is now attacking your tree")
+                update(ref(db, params.get('tree-id') + `/catAttackDetection/`),{ isAttackedByCat: false})
+            }
+        } else {
+            document.querySelector(`.toggle-input-cat`).checked = false
+        }
+    });
+}
+
+
+
 const developerAndTestingFunctions = () => {
     //addHTMLandCSS();
     //lightUpPreview();
@@ -831,7 +866,7 @@ const init = () =>{
     if (userStatus === "owner logged in"){
 
         //update data on value change from firebase realtime db
-        updateFirebaseData()
+        updateFirebaseData();
 
         // mute user so he can't send messages anymore
         document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
@@ -849,6 +884,9 @@ const init = () =>{
             toggle.addEventListener(`change`, handleChangeToggle)
         })
 
+        detectIntruder();
+
+        detectCatAttack();
     }
 
     // developer en testing functies
