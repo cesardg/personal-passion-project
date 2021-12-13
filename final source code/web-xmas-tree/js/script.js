@@ -279,7 +279,6 @@ const addHTMLandCSS = () => {
 }
 
 const lightUpPreview = () => {
-    console.log(litLights)
     litLights.forEach((light)=>{
     document.querySelector(`.led-container-${light[0]-1}`).style.background = `${light[1]}`;
     })
@@ -346,6 +345,11 @@ const handleClickMode = (e) => {
         $sendDrawingButton.style.display = "none"
     } else {
         $sendDrawingButton.style.display= "block"
+    }
+
+    if (messageMode === "motion"){
+            detectMotionPoses();
+            setTreeMode("motion");
     }
 }
 
@@ -430,7 +434,6 @@ const checkIfUserLoggedIn = () => {
 }
 
 const handleDrawingCanvas = () =>{
-    //drawTriangle()
     $canvas.addEventListener('mousedown', startDrawing);
     $canvas.addEventListener('mousemove', draw);
     window.addEventListener('mouseup', stopDrawing);
@@ -479,18 +482,18 @@ const draw = e => {
     ctx.stroke();
    
     coords.push({x: e.offsetX, y: e.offsetY});
-    convertCoordsToLedIndex(e);
+    convertCoordsToLedIndex(e.offsetX, e.offsetY);
 };
 
-const convertCoordsToLedIndex = (e) => {
-    let row = 15- (Math.round((e.offsetY-100)/28))
+const convertCoordsToLedIndex = (x, y) => {
+    let row = 15- (Math.round((y-100)/28))
     if (row < 1){
         row =  1
     } else if (row > 15){
         row = 15
     }
     
-    let col = Math.round((e.offsetX - 40)/15)
+    let col = Math.round((x - 40)/15)
     if (col < 1){
         col =  1
     } else if (col > 34){
@@ -589,7 +592,7 @@ const convertCoordsToLedIndex = (e) => {
     }
 
         
-    if (led){
+    if (led && messageMode !== "motion"){
         if (!litLightsOnlyIndex.includes(led)){
             litLightsOnlyIndex.push(led);
             litLightsOnlyColor.push($drawColor.value);
@@ -608,19 +611,16 @@ const convertCoordsToLedIndex = (e) => {
                 }
             }
         }
+       lightUpPreview();
+    } else if (led) {
+        console.log(led)
+        litLights.push([led,$drawColor.value])
+        if (!litLightsOnlyIndex.includes(led)){
+        litLightsOnlyIndex.push(led)
+        }
     }
-    lightUpPreview();
-}
 
-const drawTriangle = () => {
-    ctx.beginPath();
-    ctx.moveTo(0+10, 600-10);
-    ctx.lineTo(300, 0+10);
-    ctx.lineTo(600-10, 600-10);
-    ctx.closePath();
-    ctx.lineWidth = 10;
-    ctx.lineCap = 'round';
-    ctx.stroke();
+ 
 }
 
 const handleClickSendDrawing = (e) => {
@@ -796,9 +796,9 @@ const detectIntruder = () => {
         document.querySelector(`.last-intruder-detection`).textContent = snapshot.val().time
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-intruder`).checked = true
-             if(snapshot.val().intruderDetected) {
+             if(snapshot.val().detected) {
                  alert("there is an intruder detected in your house")
-                update(ref(db, params.get('tree-id') + `/intruderDetection/`),{ intruderDetected: false})
+                update(ref(db, params.get('tree-id') + `/intruderDetection/`),{ detected: false})
                 }
       
         } else {
@@ -813,9 +813,9 @@ const detectCatAttack = () => {
         document.querySelector(`.last-cat-attack`).textContent = snapshot.val().time
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-cat`).checked = true
-            if(snapshot.val().isAttackedByCat){
+            if(snapshot.val().detected){
                 alert("a cat is now attacking your tree")
-                update(ref(db, params.get('tree-id') + `/catAttackDetection/`),{ isAttackedByCat: false})
+                update(ref(db, params.get('tree-id') + `/catAttackDetection/`),{ detected: false})
             }
         } else {
             document.querySelector(`.toggle-input-cat`).checked = false
@@ -823,6 +823,33 @@ const detectCatAttack = () => {
     });
 }
 
+const detectMotionPoses = () => {
+    // detects poses 30fps, only has to be 2 fps for database
+    const interval  = window. setInterval(function(){ 
+    if (pose && messageMode === "motion"){
+        litLights.length = 0;
+        litLightsOnlyIndex.length = 0;
+        pose.keypoints.forEach((point) => {
+            if (point.score > 0.7){
+                const x = (600- Math.round(point.position.x))
+                const y = Math.round(point.position.y)
+                convertCoordsToLedIndex(x, y)
+            }
+        })
+        clearPreview()
+        lightUpPreview()
+        console.log(litLightsOnlyIndex)
+        update(ref(db, params.get('tree-id') ),{
+            litLightsIndex: litLightsOnlyIndex,
+            lightsIndexString: litLightsOnlyIndex.join("-")
+        })
+
+
+    } else {
+        console.log("stop bitch")
+    }
+}, 200);
+}
 
 
 const developerAndTestingFunctions = () => {

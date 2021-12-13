@@ -71,7 +71,7 @@ void detectShakeBall(){
       Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", true);
 
       //show red light as feedback
-      WiFiDrv::pinMode(25, OUTPUT);  //GREEN
+      WiFiDrv::pinMode(25, OUTPUT);
       WiFiDrv::analogWrite(26, LOW); 
       WiFiDrv::analogWrite(25, 128); 
 

@@ -19,7 +19,10 @@ function setup() {
     console.log(messageMode)
     if (messageMode === "motion"){
         document.querySelector(`.p5Canvas`).style.display = "block";
-        const myCanvas = createCanvas(640, 480);
+        const myCanvas = createCanvas(600, 531);
+        // 640 480
+        canvas.width = 1200
+        canvas.height = 960
         myCanvas.parent("canvasPlaceholder");
         video = createCapture(VIDEO);
         video.hide();
@@ -55,22 +58,15 @@ function draw() {
     fill(255, 0, 0);
     ellipse(pose.nose.x, pose.nose.y, d);
     fill(0, 0, 255);
-    ellipse(pose.rightWrist.x, pose.rightWrist.y, 32);
-    ellipse(pose.leftWrist.x, pose.leftWrist.y, 32);
+
 
     for (let i = 0; i < pose.keypoints.length; i++) {
+      if (pose.keypoints[i].score > .7){
       let x = pose.keypoints[i].position.x;
       let y = pose.keypoints[i].position.y;
       fill(0, 255, 0);
       ellipse(x, y, 16, 16);
-    }
-
-    for (let i = 0; i < skeleton.length; i++) {
-      let a = skeleton[i][0];
-      let b = skeleton[i][1];
-      strokeWeight(2);
-      stroke(255);
-      line(a.position.x, a.position.y, b.position.x, b.position.y);
+      }
     }
   }
 }

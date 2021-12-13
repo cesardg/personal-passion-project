@@ -193,7 +193,7 @@ html, body{
     color: var(--red);
 }
 
-.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas, .section-preview{
+.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas{
     display: none;
 }
  
@@ -492,6 +492,10 @@ list-name-label:hover{
   border-radius: .8rem;
 }
 
+.canvas-placeholder{
+    transform: scaleX(-1);
+}
+
 @media only screen and (max-width: 1000px) {
     .canvas-bg{
         transform: scale(0.6);
@@ -500,7 +504,7 @@ list-name-label:hover{
     }
 
     .canvas-placeholder{
-        transform: scale(0.6);
+        transform: scaleX(-1) scale(0.6);
     }
 
     .dashboard-item-container{
