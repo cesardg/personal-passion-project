@@ -58,6 +58,68 @@ void setup() {
  
 void loop() {
   detectShakeBall();
+  
+  if (Firebase.getString(firebaseData, treeId + "/lightsIndexString/")) { 
+    String str = firebaseData.stringData();
+    char arr[str.length() + 1]; 
+    for (int x = 0; x < sizeof(arr); x++) { 
+        arr[x] = str[x]; 
+    } 
+   //Serial.println(arr);
+
+   const char s[2] = "-";
+   char *token;
+   
+   token = strtok(arr, s);
+   
+   while( token != NULL ) {
+       int led = atoi(token);
+       //Serial.println(led);
+      token = strtok(NULL, s);
+    }
+   }
+
+
+
+  if (Firebase.getString(firebaseData, treeId + "/lightsString/")) { 
+    String newstr = firebaseData.stringData();
+    Serial.print(newstr);
+    char newarr[newstr.length() + 1]; 
+    for (int x = 0; x < sizeof(newarr); x++) { 
+        newarr[x] = newstr[x]; 
+    } 
+   const char news[2] = ",";
+   char *newtoken;
+   
+   newtoken = strtok(newarr, news);
+
+   for (int i = 0; i <= 25; i++) {
+     // Serial.print("begin");
+   // Serial.print(newtoken[i]);
+        //  Serial.print("einde");
+  };
+   
+   while( newtoken != NULL ) {
+      Serial.println(newtoken);
+      newtoken = strtok(NULL, news);
+      
+
+/*
+   const char newnews[2] = "-";
+   char *newnewtoken;
+   
+   newnewtoken = strtok(newtoken, newnews);
+   while( newnewtoken != NULL ) {
+  
+      Serial.println("begin");
+      Serial.println(newnewtoken);
+      Serial.println("einde");
+      newnewtoken = strtok(NULL, newnews);
+   }
+   */
+    }
+   }
+ 
 }
 
 void detectShakeBall(){

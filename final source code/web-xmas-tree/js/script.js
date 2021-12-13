@@ -348,6 +348,7 @@ const handleClickMode = (e) => {
     }
 
     if (messageMode === "motion"){
+            clearInterval()
             detectMotionPoses();
             setTreeMode("motion");
     }
@@ -825,7 +826,7 @@ const detectCatAttack = () => {
 
 const detectMotionPoses = () => {
     // detects poses 30fps, only has to be 2 fps for database
-    const interval  = window. setInterval(function(){ 
+    const interval  = window.setInterval(function(){ 
     if (pose && messageMode === "motion"){
         litLights.length = 0;
         litLightsOnlyIndex.length = 0;
@@ -845,9 +846,14 @@ const detectMotionPoses = () => {
         })
 
 
-    } else {
-        console.log("stop bitch")
+    } 
+
+  
+    if (messageMode !== "motion"){
+        clearInterval(interval)
+        setTreeMode("idle")
     }
+
 }, 200);
 }
 
