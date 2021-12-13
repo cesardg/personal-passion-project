@@ -166,9 +166,7 @@ const handleClickSendMessage = (e) => {
         .catch((error)=>{
             console.log(error)
         })
-    }
-   
-    
+    } 
 }
 
 const addHTMLandCSS = () => {
@@ -276,11 +274,8 @@ const addHTMLandCSS = () => {
                         const col =  `<div class="led-container led-container-${f}">${f}</div>`
                         document.querySelector(`.preview-row-${i}`).innerHTML += col ;
                         }
-            }
-            
+            }    
     }
-
-
 }
 
 const lightUpPreview = () => {
@@ -312,8 +307,6 @@ console.log(e)
         document.querySelector(`.led-container-${ledNumber}`).style.background = `#e9692c`;
         litLightsOnlyIndex.push(ledNumber);
     }
-      
-
       console.log(litLightsOnlyIndex);
       console.log(litLights);
 
@@ -359,11 +352,18 @@ const handleClickMode = (e) => {
 const checkIfTreeExist = () => {
     get(child(ref(db), params.get('tree-id') )).then((snapshot)=>{
         if (snapshot.exists()){
-           console.log("vallid url"); 
            treeInfo = snapshot.val();
-           document.querySelectorAll(`.owner-name`).forEach((name) => name.textContent = treeInfo.ownerName );
+            document.querySelectorAll(`.owner-name`).forEach((name) => name.textContent = treeInfo.ownerName );
+           if (treeInfo.users[0].active){
+           } else if (userStatus === "user logged in") {
+            const errorTitle = `${treeInfo.ownerName}'s tree is currently not receiving messages`
+            const errorHtml = `<p class="error-text error-text-first">Please come back another time</p><p  class="error-text">Or ask ${treeInfo.ownerName} to turn it on</p>`
+            handleErrorScreen(errorTitle, errorHtml)
+           }
         } else{
-            handleErrorScreen()
+            const errorTitle = "Tree not found"
+            const errorHtml = `<p class="error-text error-text-first">Please scan the QR code on the tree or ball again</p><p  class="error-text">Or make sure you typed the URL correctly </p>`
+            handleErrorScreen(errorTitle, errorHtml)
         }
     })
     .catch((error)=>{
@@ -372,9 +372,7 @@ const checkIfTreeExist = () => {
 }
 
 const handleSubmitUserForm = (e) => {
-console.log(treeInfo)
     e.preventDefault();
-    console.log(e)
     if ($treeCode.value.length >= 4){
         if ($treeCode.value == treeInfo.users[0].code){
             userStatus = "user logged in"
@@ -398,17 +396,19 @@ console.log(treeInfo)
 
 const checkUrl = () =>{
     if ( !params.get('tree-id') || params.get('tree-id').length == 0){
-        handleErrorScreen()
+        const errorTitle = "Tree not found"
+        const errorHtml = `<p class="error-text error-text-first">Please scan the QR code on the tree or ball agian</p><p  class="error-text">Or make sure you typed the URL correctly </p>`
+        handleErrorScreen(errorTitle, errorHtml)
     } else {
         checkIfTreeExist()
     }
 }
 
-const handleErrorScreen = () => {
+const handleErrorScreen = (errorTitle, errorHtml) => {
     console.log("invallid url, try putting ?tree-id=Rudolph-A3EpYEF7zU after it")
-    const errorHtml = `<div class="invallid-url-error"><p class="error-title">Tree not found</p> <p class="error-text error-text-first">Please scan the QR code on the tree or ball agian</p><p  class="error-text">Or make sure you typed the URL correctly </p></div>`
+    const errorInnerHtml = `<div class="invallid-url-error"><p class="error-title">${errorTitle}</p> ${errorHtml}</div>`
     document.querySelector(`.error-screen`).style.display= "flex"
-    document.querySelector(`.error-screen`).innerHTML = errorHtml;
+    document.querySelector(`.error-screen`).innerHTML = errorInnerHtml;
     document.querySelector(`.logged-off`).style.display = "none"
     document.querySelector(`.logged-in`).style.display = "none"
 }
@@ -691,6 +691,7 @@ const updateFirebaseData = () =>{
             })
     document.querySelector(`.user-list`).innerHTML = list
 });
+    
 }
 
 const handleClickUserMute = (e) => {
@@ -703,12 +704,9 @@ const handleClickUserMute = (e) => {
     .catch((error)=>{
         console.log(error)
     })
-    
-
 }
 
 const handleFocusOutUserList = (e) => {
-
 
    if (e.target.id === "name"){
         update(ref(db, params.get('tree-id') + "/users/" + [0] ),{
@@ -734,7 +732,6 @@ const handleFocusOutUserList = (e) => {
             console.log(error)
         })
         } else {
-            console.log("code moet 4 nummers hebben")
             e.target.value = treeInfo.users[0].code
             alert("Tree code has to have 4 nummeric digits")
         }
@@ -814,9 +811,6 @@ const init = () =>{
     // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
     checkUrl();
 
-    //update data on value change from firebase realtime db
-    updateFirebaseData()
-
     // message versturen
     $sendMessageButton.addEventListener('click', handleClickSendMessage);
 
@@ -833,27 +827,32 @@ const init = () =>{
 
     handleDrawingCanvas();
 
-    // user muten
-     document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
+    //only when the owner is logged in 
+    if (userStatus === "owner logged in"){
 
-    // update user name and code when focus out
-    document.querySelector(`.user-list`).addEventListener(`focusout`, handleFocusOutUserList)
+        //update data on value change from firebase realtime db
+        updateFirebaseData()
 
-    // show input owner name on click
-    document.querySelector(`.owner-dashbord`).addEventListener(`click`, handleClickShowInput)
+        // mute user so he can't send messages anymore
+        document.querySelector(`.user-list`).addEventListener(`click`, handleClickUserMute)
+
+        // update user name and code when focus out
+        document.querySelector(`.user-list`).addEventListener(`focusout`, handleFocusOutUserList)
 
         // show input owner name on click
-    document.querySelector(`.button-owner-name`).addEventListener(`click`, handleClickUpdateButton)
+        document.querySelector(`.owner-dashbord`).addEventListener(`click`, handleClickShowInput)
 
-    document.querySelectorAll(`.toggle-input`).forEach((toggle)=>{
-        toggle.addEventListener(`change`, handleChangeToggle)
-    })
+        // show input owner name on click
+        document.querySelector(`.button-owner-name`).addEventListener(`click`, handleClickUpdateButton)
 
-  
+        document.querySelectorAll(`.toggle-input`).forEach((toggle)=>{
+            toggle.addEventListener(`change`, handleChangeToggle)
+        })
+
+    }
 
     // developer en testing functies
     developerAndTestingFunctions();
- 
 }
 
 init()
