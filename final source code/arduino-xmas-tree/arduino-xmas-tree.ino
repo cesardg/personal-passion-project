@@ -1,6 +1,5 @@
 
 #include <Firebase_Arduino_WiFiNINA.h>
-#include <Wire.h>
 #include <Adafruit_DotStar.h>
 #include <SPI.h>
 #include <Arduino_LSM6DS3.h> 
