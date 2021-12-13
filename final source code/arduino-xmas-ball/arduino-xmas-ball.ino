@@ -1,7 +1,9 @@
 
 #include <Firebase_Arduino_WiFiNINA.h>
 #include <Arduino_LSM6DS3.h> 
-  
+#include <WiFiNINA.h> 
+#include <utility/wifi_drv.h>
+ 
 // Firebase 
 #define FIREBASE_HOST "arduino-wi-fi-xmas-tree-db-default-rtdb.europe-west1.firebasedatabase.app"
 #define FIREBASE_AUTH "WCkUg3iFB4NRbBHg2IXc0bsosgHo5kM5bXmUvZie"
@@ -17,6 +19,10 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
+  //show blue light
+  WiFiDrv::pinMode(27, OUTPUT); 
+  WiFiDrv::analogWrite(27, 128); 
+  
   Serial.print("Connecting to WiFi…");
 // wifi connecting...
   int status = WL_IDLE_STATUS;
@@ -28,7 +34,11 @@ void setup() {
     delay(300);
   }
 
-  // wifi is connected
+  // wifi is connected, show green light
+  WiFiDrv::pinMode(26, OUTPUT);  //GREEN
+  WiFiDrv::analogWrite(27, LOW); 
+  WiFiDrv::analogWrite(26, 128); 
+  
   Serial.print(" IP: ");
   Serial.println(WiFi.localIP());
   Serial.println();
@@ -47,8 +57,7 @@ void setup() {
 }
  
 void loop() {
-
-detectShakeBall();
+  detectShakeBall();
 }
 
 void detectShakeBall(){
@@ -61,14 +70,21 @@ void detectShakeBall(){
       //if change in tilt is detected, send to db
       Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", true);
 
+      //show red light as feedback
+      WiFiDrv::pinMode(25, OUTPUT);  //GREEN
+      WiFiDrv::analogWrite(26, LOW); 
+      WiFiDrv::analogWrite(25, 128); 
+
       // for now, reset it after 5s
       delay(5000);
 
       Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", false);
+
+      // show green light again
+      WiFiDrv::pinMode(26, OUTPUT);  
+      WiFiDrv::analogWrite(25, LOW); 
+      WiFiDrv::analogWrite(26, 128); 
     } 
   }
   delay(500);
 }
-
-
- 
