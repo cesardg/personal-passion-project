@@ -168,6 +168,7 @@ void loop() {
     if (stream.dataType() == "null")
       count = 0;
     mode = stream.stringData();
+    Serial.println(mode);
   }
 
   if (mode == "message"){
@@ -178,9 +179,15 @@ void loop() {
   }
 
 
-  if (mode == "drawing"){
+  if (mode == "drawing" || mode =="live-drawing"){
      showDrawing();
   }
+
+
+   if (mode == "motion"){
+     mapMotionInLeds();
+  }
+
 
 // only works in idle mode to save computational power for other tasks. 
   if (mode == "idle"){
@@ -244,66 +251,34 @@ void detectCatAttack(){
 // shows drawing in leds
 void showDrawing(){
 
-    String strsLed[100];
-    int StringCountLed = 0;
-    String strsColor[100];
-    int StringCountColor = 0;
 
+     
+     if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
+          String str2 = {firebaseData.stringData()};
+          Serial.println(str2);
 
-    if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyIndex/")) { 
-        Serial.println("huh");
-          String str1 = {firebaseData.stringData()};
-
-                     // Split the string into substrings
-            while (str1.length() > 0)
-            {
-              int index = str1.indexOf(' ');
-              if (index == -1) // No space found
-              {
-                strsLed[StringCountLed++] = str1;
-                break;
-              }
-              else
-              {
-                strsLed[StringCountLed++] = str1.substring(0, index);
-                str1 = str1.substring(index+1);
-              }
-            }
-          
-      delay(20);
-
-         
+            
+          if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyIndex/")) { 
+                String str1 = {firebaseData.stringData()};
+                Serial.println(str1);
+           }
      }
 
-    if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
-          String str = {firebaseData.stringData()};
-                Serial.println("huh2");
-
-            while (str.length() > 0)
-            {
-              int index = str.indexOf(' ');
-              if (index == -1) // No space found
-              {
-                strsColor[StringCountColor++] = str;
-                break;
-              }
-              else
-              {
-                strsColor[StringCountColor++] = str.substring(0, index);
-                str = str.substring(index+1);
-              }
-            }
-          
-      delay(20);
-     }
-
-      Serial.println(strsLed[0]);
-       Serial.println(strsColor[0]);
-       
+    if(mode == "drawing"){
       delay(3000);
-    Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
+      Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
+    }
+   
     
    
+}
+
+
+void mapMotionInLeds(){
+     if (Firebase.getString(firebaseData, treeId + "/motion/litLightsOnlyIndex/")) { 
+          String str = {firebaseData.stringData()};
+          Serial.println(str);
+     }  
 }
 
  // when new message is detected

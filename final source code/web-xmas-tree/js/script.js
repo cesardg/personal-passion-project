@@ -844,7 +844,7 @@ const detectMotionPoses = () => {
         lightUpPreview()
         console.log(litLightsOnlyIndex)
         const motionObj = { litLightsIndex: litLightsOnlyIndex,
-            lightsIndexString: litLightsOnlyIndex.join("-"),
+            litLightsOnlyIndex: litLightsOnlyIndex.join("-"),
         }
         update(ref(db, params.get('tree-id') ),{
             motion: motionObj
