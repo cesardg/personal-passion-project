@@ -11,10 +11,8 @@
 #define WIFI_PASSWORD "not so safe 123"
 
 String treeId = "/Rudolph-A3EpYEF7zU";
-int count = 0;
 
 FirebaseData firebaseData;
-FirebaseData stream;
  
 void setup() {
 
@@ -56,39 +54,10 @@ void setup() {
     while (1);
   }
 
-
-  if (Firebase.beginStream(stream, treeId + "/mode/" )){
-   Serial.println("test1");
- }
 }
  
 void loop() {
   detectShakeBall();
-
- if (!Firebase.readStream(stream))
-  {
-    Serial.println("Can't read stream, "+ stream.errorReason());
-  }
-
-  if (stream.streamTimeout())
-  {
-    Serial.println("Stream timed out, resuming...");
-  }
-
-  if (stream.streamAvailable())
-  {
-    count++;
-    if (stream.dataType() == "null")
-      count = 0;
-
-    Serial.println("Stream data received... ");
-    Serial.println(stream.stringData());
-    showDrawing();
-  }
-
-
-
-  
 }
 
 void detectShakeBall(){
@@ -96,12 +65,10 @@ void detectShakeBall(){
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
     
-    if (abs(x) > 30 || abs(y) > 30 || abs(z) > 30){
+    if (abs(x) > 70 || abs(y) > 70 || abs(z) > 70){
 
       //if change in tilt is detected, send to db
       Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", true);
-      Firebase.setTimestamp(firebaseData, treeId + "/users/0/time/");
-      
 
       //show red light as feedback
       WiFiDrv::pinMode(25, OUTPUT);
@@ -120,17 +87,4 @@ void detectShakeBall(){
     } 
   }
   delay(500);
-}
-
-
-void showDrawing(){
-
-  // Somehow you can only fetch 25 items max from an array
-    Serial.println("showdrawing");
-    if (Firebase.getArray(firebaseData, treeId + "/lights")) { 
-          Serial.println("begin");
-          Serial.println(firebaseData.arrayData());
-          Serial.println("einde");
-  }
-  delay(5000);
 }

@@ -29,13 +29,14 @@ String mode;
 int pirInputPin = 2;               
 int pirState = LOW;    
 int pirVal = 0;  
+int count = 0;
 
 bool attackedByCat = false;
 
 float previousHum;    
 float previousTemp;   
 
-int alfabed[][100]= {
+int alfabed[][90]= {
 /* A */ {242, 241, 224, 225, 226, 227, 228, 202, 203, 240, 243, 223, 221, 222, 207, 208, 209, 210, 211, 179, 180, 181, 165, 166, 167, 131, 132, 133, 134, 164, 163, 135, 136, 162, 161, 160, 159, 158, 157, 156, 190, 200, 201, 204, 188, 189, 141, 142, 140, 139, 138, 137, 106, 104, 105, 85, 86, 113, 114, 115, 75, 76, 77, 53, 54, 55, 84, 46, 45, 44}, 
 /* B */ {246, 220, 221, 245, 244, 243, 223, 222, 224, 242, 241, 225, 226, 227, 240, 239, 238, 237, 228, 229, 230, 231, 199, 200, 201, 189, 190, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 181, 209, 210, 180, 182, 208, 183, 184, 185, 186, 187, 188, 143, 142, 141, 105, 104, 103, 87, 86, 85, 45, 84, 46, 83, 47, 48, 82, 166, 132, 133, 134, 112, 113, 114, 76, 77, 78, 79, 80, 81, 49, 50, 51, 52, 53, 54},
 /* C */ {238, 239, 227, 228, 229, 230, 200, 201, 202, 240, 241, 242, 243, 244, 222, 223, 224, 225, 226, 221, 220, 219, 211, 210, 209, 181, 180, 179, 167, 166, 165, 133, 132, 131, 115, 114, 113, 77, 76, 75, 78, 79, 80, 81, 82, 83, 84, 85, 86, 104, 105, 106, 46, 47, 48, 49, 50, 51, 52, 53},
@@ -64,7 +65,7 @@ int alfabed[][100]= {
 /* Z */ {247, 246, 245, 244, 243, 242, 241, 240, 239, 238, 237, 236, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 204, 203, 202, 184, 185, 186, 164, 163, 162, 133, 134, 135, 114, 113, 112, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44},
 };
 
-int numbers[][100]= {
+int numbers[][90]= {
  /* 0 */ {244, 243, 242, 241, 240, 239, 221, 222, 223, 224, 225, 226, 227, 228, 211, 210, 209, 202, 201, 200, 179, 180, 181, 188, 189, 190, 167, 166, 165, 158, 157, 156, 131, 132, 133, 140, 141, 142, 115, 114, 113, 106, 105, 104, 77, 78, 79, 80, 81, 82, 83, 84, 52, 51, 50, 49, 48, 47, 184, 185, 162, 161, 136, 137}, 
  /* 1 */ {241, 240, 239, 223, 224, 225, 226, 227, 209, 208, 207, 206, 205, 204, 203, 179, 180, 181, 182, 185, 186, 187, 167, 166, 165, 161, 160, 159, 137, 138, 139, 109, 108, 107, 81, 82, 83, 49, 48, 47},
  /* 2 */ {244, 243, 242, 241, 240, 239, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 211, 210, 209, 202, 201, 200, 188, 189, 187, 179, 180, 181, 162, 161, 160, 159, 135, 136, 137, 138, 113, 112, 111, 110, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45},
@@ -77,7 +78,7 @@ int numbers[][100]= {
  /* 9 */ {244, 243, 242, 241, 240, 239, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 211, 210, 209, 203, 202, 201, 179, 180, 181, 187, 188, 189, 166, 165, 164, 163, 162, 161, 160, 159, 158, 157, 139, 140, 141, 107, 106, 105, 83, 84, 115, 114, 75, 76, 77, 78, 79, 80, 81, 82, 53, 52, 51, 50, 49, 48}
  };
 
- int specialChars[][100]= {
+ int specialChars[][50]= {
  /* ? */ {244, 243, 242, 241, 240, 239, 221, 222, 223, 226, 227, 228, 210, 209, 208, 203, 202, 201, 187, 188, 189, 160, 159, 161, 136, 137, 138, 80, 81, 82, 50, 49, 48, 224, 225}, 
  /* ! */ {242, 241, 240, 243, 223, 224, 225, 226, 207, 206, 205, 204, 183, 184, 185, 186, 163, 162, 161, 160, 135, 136, 137, 138, 51, 50, 49, 48, 79, 80, 81, 82},
  /* - */ {166, 165, 164, 163, 162, 161, 160, 159, 158, 157, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141}
@@ -85,6 +86,7 @@ int numbers[][100]= {
 
 
 FirebaseData firebaseData;
+FirebaseData stream;
 DHT dht(DHTPIN, DHTTYPE);
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BGR);
 Servo servo1; 
@@ -120,7 +122,12 @@ void setup() {
   Firebase.reconnectWiFi(true);
 
 
+  // subscribe on message mode (simular to onvalue change)
+  if (Firebase.beginStream(stream, treeId + "/mode/" )){
+   Serial.println("suscribed on mode");
+ }
 
+ 
   if (Firebase.getString(firebaseData, treeId + "/message/")) { 
     previousMessage = firebaseData.stringData();
   }
@@ -153,9 +160,12 @@ void setup() {
 void loop() {
 
 
-
-  if (Firebase.getString(firebaseData, treeId + "/mode/")) { 
-    mode = firebaseData.stringData();
+  if (stream.streamAvailable())
+  {
+    count++;
+    if (stream.dataType() == "null")
+      count = 0;
+    mode = stream.stringData();
   }
 
   if (mode == "message"){
@@ -188,7 +198,6 @@ void detectIntruder (){
     }
   } else {
     if (pirState == HIGH){
-      Firebase.setBool(firebaseData, treeId  + "/intruderDetection/detected/", false);
       pirState = LOW;
     }
   }
@@ -224,7 +233,6 @@ void detectCatAttack(){
       // for now, reset it after 5s
       delay(5000);
       attackedByCat = false;
-      Firebase.setBool(firebaseData, treeId  + "/catAttackDetection/detected/", attackedByCat);
     } else {
       attackedByCat = false;
     }
@@ -234,14 +242,48 @@ void detectCatAttack(){
 // shows drawing in leds
 void showDrawing(){
 
-  // Somehow you can only fetch 25 items max from an array
+    const char s[2] = "-";
+  
     Serial.println("showdrawing");
-    if (Firebase.getArray(firebaseData, treeId + "/lights")) { 
-          Serial.println("begin");
-          Serial.println(firebaseData.arrayData());
-          Serial.println("einde");
-  }
+    if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyIndex/")) { 
+          String index = {firebaseData.stringData()};
+          char arrIndex[index.length() + 1]; 
+              for (int x = 0; x < sizeof(arrIndex); x++) { 
+                  arrIndex[x] = index[x]; 
+              } 
+          
+             char *tokenIndex;
+             tokenIndex = strtok(arrIndex, s);
+             while( tokenIndex != NULL ) {
+                 int led = atoi(tokenIndex);
+                 Serial.println(led);
+                tokenIndex = strtok(NULL, s);
+              }
+             
+
+           if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
+              String color = {firebaseData.stringData()};
+              char arrColor[color.length() + 1]; 
+                for (int y = 0; y < sizeof(arrColor); y++) { 
+                    arrColor[y] = color[y]; 
+                }
+               char *tokenColor;
+               tokenColor = strtok(arrColor, s);
+               while( tokenColor != NULL ) {
+                   Serial.println(tokenColor);
+                  tokenColor = strtok(NULL, s);
+                }      
+            
+            }
+       }
+
+  
+  if (mode == "drawing"){
   delay(5000);
+
+  //set mode back to idle
+  Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
+  }
 }
 
  // when new message is detected
@@ -286,7 +328,7 @@ void listeningForMessages(){
         
       //loop over alfabed
       
-        for (int j =0; j < 100; j++) {
+        for (int j =0; j < 90; j++) {
           if (alfabed[index- 65][j] != 0 && alfabed[index- 65][j] > 0 && alfabed[index- 65][j] < 300 ){
           //strip.setPixelColor(alfabed[index- 65][j], 0x00FF00);
           Serial.print(alfabed[index- 65][j]);
@@ -297,7 +339,7 @@ void listeningForMessages(){
       } else if (index == 63){
        
          //loop over special chars (?!-)
-         for (int j =0; j < 100; j++) {
+         for (int j =0; j < 50; j++) {
           if (specialChars[0][j] != 0 && specialChars[0][j] > 0 && specialChars[0][j] < 300 ){
           //strip.setPixelColor(specialChars[0][j], 0x00FF00);
           Serial.print(specialChars[0][j]);
@@ -309,7 +351,7 @@ void listeningForMessages(){
       }  else if (index == 33){
        
          //loop over special chars (?!-)
-         for (int j =0; j < 100; j++) {
+         for (int j =0; j < 50; j++) {
           if (specialChars[1][j] != 0 && specialChars[1][j] > 0 && specialChars[1][j] < 300 ){
           //strip.setPixelColor(specialChars[1][j], 0x00FF00);
           Serial.print(specialChars[1][j]);
@@ -321,7 +363,7 @@ void listeningForMessages(){
       }else if (index == 45 || index == 32){
        
          //loop over special chars (?!-)
-         for (int j =0; j < 100; j++) {
+         for (int j =0; j < 50; j++) {
           if (specialChars[2][j] != 0 && specialChars[2][j] > 0 && specialChars[2][j] < 300 ){
           //strip.setPixelColor(specialChars[2][j], 0x00FF00);
           Serial.print(specialChars[2][j]);
@@ -333,7 +375,7 @@ void listeningForMessages(){
         
              //loop over number
 
-         for (int j =0; j < 100; j++) {
+         for (int j =0; j < 90; j++) {
           if (numbers[index- 48][j] != 0 && numbers[index- 48][j] > 0 && numbers[index- 48][j] < 300 ){
           //strip.setPixelColor(numbers[index- 48][j], 0x00FF00);
           Serial.print(numbers[index- 48][j]);
