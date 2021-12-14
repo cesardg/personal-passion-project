@@ -159,6 +159,8 @@ void setup() {
  
 void loop() {
 
+ if (!Firebase.readStream(stream)){Serial.println("Can't read stream, "+ stream.errorReason());}
+ if (stream.streamTimeout()){Serial.println("Stream timed out, resuming..."); }
 
   if (stream.streamAvailable())
   {
@@ -242,48 +244,66 @@ void detectCatAttack(){
 // shows drawing in leds
 void showDrawing(){
 
-    const char s[2] = "-";
-  
-    Serial.println("showdrawing");
+    String strsLed[100];
+    int StringCountLed = 0;
+    String strsColor[100];
+    int StringCountColor = 0;
+
+
     if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyIndex/")) { 
-          String index = {firebaseData.stringData()};
-          char arrIndex[index.length() + 1]; 
-              for (int x = 0; x < sizeof(arrIndex); x++) { 
-                  arrIndex[x] = index[x]; 
-              } 
-          
-             char *tokenIndex;
-             tokenIndex = strtok(arrIndex, s);
-             while( tokenIndex != NULL ) {
-                 int led = atoi(tokenIndex);
-                 Serial.println(led);
-                tokenIndex = strtok(NULL, s);
+        Serial.println("huh");
+          String str1 = {firebaseData.stringData()};
+
+                     // Split the string into substrings
+            while (str1.length() > 0)
+            {
+              int index = str1.indexOf(' ');
+              if (index == -1) // No space found
+              {
+                strsLed[StringCountLed++] = str1;
+                break;
               }
-             
-
-           if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
-              String color = {firebaseData.stringData()};
-              char arrColor[color.length() + 1]; 
-                for (int y = 0; y < sizeof(arrColor); y++) { 
-                    arrColor[y] = color[y]; 
-                }
-               char *tokenColor;
-               tokenColor = strtok(arrColor, s);
-               while( tokenColor != NULL ) {
-                   Serial.println(tokenColor);
-                  tokenColor = strtok(NULL, s);
-                }      
-            
+              else
+              {
+                strsLed[StringCountLed++] = str1.substring(0, index);
+                str1 = str1.substring(index+1);
+              }
             }
-       }
+          
+      delay(20);
 
-  
-  if (mode == "drawing"){
-  delay(5000);
+         
+     }
 
-  //set mode back to idle
-  Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
-  }
+    if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
+          String str = {firebaseData.stringData()};
+                Serial.println("huh2");
+
+            while (str.length() > 0)
+            {
+              int index = str.indexOf(' ');
+              if (index == -1) // No space found
+              {
+                strsColor[StringCountColor++] = str;
+                break;
+              }
+              else
+              {
+                strsColor[StringCountColor++] = str.substring(0, index);
+                str = str.substring(index+1);
+              }
+            }
+          
+      delay(20);
+     }
+
+      Serial.println(strsLed[0]);
+       Serial.println(strsColor[0]);
+       
+      delay(3000);
+    Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
+    
+   
 }
 
  // when new message is detected

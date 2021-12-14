@@ -629,14 +629,11 @@ const handleClickSendDrawing = (e) => {
 
     if (litLights.length != 0){
     const drawingObj = {
-            onOfIndex : "01020101010201",
-            litLightsOnlyIndex : litLightsOnlyIndex.join("-"),
-            litLightsOnlyColor : litLightsOnlyColor.join("-")
+            litLightsOnlyIndex : litLightsOnlyIndex.join(" "),
+            litLightsOnlyColor : litLightsOnlyColor.join(" ")
     }
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
-        lights: litLights,
-        lightsString: twoDimArrToStr(),
         drawing: drawingObj
     })
     .then(()=>{
