@@ -628,10 +628,16 @@ const handleClickSendDrawing = (e) => {
     if (e) e.preventDefault();
 
     if (litLights.length != 0){
+    const drawingObj = {
+            onOfIndex : "01020101010201",
+            litLightsOnlyIndex : litLightsOnlyIndex,
+            litLightsOnlyColor : litLightsOnlyColor
+    }
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
         lights: litLights,
-        lightsString: twoDimArrToStr()
+        lightsString: twoDimArrToStr(),
+        drawing: drawingObj
     })
     .then(()=>{
         console.log("update send drawing done")
@@ -840,9 +846,11 @@ const detectMotionPoses = () => {
         clearPreview()
         lightUpPreview()
         console.log(litLightsOnlyIndex)
+        const motionObj = { litLightsIndex: litLightsOnlyIndex,
+            lightsIndexString: litLightsOnlyIndex.join("-"),
+        }
         update(ref(db, params.get('tree-id') ),{
-            litLightsIndex: litLightsOnlyIndex,
-            lightsIndexString: litLightsOnlyIndex.join("-")
+            motion: motionObj
         })
 
 

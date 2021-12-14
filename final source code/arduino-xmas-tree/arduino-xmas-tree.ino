@@ -218,7 +218,8 @@ void detectCatAttack(){
 
       //if change in tilt is detected, send to db
       attackedByCat = true;
-      Firebase.setBool(firebaseData, treeId  + "/catAttackDetection/detected/", attackedByCat);
+      Firebase.setBool(firebaseData, treeId + "/catAttackDetection/detected/", attackedByCat);
+      Firebase.setTimestamp(firebaseData, treeId + "/catAttackDetection/time/");
 
       // for now, reset it after 5s
       delay(5000);
