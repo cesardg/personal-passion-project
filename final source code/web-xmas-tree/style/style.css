@@ -19,8 +19,9 @@ html, body{
 .container, .logged-in, .logged-off{
     height: 100vh;
     display: flex;
-     font-family: houschka-rounded, sans-serif;
+    font-family: houschka-rounded, sans-serif;
     font-weight: 500;
+    background-color: var(--blue);
     font-style: normal;
     width: 100%;
     color: var(--black);
@@ -192,7 +193,7 @@ html, body{
     color: var(--red);
 }
 
-.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas{
+.section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas, .section-preview{
     display: none;
 }
  

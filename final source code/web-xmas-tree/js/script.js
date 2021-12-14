@@ -139,7 +139,7 @@ let litLightsOnlyIndex = [];
 const handleClickSendMessage = (e) => {
     const $errorMessage = document.querySelector(`.error-message`);
     const $succesMessage = document.querySelector(`.succes-message`);
-    const alowedChars = /^[a-zA-Z\s\\?\\!\\0-9\\-]*$/
+    const alowedChars = /^[a-zA-Z\s\\?\\!\\-]*$/
 
     e.preventDefault();
 
@@ -879,7 +879,7 @@ const developerAndTestingFunctions = () => {
     document.querySelector(`.tree-id`).textContent = params.get('tree-id')
         if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
-           ledContainer.addEventListener('mouseover', handleHoverOverLed)
+           //ledContainer.addEventListener('mouseover', handleHoverOverLed)
         })
     }
 }

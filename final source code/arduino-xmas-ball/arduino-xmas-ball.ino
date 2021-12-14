@@ -68,7 +68,7 @@ void detectShakeBall(){
     if (abs(x) > 70 || abs(y) > 70 || abs(z) > 70){
 
       //if change in tilt is detected, send to db
-      Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", true);
+      Firebase.setString(firebaseData, treeId  + "/mode/", "ball-shake" );
 
       //show red light as feedback
       WiFiDrv::pinMode(25, OUTPUT);
@@ -77,9 +77,6 @@ void detectShakeBall(){
 
       // for now, reset it after 5s
       delay(5000);
-
-      Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", false);
-
       // show green light again
       WiFiDrv::pinMode(26, OUTPUT);  
       WiFiDrv::analogWrite(25, LOW); 
