@@ -11,8 +11,10 @@
 #define WIFI_PASSWORD "not so safe 123"
 
 String treeId = "/Rudolph-A3EpYEF7zU";
+int count = 0;
 
 FirebaseData firebaseData;
+FirebaseData stream;
  
 void setup() {
 
@@ -54,72 +56,39 @@ void setup() {
     while (1);
   }
 
+
+  if (Firebase.beginStream(stream, treeId + "/mode/" )){
+   Serial.println("test1");
+ }
 }
  
 void loop() {
   detectShakeBall();
+
+ if (!Firebase.readStream(stream))
+  {
+    Serial.println("Can't read stream, "+ stream.errorReason());
+  }
+
+  if (stream.streamTimeout())
+  {
+    Serial.println("Stream timed out, resuming...");
+  }
+
+  if (stream.streamAvailable())
+  {
+    count++;
+    if (stream.dataType() == "null")
+      count = 0;
+
+    Serial.println("Stream data received... ");
+    Serial.println(stream.stringData());
+    showDrawing();
+  }
+
+
+
   
-  if (Firebase.getString(firebaseData, treeId + "/lightsIndexString/")) { 
-    String str = firebaseData.stringData();
-    char arr[str.length() + 1]; 
-    for (int x = 0; x < sizeof(arr); x++) { 
-        arr[x] = str[x]; 
-    } 
-   //Serial.println(arr);
-
-   const char s[2] = "-";
-   char *token;
-   
-   token = strtok(arr, s);
-   
-   while( token != NULL ) {
-       int led = atoi(token);
-       //Serial.println(led);
-      token = strtok(NULL, s);
-    }
-   }
-
-
-
-  if (Firebase.getString(firebaseData, treeId + "/lightsString/")) { 
-    String newstr = firebaseData.stringData();
-    Serial.print(newstr);
-    char newarr[newstr.length() + 1]; 
-    for (int x = 0; x < sizeof(newarr); x++) { 
-        newarr[x] = newstr[x]; 
-    } 
-   const char news[2] = ",";
-   char *newtoken;
-   
-   newtoken = strtok(newarr, news);
-
-   for (int i = 0; i <= 25; i++) {
-     // Serial.print("begin");
-   // Serial.print(newtoken[i]);
-        //  Serial.print("einde");
-  };
-   
-   while( newtoken != NULL ) {
-      Serial.println(newtoken);
-      newtoken = strtok(NULL, news);
-      
-
-/*
-   const char newnews[2] = "-";
-   char *newnewtoken;
-   
-   newnewtoken = strtok(newtoken, newnews);
-   while( newnewtoken != NULL ) {
-  
-      Serial.println("begin");
-      Serial.println(newnewtoken);
-      Serial.println("einde");
-      newnewtoken = strtok(NULL, newnews);
-   }
-   */
-    }
-   }
- 
 }
 
 void detectShakeBall(){
@@ -131,6 +100,8 @@ void detectShakeBall(){
 
       //if change in tilt is detected, send to db
       Firebase.setBool(firebaseData, treeId  + "/users/0/ballIsShaked/", true);
+      Firebase.setTimestamp(firebaseData, treeId + "/users/0/time/");
+      
 
       //show red light as feedback
       WiFiDrv::pinMode(25, OUTPUT);
@@ -149,4 +120,17 @@ void detectShakeBall(){
     } 
   }
   delay(500);
+}
+
+
+void showDrawing(){
+
+  // Somehow you can only fetch 25 items max from an array
+    Serial.println("showdrawing");
+    if (Firebase.getArray(firebaseData, treeId + "/lights")) { 
+          Serial.println("begin");
+          Serial.println(firebaseData.arrayData());
+          Serial.println("einde");
+  }
+  delay(5000);
 }
