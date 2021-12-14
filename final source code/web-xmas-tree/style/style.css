@@ -23,7 +23,6 @@ html, body{
     font-weight: 500;
     font-style: normal;
     width: 100%;
-    background-color: var(--blue);
     color: var(--black);
 }
 
@@ -125,8 +124,8 @@ html, body{
 .font{
     position: absolute;
     z-index: -1;
-    display: none;
-    transform: scale(6.5) translate(56rem, 26rem);
+    transform-origin: center;
+    transform: scale(4.5) translate(15.9rem, -18rem)
 }
 
 .copy-array{

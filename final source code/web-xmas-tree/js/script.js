@@ -879,7 +879,7 @@ const developerAndTestingFunctions = () => {
     document.querySelector(`.tree-id`).textContent = params.get('tree-id')
         if ($ledContainers){
         $ledContainers.forEach((ledContainer)=>{
-           // ledContainer.addEventListener('mouseover', handleHoverOverLed)
+           ledContainer.addEventListener('mouseover', handleHoverOverLed)
         })
     }
 }
