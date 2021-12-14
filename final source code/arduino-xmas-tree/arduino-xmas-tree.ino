@@ -1,7 +1,6 @@
 
 #include <Firebase_Arduino_WiFiNINA.h>
 #include <Adafruit_DotStar.h>
-#include <SPI.h>
 #include <Arduino_LSM6DS3.h> 
 #include <DHT.h> 
 #include <Servo.h>       
@@ -127,7 +126,9 @@ int heartAnimation[][90] = {
 };
 
 int wifiAnimation[][90] = {
-  {12, 13, 20, 21}
+{48, 49, 50, 51, 81, 16, 17, 18, 47, 82, 79, 52, 80, 15},
+{48, 49, 50, 51, 81, 16, 17, 18, 47, 82, 79, 52, 80, 15, 140, 139, 134, 114, 115, 116, 130, 131, 133, 132, 166, 165, 163, 162, 161, 160, 159, 184, 185, 158, 157, 141, 103, 105, 143, 142, 186, 183, 164, 104},
+{48, 49, 50, 51, 81, 16, 17, 18, 47, 82, 79, 52, 80, 15, 140, 139, 134, 114, 115, 116, 130, 131, 133, 132, 166, 165, 163, 162, 161, 160, 159, 184, 185, 158, 157, 141, 103, 105, 143, 142, 186, 183, 164, 104, 174, 171, 177, 176, 175, 214, 213, 227, 226, 223, 218, 222, 220, 219, 221, 212, 211, 210, 224, 225, 201, 200, 192, 198, 197, 193, 195, 194, 152, 199, 231, 228, 229, 230, 243, 242, 241, 240, 239, 244}
 };
 
 
@@ -229,6 +230,10 @@ void loop() {
 
    if (mode == "motion"){
      mapMotionInLeds();
+  }
+
+  if (mode == "ball-shake"){
+     handleBallShakeAnimation();
   }
 
 
@@ -452,6 +457,15 @@ void listeningForMessages(){
     servo1.write(170);
     delay(1000);
     servo1.write(10);
+ }
+
+ void handleBallShakeAnimation() {
+  for (int i =0; i < 35; i++){
+     for (int j =0; j < 90; j++){
+          Serial.print(heartAnimation[i][j]);
+          Serial.print("-");
+      }
+  }
  }
 
  void showLedPatternFullGreen () {

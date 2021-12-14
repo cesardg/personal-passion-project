@@ -102,7 +102,7 @@ html, body{
     justify-content: center;
     height: 3rem;
     width: 3rem;
-    margin: 4rem 1rem;
+    margin: 3rem 1rem;
     border-radius: 50%;
 }
 
@@ -125,7 +125,7 @@ html, body{
     position: absolute;
     z-index: -1;
     transform-origin: center;
-    transform: scale(4.5) translate(15.9rem, -18rem)
+    transform: scale(3) translate(18.9rem, -19rem);
 }
 
 .copy-array{
