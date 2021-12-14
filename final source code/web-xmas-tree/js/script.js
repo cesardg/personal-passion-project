@@ -630,7 +630,7 @@ const handleClickSendDrawing = (e) => {
     if (litLights.length != 0){
     const drawingObj = {
             litLightsOnlyIndex : litLightsOnlyIndex.join(" "),
-            litLightsOnlyColor : litLightsOnlyColor.join(" ")
+            litLightsOnlyColor : removeHashFromColor()
     }
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
@@ -843,7 +843,7 @@ const detectMotionPoses = () => {
         clearPreview()
         lightUpPreview()
         console.log(litLightsOnlyIndex)
-        const motionObj = { litLightsIndex: litLightsOnlyIndex,
+        const motionObj = {
             litLightsOnlyIndex: litLightsOnlyIndex.join("-"),
         }
         update(ref(db, params.get('tree-id') ),{
@@ -862,6 +862,15 @@ const detectMotionPoses = () => {
 }, 200);
 }
 
+
+const removeHashFromColor = () => {
+    let tempArr = []
+    litLightsOnlyColor.forEach((color) => {
+        tempArr.push((color.substring(1)).toUpperCase());
+    })
+
+    return tempArr.join(" ");
+}
 
 const developerAndTestingFunctions = () => {
     //addHTMLandCSS();

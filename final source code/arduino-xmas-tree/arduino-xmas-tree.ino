@@ -24,7 +24,7 @@
 String treeId = "/Rudolph-A3EpYEF7zU";
 String jsonStr;
 String previousMessage;
-String mode;
+String mode = "idle";
 
 int pirInputPin = 2;               
 int pirState = LOW;    
@@ -160,7 +160,7 @@ void setup() {
 void loop() {
 
  if (!Firebase.readStream(stream)){Serial.println("Can't read stream, "+ stream.errorReason());}
- if (stream.streamTimeout()){Serial.println("Stream timed out, resuming..."); }
+ //if (stream.streamTimeout()){Serial.println("Stream timed out, resuming..."); }
 
   if (stream.streamAvailable())
   {
@@ -173,9 +173,6 @@ void loop() {
 
   if (mode == "message"){
      listeningForMessages();
-
-     //and back to normal;
-     //showLedPatternFullGreen();
   }
 
 
@@ -191,6 +188,7 @@ void loop() {
 
 // only works in idle mode to save computational power for other tasks. 
   if (mode == "idle"){
+     //showLedPatternFullGreen();
       detectCatAttack();
       detectIntruder();
       getTemperature();
@@ -251,13 +249,10 @@ void detectCatAttack(){
 // shows drawing in leds
 void showDrawing(){
 
-
-     
-     if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
+      if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyColor/")) { 
           String str2 = {firebaseData.stringData()};
           Serial.println(str2);
-
-            
+       
           if (Firebase.getString(firebaseData, treeId + "/drawing/litLightsOnlyIndex/")) { 
                 String str1 = {firebaseData.stringData()};
                 Serial.println(str1);
@@ -267,18 +262,35 @@ void showDrawing(){
     if(mode == "drawing"){
       delay(3000);
       Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
-    }
-   
-    
-   
+    } 
 }
 
-
 void mapMotionInLeds(){
+  String strs[20];
+  int StringCount = 0;
+
+     delay(50);
      if (Firebase.getString(firebaseData, treeId + "/motion/litLightsOnlyIndex/")) { 
           String str = {firebaseData.stringData()};
-          Serial.println(str);
+
+
+         while (str.length() > 0){
+          int index = str.indexOf(' ');
+          if (index == -1) {
+              strs[StringCount++] = str;
+              break;
+          }else{
+              strs[StringCount++] = str.substring(0, index);
+              str = str.substring(index+1);
+            }
+          }
      }  
+      delay(50);
+
+        for (int i = 0; i < StringCount; i++){
+          Serial.println(strs[i]);
+         }
+      
 }
 
  // when new message is detected
@@ -397,6 +409,9 @@ void listeningForMessages(){
  }
 
  void showLedPatternFullGreen () {
+  delay(100);
+  strip.clear();
+  delay(100);
   strip.fill(0x00FF00, 0, 300);
   strip.setBrightness(40);
   strip.show();
