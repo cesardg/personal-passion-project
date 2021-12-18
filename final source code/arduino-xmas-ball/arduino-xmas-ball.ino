@@ -65,7 +65,7 @@ void detectShakeBall(){
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
     
-    if (abs(x) > 70 || abs(y) > 70 || abs(z) > 70){
+    if (abs(x) > 50 || abs(y) > 50 || abs(z) > 50){
 
       //if change in tilt is detected, send to db
       Firebase.setString(firebaseData, treeId  + "/mode/", "ball-shake" );
@@ -75,8 +75,11 @@ void detectShakeBall(){
       WiFiDrv::analogWrite(26, LOW); 
       WiFiDrv::analogWrite(25, 128); 
 
-      // for now, reset it after 5s
-      delay(5000);
+      // for now, reset it after 1s
+      delay(1000);
+      Firebase.setString(firebaseData, treeId  + "/mode/", "idle" );
+
+      delay(4000);
       // show green light again
       WiFiDrv::pinMode(26, OUTPUT);  
       WiFiDrv::analogWrite(25, LOW); 

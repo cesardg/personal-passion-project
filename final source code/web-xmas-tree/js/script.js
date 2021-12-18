@@ -637,11 +637,13 @@ const handleClickSendDrawing = (e) => {
     if (litLights.length != 0){
     const drawingObj = {
             litLightsOnlyIndex : litLightsOnlyIndex.join(" "),
-            litLightsOnlyColor : removeHashFromColor()
+            litLightsOnlyColor : removeHashFromColor(),
+            litLightsOnOff : "11101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101010111011101111000001110000111001101000000000000000000"
+     
     }
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
-        drawing: drawingObj
+        drawing: drawingObj,
     })
     .then(()=>{
         console.log("update send drawing done")
