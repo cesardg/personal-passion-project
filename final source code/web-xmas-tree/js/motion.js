@@ -52,19 +52,19 @@ function draw() {
   image(video, 0, 0);
 
   if (pose) {
-    let eyeR = pose.rightEye;
-    let eyeL = pose.leftEye;
-    let d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+    //let eyeR = pose.rightEye;
+    //let eyeL = pose.leftEye;
+    //let d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+   // fill(255, 0, 0);
+    //ellipse(pose.nose.x, pose.nose.y, d);
     fill(255, 0, 0);
-    ellipse(pose.nose.x, pose.nose.y, d);
-    fill(0, 0, 255);
 
 
     for (let i = 0; i < pose.keypoints.length; i++) {
       if (pose.keypoints[i].score > .7){
       let x = pose.keypoints[i].position.x;
       let y = pose.keypoints[i].position.y;
-      fill(0, 255, 0);
+      fill(255, 0, 0);
       ellipse(x, y, 16, 16);
       }
     }

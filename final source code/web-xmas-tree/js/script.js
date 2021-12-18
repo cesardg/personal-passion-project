@@ -438,6 +438,11 @@ const handleDrawingCanvas = () =>{
     $canvas.addEventListener('mousedown', startDrawing);
     $canvas.addEventListener('mousemove', draw);
     window.addEventListener('mouseup', stopDrawing);
+
+    //mobile
+    $canvas.addEventListener('touchstart', startDrawing);
+    $canvas.addEventListener('touchmove', draw);
+
     $resetButton.addEventListener('click', resetCanvas);
 }
 
@@ -452,6 +457,7 @@ const resetCanvas = () => {
 };
 
 const startDrawing = e => {
+    console.log("startDrawing triggered", e.type)
     mouseIsDown = true;
     ctx.save();
     ctx.lineWidth = 10;
@@ -463,6 +469,7 @@ const startDrawing = e => {
 };
 
 const stopDrawing = e => {
+     console.log(" stop Drawing triggered", e.type)
     if (!mouseIsDown) {
     return;
     }
@@ -473,7 +480,7 @@ const stopDrawing = e => {
 
 
 const draw = e => {
-
+ console.log("Draw triggered", e.type)
     if (!mouseIsDown) {
     return;
     } 
@@ -770,7 +777,8 @@ const handleChangeToggle = (e) => {
     setTreeMode("idle")
 
     update(ref(db, params.get('tree-id') + `/${e.target.value}/`),{
-            active: e.target.checked
+            active: e.target.checked,
+            detected: false
         })
         .then(()=>{
             console.log("update done")
