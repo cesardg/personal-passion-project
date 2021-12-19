@@ -114,7 +114,6 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 
 const $treeCode= document.querySelector(`.tree-code`);
-const $drawColor= document.querySelector(`.drawing-color`);
 const $message = document.querySelector(`.message`);
 const $ledContainers = document.querySelectorAll(`.led-container`);
 const $sendMessageButton = document.querySelector(`.send`);
@@ -122,7 +121,9 @@ const $sendDrawingButton = document.querySelector(`.send-drawing`);
 const $canvas = document.querySelector(`.canvas`);
 const ctx = $canvas.getContext("2d");
 const $resetButton = document.querySelector(`.reset-button`);
-const $ownerName = document.querySelector(`.input-owner-name`) 
+const $ownerName = document.querySelector(`.input-owner-name`) ;
+let $drawColor= document.querySelector('input[name="color"]:checked').value;
+let $drawColorCode= document.querySelector('input[name="color"]:checked').id;
 
 let url = window.location.href;
 let params = (new URL(url)).searchParams;
@@ -134,7 +135,7 @@ let coords = []
 let litLightsOnlyColor = [];
 let litLights = [];
 let litLightsOnlyIndex = [];
-
+let litLightsOnOff = ["N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N"]
 
 const handleClickSendMessage = (e) => {
     const $errorMessage = document.querySelector(`.error-message`);
@@ -354,6 +355,11 @@ const handleClickMode = (e) => {
     }
 }
 
+const handleClickColor = () => {
+    $drawColor = document.querySelector('input[name="color"]:checked').value;
+    $drawColorCode = document.querySelector('input[name="color"]:checked').id;
+}
+
 const checkIfTreeExist = () => {
     get(child(ref(db), params.get('tree-id') )).then((snapshot)=>{
         if (snapshot.exists()){
@@ -451,6 +457,7 @@ const resetCanvas = () => {
     litLights = [];
     litLightsOnlyIndex = [];
     litLightsOnlyColor = [];
+    litLightsOnOff = ["N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N"]
     ctx.clearRect(0, 0, $canvas.width, $canvas.height);
     //drawTriangle();
     clearPreview()
@@ -461,7 +468,7 @@ const startDrawing = e => {
     mouseIsDown = true;
     ctx.save();
     ctx.lineWidth = 10;
-    ctx.strokeStyle = $drawColor.value
+    ctx.strokeStyle = $drawColor
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(e.offsetX, e.offsetY);
@@ -485,7 +492,7 @@ const draw = e => {
     return;
     } 
     ctx.lineCap = 'round';
-    ctx.strokeStyle = $drawColor.value
+    ctx.strokeStyle = $drawColor
     ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
    
@@ -603,17 +610,19 @@ const convertCoordsToLedIndex = (x, y) => {
     if (led && messageMode !== "motion"){
         if (!litLightsOnlyIndex.includes(led)){
             litLightsOnlyIndex.push(led);
-            litLightsOnlyColor.push($drawColor.value);
-            litLights.push([led, $drawColor.value])
+            litLightsOnlyColor.push($drawColor);
+            litLights.push([led, $drawColor])
+            litLightsOnOff[led] = $drawColorCode;
             if (messageMode === "live-drawing"){
                 handleClickSendDrawing();
             }
         } else {
             // zelfde ledje, maar andere kleur
             const tempColor = litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)];
-            if (tempColor != $drawColor.value){
-                litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)] = $drawColor.value;
-                litLights[litLightsOnlyIndex.indexOf(led)] = [led, $drawColor.value];
+            if (tempColor != $drawColor){
+                litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)] = $drawColor;
+                litLights[litLightsOnlyIndex.indexOf(led)] = [led, $drawColor];
+                litLightsOnOff[led] = $drawColorCode;
                 if (messageMode === "live-drawing"){
                     handleClickSendDrawing();
                 }
@@ -622,7 +631,7 @@ const convertCoordsToLedIndex = (x, y) => {
        lightUpPreview();
     } else if (led) {
         console.log(led)
-        litLights.push([led,$drawColor.value])
+        litLights.push([led,$drawColor])
         if (!litLightsOnlyIndex.includes(led)){
         litLightsOnlyIndex.push(led)
         }
@@ -636,9 +645,7 @@ const handleClickSendDrawing = (e) => {
 
     if (litLights.length != 0){
     const drawingObj = {
-            litLightsOnlyIndex : litLightsOnlyIndex.join(" "),
-            litLightsOnlyColor : removeHashFromColor(),
-            litLightsOnOff : "RPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOYGLBURPOY" 
+            litLightsOnOff : litLightsOnOff.join("")
     }
     update(ref(db, params.get('tree-id') ),{
         mode: messageMode,
@@ -656,13 +663,6 @@ const handleClickSendDrawing = (e) => {
 }
 }
 
-const twoDimArrToStr = () => {
-    let tempArr = []
-    litLights.forEach((led) => {
-        tempArr.push(led.join("-"))
-    })
-    return tempArr.toString("")
-}
 
 const updateFirebaseData = () =>{
     const roomTemp = ref(db, params.get('tree-id') + '/roomTemp');
@@ -806,7 +806,6 @@ const setTreeMode = (mode) => {
 const detectIntruder = () => {
     const intruderDetection = ref(db, params.get('tree-id') + '/intruderDetection');
         onValue(intruderDetection, (snapshot) => {
-        document.querySelector(`.last-intruder-detection`).textContent = snapshot.val().time
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-intruder`).checked = true
              if(snapshot.val().detected) {
@@ -823,7 +822,6 @@ const detectIntruder = () => {
 const detectCatAttack = () => {
     const catAttackDetection = ref(db, params.get('tree-id') + '/catAttackDetection');
         onValue(catAttackDetection, (snapshot) => {
-        document.querySelector(`.last-cat-attack`).textContent = snapshot.val().time
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-cat`).checked = true
             if(snapshot.val().detected){
@@ -858,11 +856,8 @@ const detectMotionPoses = () => {
         update(ref(db, params.get('tree-id') ),{
             motion: motionObj
         })
-
-
     } 
 
-  
     if (messageMode !== "motion"){
         clearInterval(interval)
         setTreeMode("idle")
@@ -872,14 +867,6 @@ const detectMotionPoses = () => {
 }
 
 
-const removeHashFromColor = () => {
-    let tempArr = []
-    litLightsOnlyColor.forEach((color) => {
-        tempArr.push((color.substring(1)).toUpperCase());
-    })
-
-    return tempArr.join(" ");
-}
 
 const developerAndTestingFunctions = () => {
     //addHTMLandCSS();
@@ -911,6 +898,11 @@ const init = () =>{
     // on change radio button menu
     document.querySelectorAll(`.message-modes`).forEach((mode)=> {
         mode.addEventListener("change", handleClickMode)
+    })
+
+        // on change color menu
+    document.querySelectorAll(`.color-modes`).forEach((color)=> {
+        color.addEventListener("change", handleClickColor)
     })
 
     //login code form

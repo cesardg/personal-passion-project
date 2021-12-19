@@ -76,8 +76,44 @@
                 <p>Draw something on the tree</p>
                 <div class="drawing-options">
                     <div class="color-container">
-                        <label for="drawing-color">Drawing color: </label>
-                        <input class="drawing-color" type="color" id="drawing-color" name="drawing-color" value="#d94047">
+
+                        <form class="color-form">
+                            <div class="color-picker">
+                                <div class="color-selection">
+                                    <input id="R" class="color-modes" name="color" value="#FF0000" checked type="radio">
+                                    <label for="R">red</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="P" class="color-moPes" name="color" value="#FA86C4" type="radio">
+                                    <label for="P">pink</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="O" class="color-modes" name="color" value="#FFA500" type="radio">
+                                    <label for="O">orange</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="Y" class="color-modes" name="color" value="#FFFF00" type="radio">
+                                    <label for="Y">yellow</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="G" class="color-modes" name="color" value="#00FF00" type="radio">
+                                    <label for="G">green</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="L" class="color-modes" name="color" value="#ADD8E6" type="radio">
+                                    <label for="L">light-blue</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="B" class="color-modes" name="color" value="#0000FF" type="radio">
+                                    <label for="B">blue</label>
+                                </div>
+                                <div class="color-selection">
+                                    <input id="U" class="color-modes" name="color" value="#800080" type="radio">
+                                    <label for="U">purple</label>
+                                </div>
+
+                            </div>
+                        </form>
                     </div>
                     <button class="reset-button">Try again</button>
                 </div>
@@ -123,23 +159,21 @@
                         <div class="dashboard-item-switch">
                             <h3 class="dashboard-title">Intruder detection</h3>
                             <label class="toggle-switch">
-                                <input name="intruder" value="intruderDetection"   class="toggle-input toggle-input-intruder" type="checkbox">
+                                <input name="intruder" value="intruderDetection" class="toggle-input toggle-input-intruder" type="checkbox">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <p>You will get notified when a person passes by the tree</p>
-                        <p>Time since last attack: <span class="time last-intruder-detection"></span></p>
                     </article>
                     <article class="dashboard-item">
-                            <div class="dashboard-item-switch">
-                                <h3 class="dashboard-title">Cat attack detector</h3>
-                                <label class="toggle-switch">
-                                    <input name="cat" value="catAttackDetection" class="toggle-input toggle-input-cat" type="checkbox">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
+                        <div class="dashboard-item-switch">
+                            <h3 class="dashboard-title">Cat attack detector</h3>
+                            <label class="toggle-switch">
+                                <input name="cat" value="catAttackDetection" class="toggle-input toggle-input-cat" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                         <p>You will get notified when a cat attacks your tree</p>
-                        <p>Time since last attack: <span class="time last-cat-attack"></span></p>
                     </article>
                 </div>
             </section>

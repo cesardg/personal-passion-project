@@ -276,13 +276,13 @@ void mapDrawingInLeds(String drawing){
       if (String(messageArray[i]) == "R" ){
         strip.setPixelColor(i, 0xFF0000);
       } else if (String(messageArray[i]) == "P" ){
-        strip.setPixelColor(i, 0xFFC0CB);
+        strip.setPixelColor(i, 0xFA86C4);
       } else if (String(messageArray[i]) == "O" ){
         strip.setPixelColor(i, 0xFFA500);
       } else if (String(messageArray[i]) == "Y" ){
         strip.setPixelColor(i, 0xFFFF00);
       } else if (String(messageArray[i]) == "G" ){
-        strip.setPixelColor(i, 0x008000);
+        strip.setPixelColor(i, 0x00FF00);
       } else if (String(messageArray[i]) == "L" ){
         strip.setPixelColor(i, 0xADD8E6);
       } else if (String(messageArray[i]) == "B" ){
