@@ -14,14 +14,14 @@ html{
 
 html, body{
   height: 100%;
+background-color: var(--blue);
 }
 
 .container, .logged-in, .logged-off{
-    height: 100vh;
+    height: 100%;
     display: flex;
     font-family: houschka-rounded, sans-serif;
     font-weight: 500;
-    background-color: var(--blue);
     font-style: normal;
     width: 100%;
     color: var(--black);
@@ -496,6 +496,67 @@ list-name-label:hover{
     transform: scaleX(-1);
 }
 
+.color-picker{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+ .color-selection label {
+    font-size: 2rem;
+    display: inline-block;
+    width: 2rem;
+    border-radius: .4rem;
+    color: var(--black);
+    padding: 1rem;
+    cursor: pointer;
+    transition: .2s all ease;
+    border: .1rem solid var(--black);
+    margin: .1rem;
+}
+
+.color-selection input[type=radio] {
+  display: none;
+}
+
+ .color-selection input[type=radio]:checked ~ label {
+    border: .2rem solid var(--black);
+}
+
+.color-selection-r label{
+    background-color: #FF0000;
+}
+
+.color-selection-p label{
+    background-color: #FA86C4;
+}
+
+.color-selection-o label{
+      background-color: #FFA500
+}
+
+.color-selection-y label{
+      background-color: #FFFF00;
+}
+
+.color-selection-g label{
+      background-color: #00FF00;
+}
+
+.color-selection-l label{
+      background-color: #ADD8E6;
+}
+
+.color-selection-b label{
+      background-color: #0000FF;
+}
+
+.color-selection-u label{
+      background-color: #800080;
+}
+
+
+
+
 @media only screen and (max-width: 1000px) {
     .canvas-bg{
         transform: scale(0.6);
@@ -545,6 +606,7 @@ list-name-label:hover{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
     }
 
     .selection{
@@ -559,8 +621,11 @@ list-name-label:hover{
         margin: 0;
         padding: 0;
         border-bottom: .1rem solid var(--black);
-        border-radius: 0 0 1rem 1rem
-     
+        border-radius: 0;
+    }
+
+    .input{
+        margin: 1rem 0;
     }
 
     .title{

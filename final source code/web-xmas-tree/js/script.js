@@ -815,7 +815,7 @@ const detectIntruder = () => {
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-intruder`).checked = true
              if(snapshot.val().detected) {
-                 alert("there is an intruder detected in your house")
+                 alert("There is an intruder detected in your house")
                 update(ref(db, params.get('tree-id') + `/intruderDetection/`),{ detected: false})
                 }
       
@@ -831,7 +831,7 @@ const detectCatAttack = () => {
         if (snapshot.val().active){
             document.querySelector(`.toggle-input-cat`).checked = true
             if(snapshot.val().detected){
-                alert("a cat is now attacking your tree")
+                alert("A cat is now attacking your tree")
                 update(ref(db, params.get('tree-id') + `/catAttackDetection/`),{ detected: false})
             }
         } else {

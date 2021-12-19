@@ -1,8 +1,4 @@
-// ml5.js: Pose Estimation with PoseNet
-// The Coding Train / Daniel Shiffman
-// https://thecodingtrain.com/learning/ml5/7.1-posenet.html
-// https://youtu.be/OIo-DIOkNVg
-// https://editor.p5js.org/codingtrain/sketches/ULA97pJXR
+// based on code from The Coding Train / Daniel Shiffman
 
 let video;
 let poseNet;
