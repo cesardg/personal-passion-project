@@ -470,7 +470,6 @@ const resetCanvas = () => {
 };
 
 const startDrawing = e => {
-    console.log("startDrawing triggered", e.type)
     mouseIsDown = true;
     ctx.save();
     ctx.lineWidth = 10;
@@ -482,7 +481,6 @@ const startDrawing = e => {
 };
 
 const stopDrawing = e => {
-     console.log(" stop Drawing triggered", e.type)
     if (!mouseIsDown) {
     return;
     }
@@ -493,7 +491,6 @@ const stopDrawing = e => {
 
 
 const draw = e => {
- console.log("Draw triggered", e.type)
     if (!mouseIsDown) {
     return;
     } 

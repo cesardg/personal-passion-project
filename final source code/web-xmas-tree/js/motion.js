@@ -12,7 +12,6 @@ const handleClickMode = (e) => {
 }
 
 function setup() {
-    console.log(messageMode)
     if (messageMode === "motion"){
         document.querySelector(`.p5Canvas`).style.display = "block";
         const myCanvas = createCanvas(600, 531);
@@ -24,8 +23,6 @@ function setup() {
         video.hide();
         poseNet = ml5.poseNet(video, modelLoaded);
         poseNet.on('pose', gotPoses);
-    } else {
-      console.log("stop webcam")
     }
 }
 
