@@ -612,7 +612,7 @@ const convertCoordsToLedIndex = (x, y) => {
             litLightsOnlyIndex.push(led);
             litLightsOnlyColor.push($drawColor);
             litLights.push([led, $drawColor])
-            litLightsOnOff[led] = $drawColorCode;
+            litLightsOnOff[led-1] = $drawColorCode;
             if (messageMode === "live-drawing"){
                 handleClickSendDrawing();
             }
@@ -622,7 +622,7 @@ const convertCoordsToLedIndex = (x, y) => {
             if (tempColor != $drawColor){
                 litLightsOnlyColor[litLightsOnlyIndex.indexOf(led)] = $drawColor;
                 litLights[litLightsOnlyIndex.indexOf(led)] = [led, $drawColor];
-                litLightsOnOff[led] = $drawColorCode;
+                litLightsOnOff[led-1] = $drawColorCode;
                 if (messageMode === "live-drawing"){
                     handleClickSendDrawing();
                 }
