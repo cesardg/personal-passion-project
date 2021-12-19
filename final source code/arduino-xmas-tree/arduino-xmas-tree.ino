@@ -236,7 +236,7 @@ void detectCatAttack(){
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
     
-    if (abs(x) > 30 || abs(y) > 30 || abs(z) > 30){
+    if (abs(x) > 10 || abs(y) > 10 || abs(z) > 10){
 
       //if change in tilt is detected, send to db
       attackedByCat = true;
@@ -267,18 +267,34 @@ void listenForDrawing(){
 void mapDrawingInLeds(String drawing){
   
   strip.clear();
-  drawing.toUpperCase();
   int messageLenght = drawing.length() + 1;
   char messageArray[messageLenght];
   drawing.toCharArray(messageArray, messageLenght);
-
+  
   for (int i=0; i<messageLenght-1; i++) {     
-    Serial.println(messageArray[i]);
-      if (messageArray[i] == 1 ){
-        Serial.println("check");
-        strip.setPixelColor(i, 0x00FF00);
-      } 
+   
+      if (String(messageArray[i]) == "R" ){
+        strip.setPixelColor(i, 0xFF0000);
+      } else if (String(messageArray[i]) == "P" ){
+        strip.setPixelColor(i, 0xFFC0CB);
+      } else if (String(messageArray[i]) == "O" ){
+        strip.setPixelColor(i, 0xFFA500);
+      } else if (String(messageArray[i]) == "Y" ){
+        strip.setPixelColor(i, 0xFFFF00);
+      } else if (String(messageArray[i]) == "G" ){
+        strip.setPixelColor(i, 0x008000);
+      } else if (String(messageArray[i]) == "L" ){
+        strip.setPixelColor(i, 0xADD8E6);
+      } else if (String(messageArray[i]) == "B" ){
+        strip.setPixelColor(i, 0x0000FF);
+      } else if (String(messageArray[i]) == "U" ){
+        strip.setPixelColor(i, 0x800080);
+      }
+
   }
+
+
+   strip.setBrightness(40);
    strip.show();
 }
 
