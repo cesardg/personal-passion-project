@@ -194,6 +194,10 @@ html, body{
     color: var(--red);
 }
 
+.succes-message{
+    text-align: center;
+}
+
 .section-drawing, .section-motion, .logged-in, .section-dashboard, .error-screen, .p5Canvas, .section-preview{
     display: none;
 }
@@ -630,6 +634,7 @@ list-name-label:hover{
         padding: 0;
         border-bottom: .1rem solid var(--black);
         border-radius: 0;
+        width: 100vw;
     }
 
     .input{
@@ -645,6 +650,10 @@ list-name-label:hover{
         padding: .5rem;
     }
 
+    .message{
+        margin: 2rem;
+        width: 90%;
+    }
 }
 
 .snowflake {
@@ -655,6 +664,7 @@ list-name-label:hover{
 	 border-radius: 50%;
 	 position: absolute;
 	 top: -5vh;
+     margin-left: -5rem;
 }
  @keyframes snowfall {
 	 0% {
@@ -1064,9 +1074,12 @@ list-name-label:hover{
 	 animation: snowfall 11s linear infinite;
 	 animation-delay: -9s;
 }
-/* added small blur every 6 snowflakes*/
+
  .snowflake:nth-child(6n) {
-	 filter: blur(1px);
+	 filter: blur(.1rem);
 }
  
+.snowflake-animation{
+
+}
  

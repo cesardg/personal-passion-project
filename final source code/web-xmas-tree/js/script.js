@@ -161,7 +161,7 @@ const handleClickSendMessage = (e) => {
         .then(()=>{
             console.log("update send message done")
             $errorMessage.textContent = ""
-            $succesMessage.textContent=`Your message is succesfully send to ${treeInfo.ownerName}' tree!`
+            $succesMessage.textContent=`Your message is succesfully send to ${treeInfo.ownerName}'s tree!`
             $message.value="";
         })
         .catch((error)=>{
