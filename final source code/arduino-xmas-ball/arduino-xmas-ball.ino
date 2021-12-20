@@ -65,7 +65,7 @@ void detectShakeBall(){
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
     
-    if (abs(x) > 50 || abs(y) > 50 || abs(z) > 50){
+    if (abs(x) > 70 || abs(y) > 150 || abs(z) > 70){
 
       //if change in tilt is detected, send to db
       Firebase.setString(firebaseData, treeId  + "/mode/", "ball-shake" );
