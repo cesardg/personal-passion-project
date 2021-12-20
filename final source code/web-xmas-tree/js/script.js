@@ -397,7 +397,7 @@ const handleSubmitUserForm = (e) => {
             sessionStorage.setItem("userStatus", userStatus);
             document.querySelector(`.logged-off`).style.display = "none"
             document.querySelector(`.logged-in`).style.display = "flex"
-            document.querySelector(`.room-temp`).textContent = treeInfo.roomTemp
+            updateFirebaseData();
         } else {
             document.querySelector(`.error-code`).textContent = "Wrong code, please try again."
             $treeCode.value = "";
