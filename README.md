@@ -27,4 +27,4 @@ Send a message to my Connectree: https://cesardegreve.be/connectree/?tree-id=Rud
 * Visual Studio Code
 * Note: Make sure you add all the librarys (see top Arduino code file)
 * Note: Before uploading the code you need to make 1 change in the Adafruit_DotStar.h library (due to incompatibility new ATmega4809 chip): 
-    * File: Adafruit_DotStar.cpp, line 257 --> Comment line : //#define SPI_PIPELINE.
+    * Adafruit_DotStar.cpp --> Comment line 257: //#define SPI_PIPELINE.
