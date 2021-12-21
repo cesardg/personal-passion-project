@@ -40,6 +40,13 @@ html, body{
     align-items: center;
 }
 
+.header-title{
+    font-family: "Recoleta", sans-serif;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
 .header-top{
     display: flex;
     flex-direction: column;
@@ -610,7 +617,7 @@ list-name-label:hover{
         padding-bottom: 1rem;
     }
 
-    .logo{
+    .logo, .header-title{
         display: none;
     }
 
