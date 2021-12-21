@@ -146,11 +146,11 @@ const handleClickSendMessage = (e) => {
 
     if ($message.value.length == 0){
         $errorMessage.textContent = `Please type a message`
-         $succesMessage.textContent=""
+        $succesMessage.textContent=""
     } else if ($message.value.length >= 20) {
         $errorMessage.textContent = `Your message to long (${$message.value.length}) charachters. Max 20 characters.`
     } else if (!$message.value.match(alowedChars)) {
-         $succesMessage.textContent=""
+        $succesMessage.textContent=""
         $errorMessage.textContent = `Message can't contain special characters `
     }
     else {
@@ -290,26 +290,22 @@ console.log(e)
     const ledNumber = Number(e.currentTarget.innerHTML);
   
     if (litLightsOnlyIndex.includes(ledNumber)){
-
-
         if (litLightsOnlyIndex.indexOf(ledNumber) > -1) {
-        litLightsOnlyIndex.splice(litLightsOnlyIndex.indexOf(ledNumber), 1);
+            litLightsOnlyIndex.splice(litLightsOnlyIndex.indexOf(ledNumber), 1);
         }
-
-          if (litLights.indexOf(ledNumber) > -1) {
-        litLights.splice(litLights.indexOf(ledNumber), 1);
+        if (litLights.indexOf(ledNumber) > -1) {
+            litLights.splice(litLights.indexOf(ledNumber), 1);
         }
-
-         document.querySelector(`.led-container-${ledNumber}`).style.background = `#ffffff`;
+        document.querySelector(`.led-container-${ledNumber}`).style.background = `#ffffff`;
 
     } else {
         litLights.push([ledNumber, "e9692c"])
         document.querySelector(`.led-container-${ledNumber}`).style.background = `#e9692c`;
         litLightsOnlyIndex.push(ledNumber);
     }
-      console.log(litLightsOnlyIndex);
-      console.log(litLights);
 
+    console.log(litLightsOnlyIndex);
+    console.log(litLights);
     let copyString;
 
     litLights.forEach((e) => {
@@ -339,6 +335,11 @@ const clearPreview = () =>{
 }
 
 const handleClickMode = (e) => {
+
+    if (messageMode === "live-drawing") {
+        setTreeMode("idle")
+    }
+
     messageMode = e.target.value;
     document.querySelectorAll(`.section`).forEach(sections => sections.style.display = "none")
     document.querySelector(`.section-${messageMode}`).style.display = "flex"
@@ -349,9 +350,9 @@ const handleClickMode = (e) => {
     }
 
     if (messageMode === "motion"){
-            clearInterval()
-            detectMotionPoses();
-            setTreeMode("motion");
+        clearInterval()
+        detectMotionPoses();
+        setTreeMode("motion");
     }
 }
 
@@ -448,7 +449,6 @@ const handleDrawingCanvas = () =>{
     //mobile
     $canvas.addEventListener('touchstart', startDrawing);
     $canvas.addEventListener('touchmove', draw);
-
     $resetButton.addEventListener('click', resetCanvas);
 }
 
@@ -884,16 +884,16 @@ const developerAndTestingFunctions = () => {
 
 const init = () =>{
 
-    // checkt met localStorage of de user ingelogt is
+    // checks if user logged in with session storage
     checkIfUserLoggedIn();
 
-    // checkt of de juiste parameters aanwezig zijn in de url en of de kerstboom bestaat in de database
+    // checks paramets in url and if tree exists in database
     checkUrl();
 
-    // message versturen
+    // sending message
     $sendMessageButton.addEventListener('click', handleClickSendMessage);
 
-    // drawing versturen
+    // sending drawing
     $sendDrawingButton.addEventListener('click', handleClickSendDrawing);
 
     // on change radio button menu
@@ -901,7 +901,7 @@ const init = () =>{
         mode.addEventListener("change", handleClickMode)
     })
 
-        // on change color menu
+    // on change color menu
     document.querySelectorAll(`.color-modes`).forEach((color)=> {
         color.addEventListener("change", handleClickColor)
     })
@@ -938,8 +938,8 @@ const init = () =>{
         detectCatAttack();
     }
 
-    // developer en testing functies
-    developerAndTestingFunctions();
+    // developer en testing functions
+    //developerAndTestingFunctions();
 }
 
 init()
