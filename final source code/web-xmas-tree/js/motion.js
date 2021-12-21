@@ -54,7 +54,7 @@ function draw() {
 
 
     for (let i = 0; i < pose.keypoints.length; i++) {
-      if (pose.keypoints[i].score > .7){
+      if (pose.keypoints[i].score > .6){
       let x = pose.keypoints[i].position.x;
       let y = pose.keypoints[i].position.y;
       fill(255, 0, 0);

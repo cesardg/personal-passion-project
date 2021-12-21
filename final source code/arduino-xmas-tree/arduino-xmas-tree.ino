@@ -25,6 +25,7 @@ String treeId = "/Rudolph-A3EpYEF7zU";
 String jsonStr;
 String previousMessage;
 String mode = "idle";
+char previousLetter;
 
 int pirInputPin = 2;               
 int pirState = LOW;    
@@ -259,7 +260,7 @@ void listenForDrawing(){
       }
 
     if(mode == "drawing"){
-      delay(3000);
+      delay(6000);
       Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
     } 
 }
@@ -278,17 +279,17 @@ void mapDrawingInLeds(String drawing){
       } else if (String(messageArray[i]) == "P" ){
         strip.setPixelColor(i, 0xFA86C4);
       } else if (String(messageArray[i]) == "O" ){
-        strip.setPixelColor(i, 0xFFA500);
+        strip.setPixelColor(i, 0xFF7F00);
       } else if (String(messageArray[i]) == "Y" ){
         strip.setPixelColor(i, 0xFFFF00);
       } else if (String(messageArray[i]) == "G" ){
-        strip.setPixelColor(i, 0x00FF00);
+        strip.setPixelColor(i, 0x008400);
       } else if (String(messageArray[i]) == "L" ){
         strip.setPixelColor(i, 0xADD8E6);
       } else if (String(messageArray[i]) == "B" ){
         strip.setPixelColor(i, 0x0000FF);
       } else if (String(messageArray[i]) == "U" ){
-        strip.setPixelColor(i, 0x800080);
+        strip.setPixelColor(i, 0x820F8D);
       }
 
   }
@@ -320,11 +321,12 @@ void mapMotionInLeds(){
             }
           }
      }  
-      delay(50);
+      delay(10);
 
         for (int i = 0; i < StringCount; i++){
           //Serial.println(strs[i]);
-          strip.setPixelColor(strs[i].toInt(), 0xFF0000);
+          int led = (strs[i].toInt())-1;
+          strip.setPixelColor(led, 0xFF0000);
          }
 
         strip.show();
@@ -340,7 +342,7 @@ void listeningForMessages(){
       }
     previousMessage = firebaseData.stringData();
   }
- delay(1000);
+ delay(500);
 
  //set mode back to idle
   Firebase.setString(firebaseData, treeId  + "/mode/", "idle");
@@ -349,21 +351,25 @@ void listeningForMessages(){
  
   // string message to led array
  void mapMessageInLeds(String message){
-
-
-  //led uit zetten 
-  strip.clear();
   
+  strip.clear();
   Serial.println(message);
   message.toUpperCase();
   int messageLenght = message.length() + 1;
   char messageArray[messageLenght];
   
   message.toCharArray(messageArray, messageLenght);
-
   for (int i=0; i<messageLenght-1; i++) {
+    
       //search for ASCII number and substract it with 65
       int index = int(messageArray[i]);
+
+      // for two identical letters in a row such as HELLO, leave some time between L and L 
+      if (previousLetter == messageArray[i]){
+        strip.show();
+        delay(100);
+      }
+     
       Serial.println(index);
       Serial.print("These leds needs to be on for ");
       Serial.print(messageArray[i]);
@@ -418,10 +424,13 @@ void listeningForMessages(){
         
       }
       
-      strip.show(); 
       Serial.println();
+      strip.show(); 
       delay(500);
       strip.clear();
+
+      previousLetter = messageArray[i];
+    
   }
  }
 

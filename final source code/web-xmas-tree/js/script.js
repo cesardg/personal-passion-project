@@ -839,20 +839,20 @@ const detectCatAttack = () => {
 }
 
 const detectMotionPoses = () => {
-    // detects poses 30fps, only has to be 5 fps for database
+    // detects poses 30fps, only has to be 10 fps for database
     const interval  = window.setInterval(function(){ 
     if (pose && messageMode === "motion"){
         litLights.length = 0;
         litLightsOnlyIndex.length = 0;
         pose.keypoints.forEach((point) => {
-            if (point.score > 0.7){
+            if (point.score > 0.6){
                 const x = (600- Math.round(point.position.x))
                 const y = Math.round(point.position.y)
                 convertCoordsToLedIndex(x, y)
             }
         })
-        clearPreview()
-        lightUpPreview()
+        //clearPreview()
+        //lightUpPreview()
         const motionObj = {
             litLightsOnlyIndex: litLightsOnlyIndex.join("-"),
         }
@@ -866,7 +866,7 @@ const detectMotionPoses = () => {
         setTreeMode("idle")
     }
 
-}, 200);
+}, 100);
 }
 
 
