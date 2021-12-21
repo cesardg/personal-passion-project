@@ -392,12 +392,14 @@ const handleSubmitUserForm = (e) => {
             document.querySelector(`.logged-off`).style.display = "none"
             document.querySelector(`.logged-in`).style.display = "flex"
             document.querySelector(`.selection-dashboard`).style.display = "none"
+            document.activeElement.blur();
             
         } else if ($treeCode.value == treeInfo.ownerCode)  {
             userStatus = "owner logged in"
             sessionStorage.setItem("userStatus", userStatus);
             document.querySelector(`.logged-off`).style.display = "none"
             document.querySelector(`.logged-in`).style.display = "flex"
+            document.activeElement.blur();
             updateFirebaseData();
         } else {
             document.querySelector(`.error-code`).textContent = "Wrong code, please try again."
@@ -837,7 +839,7 @@ const detectCatAttack = () => {
 }
 
 const detectMotionPoses = () => {
-    // detects poses 30fps, only has to be 2 fps for database
+    // detects poses 30fps, only has to be 5 fps for database
     const interval  = window.setInterval(function(){ 
     if (pose && messageMode === "motion"){
         litLights.length = 0;
