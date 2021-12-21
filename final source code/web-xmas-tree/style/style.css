@@ -632,6 +632,8 @@ list-name-label:hover{
     .header{
         margin: 0;
         padding: 0;
+        border: 0;
+        border-top: .1rem solid var(--black);
         border-bottom: .1rem solid var(--black);
         border-radius: 0;
         width: 100vw;
@@ -642,7 +644,7 @@ list-name-label:hover{
     }
 
     .title{
-        margin: 1rem;
+        margin: 2rem 1rem;
     }
 
     .color-container, .reset-button{

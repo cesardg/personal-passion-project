@@ -633,7 +633,6 @@ const convertCoordsToLedIndex = (x, y) => {
         }
        lightUpPreview();
     } else if (led) {
-        console.log(led)
         litLights.push([led,$drawColor])
         if (!litLightsOnlyIndex.includes(led)){
         litLightsOnlyIndex.push(led)
@@ -852,7 +851,6 @@ const detectMotionPoses = () => {
         })
         clearPreview()
         lightUpPreview()
-        console.log(litLightsOnlyIndex)
         const motionObj = {
             litLightsOnlyIndex: litLightsOnlyIndex.join("-"),
         }
