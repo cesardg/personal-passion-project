@@ -10,17 +10,18 @@ Send a message to my Connectree: https://cesardegreve.be/connectree/?tree-id=Rud
 
 ## Hardware, components & supplies
 * 2X Arduino UNO WiFi Rev2
-* Adafruit DotStar Digital LED Strip - 30 LED per meter - 10 meter
+* Adafruit DotStar Digital LED Strip - 30 LED per meter - 10 meters
 * 5V 10A switching power supply for the LED strip
 * 9V 1.8A power supply for the Arduino
 * 9V battery + clip for the other Arduino
-* Jumper wires & 4-pin JST SM Plugs
+* Jumper wires & 4-pin JST SM Plugs (about 4 meters)
 * 1000µF (6.3V or higher) capacitor
 * USB cable
 * Servo motor
 * DHT11 Temperature & Humidity Sensor (3 pins)
 * PIR motion sensor (WPSE314)
 * Toggle switch
+* soldering machine & tin
 
 ## Software
 * Arduino IDE (1.8.13)
