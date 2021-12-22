@@ -6,7 +6,7 @@ Concept: https://cesar.vercel.app/concept
 
 Process: https://cesar.vercel.app/
 
-Send a message to my Connectree: https://cesardegreve.be/connectree/?tree-id=Rudolph-A3EpYEF7zU
+Send a message to my Connectree (pin code: 2512): https://cesardegreve.be/connectree/?tree-id=Rudolph-A3EpYEF7zU
 
 ## Hardware, components & supplies
 * 2X Arduino UNO WiFi Rev2
